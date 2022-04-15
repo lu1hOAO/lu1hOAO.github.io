@@ -76,7 +76,7 @@ Lu Ying = Lu Ying's home</title>
       <i class="ic i-pen"></i>
     </span>
     <span class="text">Symbols count in article</span>
-    <span>872</span>
+    <span>1.5k</span>
     <span class="text">words</span>
   </span>
   <span class="item" title="Reading time">
@@ -161,14 +161,30 @@ Lu Ying = Lu Ying's home</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <h3 id="關於我"><a href="#關於我" class="headerlink" title="關於我"></a>關於我</h3><p>平常撰寫以C語言為主，Python為輔，每個人、每個語言都會有自己喜歡、適合的編輯環境，從開始寫程式到現在我也用過不少開發環境，最後選擇 VS Code ( Visual Studio Code )搭配 WSL (Ubuntu)。</p>
-<h3 id="環境選擇"><a href="#環境選擇" class="headerlink" title="環境選擇"></a>環境選擇</h3><p>本篇文章會介紹兩種編輯器，分別是 Visual Studio 和 VS Code + WSL 的組合。<br>如果平常以 C 或 C++ 為主，又不想耗費太多時間安裝東西(非資訊本科)，想要一次搞定的話就可以用 Visual studio XXXX (年份)，缺點是介面美感有待加強，跟我阿嬤衣櫃一樣的紫色QQ (不過後期的紫色蠻好看的，主要缺點是很大，肥肥一隻，占掉很多空間)。<br>想要一步步建置環境的話，選擇 VS Code + WSL，WSL 是編譯器 (complier) 把我們寫的高階語言翻譯成組合語言再藉由 interpreter 轉譯執行，這個過程一步一步接近電腦底層，從軟體進到硬體。搭配 VS Code 的編譯器也不一定要選擇 WSL， minGW 也很多人推薦喔! 那我們就開始吧！</p>
-<h3 id="Visual-Studio-2022"><a href="#Visual-Studio-2022" class="headerlink" title="Visual Studio 2022"></a>Visual Studio 2022</h3><p>搜尋 Visual Studio ，點選下方進入網站，就可以看到歷年的 visual studio 版本，選擇自己喜歡的，這裡以 2022 做示範，滑到最下面會有作業系統選擇，這裡以 windows 做示範。</p>
-<p><img data-src="https://i.imgur.com/NhHc7o1.png"></p>
-<p>下載完成後會跑出以下視窗，依照自己的使用習慣勾選，要記得把每一項都大致看過一遍喔，如果是寫 c 或 c++ 的人要<strong>記得把 c++ 勾選起來</strong>，不然是沒有內建 c 的喔 (以前有，這版主打輕量就沒有了@@，勾選之後開始安裝，我勾完之後是3.69GB肥肥一隻(不過跟以前相比算是瘦身有成，我之前的電腦硬碟才128GB，真的很佔空間)，安裝需要一點時間可以喝杯咖啡再回來</p>
-<p><img data-src="https://i.imgur.com/2upD0Ah.png"></p>
-<p>到此為止安裝完成，可以開始寫程式了，我的建議是<strong>建立新專案</strong>，這樣他就會幫你建一個資料夾，之後寫的.c檔以及編譯後的.exe檔(可執行檔)都會存在這個資料夾。專案名稱可以功能取向 (比如 HW1-1)，建議專案名稱不要出現中文，寫好程式可能會寄給別人，由於.exe檔會被阻攔，往往要使用壓縮方式將檔案提交，壓縮時檔案名稱不可以出現中文喔</p>
-<p><img data-src="https://i.imgur.com/3blXSCV.png"></p>
+    <h3 id="關於我"><a class="markdownIt-Anchor" href="#關於我">#</a> 關於我</h3>
+<p>平常撰寫以 C 語言為主，Python 為輔，每個人、每個語言都會有自己喜歡、適合的編輯環境，從開始寫程式到現在我也用過不少開發環境，最後選擇 VS Code (Visual Studio Code) 搭配 WSL (Ubuntu)。</p>
+<h3 id="環境選擇"><a class="markdownIt-Anchor" href="#環境選擇">#</a> 環境選擇</h3>
+<p>本篇文章會介紹 Visual Studio 2022，另有文章介紹 VS Code + WSL 的組合。<br>
+如果平常以 C 或 C++ 為主，又不想耗費太多時間安裝東西 (非資訊本科)，想要一次搞定的話就可以用 Visual studio XXXX (年份)，缺點是介面美感有待加強，跟我阿嬤衣櫃一樣的紫色 QQ (不過後期的紫色蠻好看的，主要缺點是很大，肥肥一隻，占掉很多空間)。<br>
+想要一步步建置環境的話，選擇 VS Code + WSL，WSL 是編譯器 (complier) 把我們寫的高階語言翻譯成組合語言再藉由 interpreter 轉譯執行，這個過程一步一步接近電腦底層，從軟體進到硬體。搭配 VS Code 的編譯器也不一定要選擇 WSL， minGW 也很多人推薦喔！那我們就開始吧！</p>
+<h3 id="visual-studio-2022"><a class="markdownIt-Anchor" href="#visual-studio-2022">#</a> Visual Studio 2022</h3>
+<p>搜尋 Visual Studio ，點選下方進入網站，就可以看到歷年的 visual studio 版本，選擇自己喜歡的，這裡以 2022 做示範，滑到最下面會有作業系統選擇，這裡以 windows 做示範。</p>
+<p><img data-src="https://i.imgur.com/NhHc7o1.png" alt=""></p>
+<p>下載完成後會跑出以下視窗，依照自己的使用習慣勾選，要記得把每一項都大致看過一遍喔，如果是寫 c 或 c++ 的人要<strong>記得把 c++ 勾選起來</strong>，不然是沒有內建 c 的喔 (以前有，這版主打輕量就沒有了 @@，勾選之後開始安裝，我勾完之後是 3.69GB 肥肥一隻 (不過跟以前相比算是瘦身有成，我之前的電腦硬碟才 128GB，真的很佔空間)，安裝需要一點時間可以喝杯咖啡再回來</p>
+<p><img data-src="https://i.imgur.com/2upD0Ah.png" alt=""></p>
+<p>到此為止安裝完成，可以開始寫程式了，我的建議是<strong>建立新專案</strong>，這樣他就會幫你建一個資料夾，之後寫的.c 檔以及編譯後的.exe 檔 (可執行檔) 都會存在這個資料夾。專案名稱可以功能取向 (比如 HW1-1)，建議專案名稱不要出現中文，寫好程式可能會寄給別人，由於.exe 檔會被阻攔，往往要使用壓縮方式將檔案提交，壓縮時檔案名稱不可以出現中文喔</p>
+<p><img data-src="https://i.imgur.com/3blXSCV.png" alt=""></p>
+<p>進入專案之後點選<strong>空白專案</strong>，設定名稱 (建議功能取向)，這邊使用 helloworld (大家的第一支程式)</p>
+<p><img data-src="https://i.imgur.com/3pierEI.png" alt=""></p>
+<p>進入之後會發現主畫面什麼都沒有，不要緊張，從上方點選<strong>專案 -&gt; 加入新項目</strong> (或者使用快捷鍵 ctrl+shift+A)，這樣就跑出來了，值得注意的是，Visual Studio 2022 在預設情況下沒辦法直接建 c 專案，<strong>只能建 c++ 專案</strong>，但仍保有編譯 c 原始碼的功能喔！</p>
+<p><img data-src="https://i.imgur.com/YBLdQ3H.png" alt=""></p>
+<p>打好程式碼之後在上方點選建置 -&gt; 建置方案，即可完成編譯，如果程式碼沒有問題最下方會顯示建置成功，若建置失敗或出現警告，最下方也會出現相關資訊，<strong>若是修改後的程式碼要重新編譯，那就要選擇建置 -&gt; 重建方案</strong></p>
+<p><img data-src="https://i.imgur.com/2RoDH8u.png" alt=""></p>
+<p>最後在終端機 (按下桌面開始鍵搜尋終端機) 輸入 cd (開啟檔案的意思) 把建置成功的檔案位置貼上， enter 之後輸入 ./ 檔名.exe 就是執行囉！</p>
+<p><img data-src="https://i.imgur.com/2o5aZJ1.png" alt=""></p>
+<p>到此為止會發現其實 Visual Studio 2022 很適合新手使用，一鍵編譯也不用花時間去搞清楚甚麼是編譯器，偵錯功能很強大，一打錯立刻出現紅色蚯蚓提醒你，但使用 Visual Studio 2022 寫 C 語言其實不太友善，標準 I/O scanf 立刻報錯給你看，跳出一堆警告的時候都很想對編譯器喊：我要怎麼寫 code 你管不著！！因此想要寫 c 語言時記得在專案 -&gt; 屬性 -&gt; 前置處理器<br>
+加上 CRT_SECURE_NO_WARNINGS</p>
+<p>本篇文章到此結束，祝福所有小白寫扣順利，我第一次用時看到終端機跑出來就覺得自己是拯救世界的駭客 (但現在看到深色主題就覺得眼睛好痛 QQ)</p>
 
       <div class="tags">
           <a href="/tags/%E7%A8%8B%E5%BC%8F%E6%96%B0%E6%89%8B/" rel="tag"><i class="ic i-tag"></i> 程式新手</a>
@@ -184,7 +200,7 @@ Lu Ying = Lu Ying's home</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2022-04-15 16:07:17" itemprop="dateModified" datetime="2022-04-15T16:07:17+08:00">2022-04-15</time>
+    <time title="Modified: 2022-04-15 19:51:36" itemprop="dateModified" datetime="2022-04-15T19:51:36+08:00">2022-04-15</time>
   </span>
 </div>
 
@@ -232,7 +248,7 @@ Lu Ying = Lu Ying's home</title>
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="Contents">
-          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%9C%E6%96%BC%E6%88%91"><span class="toc-number">1.</span> <span class="toc-text">關於我</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%92%B0%E5%A2%83%E9%81%B8%E6%93%87"><span class="toc-number">2.</span> <span class="toc-text">環境選擇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Visual-Studio-2022"><span class="toc-number">3.</span> <span class="toc-text">Visual Studio 2022</span></a></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%9C%E6%96%BC%E6%88%91"><span class="toc-number">1.</span> <span class="toc-text"> 關於我</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%92%B0%E5%A2%83%E9%81%B8%E6%93%87"><span class="toc-number">2.</span> <span class="toc-text"> 環境選擇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#visual-studio-2022"><span class="toc-number">3.</span> <span class="toc-text"> Visual Studio 2022</span></a></li></ol>
       </div>
       <div class="related panel pjax" data-title="Related">
         <ul>
@@ -356,7 +372,7 @@ Lu Ying = Lu Ying's home</title>
     <span class="post-meta-item-icon">
       <i class="ic i-chart-area"></i>
     </span>
-    <span title="Symbols count total">1k words</span>
+    <span title="Symbols count total">2k words</span>
 
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
