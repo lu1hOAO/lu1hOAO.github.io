@@ -76,7 +76,7 @@ Lu Ying = Lu Ying's home</title>
       <i class="ic i-pen"></i>
     </span>
     <span class="text">Symbols count in article</span>
-    <span>2.7k</span>
+    <span>2.6k</span>
     <span class="text">words</span>
   </span>
   <span class="item" title="Reading time">
@@ -162,7 +162,7 @@ Lu Ying = Lu Ying's home</title>
     
 
     <h3 id="概要"><a class="markdownIt-Anchor" href="#概要">#</a> 概要</h3>
-<p>對現在電腦而言，排程式一件很重要的技術，打開電腦有很多事情想做，又很希望電腦趕快做完，就算沒有真的在做也給我們一點回應，讓我們知道他需要一點時間處理，本文主要探討常見的 CPU 排程方法 (包含 mulititasking 和 multiple-processor (下篇))</p>
+<p>對現在電腦而言，排程是一件很重要的技術，打開電腦有很多事情想做，又很希望電腦趕快做完，就算沒有真的在做也給我們一點回應，讓我們知道他需要一點時間處理，本文主要探討常見的 CPU 排程方法 (包含 mulititasking 和 multiple-processor (下篇))</p>
 <h3 id="評估標準-criteria"><a class="markdownIt-Anchor" href="#評估標準-criteria">#</a> 評估標準 Criteria</h3>
 <p>由於人類具有慣老闆天性，對於電腦這種不會抱怨的員工更是要求一人當三人用一刻不得閒，所以我們評估排程好壞的標準大概可以由以下幾點決定</p>
 <ol>
@@ -174,8 +174,7 @@ Lu Ying = Lu Ying's home</title>
 </ol>
 <p>了解以上幾點評估標準後我們就可以更進一步來比較各種排程方法</p>
 <h3 id="為何需要排程"><a class="markdownIt-Anchor" href="#為何需要排程">#</a> 為何需要排程</h3>
-<p>現在的電腦多是 multitaskong 也就是說 CPU 可以同時一次處理好幾個 process 但這裡的同時並不是說 CPU 像千手觀音那樣，同一時刻處理好多事情，而是說 CPU 先做 A process ，做一下子後儲存 A 的狀態再換去做 B ，B 做完一些後再回來做 A ，在一段時間內多處跑的概念，到這裡人類可能會想這是哪門子的同時呀，但電腦執行的速度很快，在人類有感時間一秒內，電腦可能已經處理完好幾個 process 了<br>
-既然 CPU 是這樣在 process 之間來回走跳，決定他下一步該去哪個 process 就很重要，也是排程的精髓</p>
+<p>multitasking 是說 CPU 可以同時一次處理好幾個 process 但這裡的同時並不是說 CPU 像千手觀音那樣，同一時刻處理好多事情，而是說 CPU 先做 A process ，做一下子後儲存 A 的狀態再換去做 B ，B 做完一些後再回來做 A ，在一段時間內多處跑的概念，到這裡人類可能會想這是哪門子的同時呀，但電腦執行的速度很快，在人類有感時間一秒內，電腦可能已經處理完好幾個 process 了，既然 CPU 是這樣在 process 之間來回走跳，決定他下一步該去哪個 process 就很重要，也是排程的精髓</p>
 <h3 id="過程"><a class="markdownIt-Anchor" href="#過程">#</a> 過程</h3>
 <ol>
 <li>Short-term-scheuler 會從 ready queue 挑選一個要被執行的 process 給 CPU ，這個過程稱為 Dispatch</li>
@@ -235,7 +234,7 @@ Lu Ying = Lu Ying's home</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2022-04-24 16:08:58" itemprop="dateModified" datetime="2022-04-24T16:08:58+08:00">2022-04-24</time>
+    <time title="Modified: 2022-04-24 17:20:36" itemprop="dateModified" datetime="2022-04-24T17:20:36+08:00">2022-04-24</time>
   </span>
 </div>
 
@@ -387,20 +386,20 @@ Lu Ying = Lu Ying's home</title>
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
+<a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
 </div>
 
-    <span><a href="/2022/04/23/os-1/" title="CPU Scheduling (上)">CPU Scheduling (上)</a></span>
+    <span><a href="/2022/04/22/program-lesson-3/" title="Debug C 語言的方法">Debug C 語言的方法</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
+<a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
 </div>
 
-    <span><a href="/2022/04/18/program-lesson-2/" title="環境建置--VS Code + WSL">環境建置--VS Code + WSL</a></span>
+    <span><a href="/2022/04/23/os-1/" title="CPU Scheduling (上)">CPU Scheduling (上)</a></span>
   </li>
 
       
@@ -420,7 +419,7 @@ Lu Ying = Lu Ying's home</title>
 <a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
 </div>
 
-    <span><a href="/2022/04/22/program-lesson-3/" title="Debug C 語言的方法">Debug C 語言的方法</a></span>
+    <span><a href="/2022/04/18/program-lesson-2/" title="環境建置--VS Code + WSL">環境建置--VS Code + WSL</a></span>
   </li>
 
   </ul>
