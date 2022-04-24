@@ -24,15 +24,15 @@
 <link rel="stylesheet" href="/css/app.css?v=0.2.5">
 
   
-  <meta name="keywords" content="程式新手,Visual studio 2022" />
+  <meta name="keywords" content="OS,scheduling" />
 
 
-<link rel="canonical" href="https://lu1hoao.github.io/2022/04/14/program-lesson-1/">
+<link rel="canonical" href="https://lu1hoao.github.io/2022/04/23/os-1/">
 
 
 
   <title>
-環境建置 --Visual Studio 2022 - 程式小白 |
+CPU Scheduling (上) - 作業系統小科普 |
 Lu Ying = Lu Ying's home</title>
 <meta name="generator" content="Hexo 6.1.0"></head>
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -60,23 +60,23 @@ Lu Ying = Lu Ying's home</title>
         <!--<div id="brand">
           <div class="pjax">
           
-  <h1 itemprop="name headline">環境建置 --Visual Studio 2022
+  <h1 itemprop="name headline">CPU Scheduling (上)
   </h1>
   
 <div class="meta">
-  <span class="item" title="Created: 2022-04-14 16:42:28">
+  <span class="item" title="Created: 2022-04-23 20:23:28">
     <span class="icon">
       <i class="ic i-calendar"></i>
     </span>
     <span class="text">Posted on</span>
-    <time itemprop="dateCreated datePublished" datetime="2022-04-14T16:42:28+08:00">2022-04-14</time>
+    <time itemprop="dateCreated datePublished" datetime="2022-04-23T20:23:28+08:00">2022-04-23</time>
   </span>
   <span class="item" title="Symbols count in article">
     <span class="icon">
       <i class="ic i-pen"></i>
     </span>
     <span class="text">Symbols count in article</span>
-    <span>1.7k</span>
+    <span>2.7k</span>
     <span class="text">words</span>
   </span>
   <span class="item" title="Reading time">
@@ -116,7 +116,7 @@ Lu Ying = Lu Ying's home</title>
 
       </div>
       <div id="imgs" class="pjax">
-          <img src="https://i.imgur.com/4ZdEhYT.jpg">
+          <img src="https://i.imgur.com/00MXFli.jpg">
       </div>
     </header>
     <div id="waves">
@@ -141,12 +141,12 @@ Lu Ying = Lu Ying's home</title>
 <div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
 <i class="ic i-home"></i>
 <span><a href="/">Home</a></span><i class="ic i-angle-right"></i>
-<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" itemprop="item" rel="index" title="In 程式小白"><span itemprop="name">程式小白</span></a>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" itemprop="item" rel="index" title="In 作業系統小科普"><span itemprop="name">作業系統小科普</span></a>
 <meta itemprop="position" content="1" /></span>
 </div>
 
     <article itemscope itemtype="http://schema.org/Article" class="post block" lang="en">
-  <link itemprop="mainEntityOfPage" href="https://lu1hoao.github.io/2022/04/14/program-lesson-1/">
+  <link itemprop="mainEntityOfPage" href="https://lu1hoao.github.io/2022/04/23/os-1/">
 
   <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="image" content="/images/%E6%88%91.png">
@@ -161,34 +161,69 @@ Lu Ying = Lu Ying's home</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <h3 id="關於我"><a class="markdownIt-Anchor" href="#關於我">#</a> 關於我</h3>
-<p>平常撰寫以 C 語言為主，Python 為輔，每個人、每個語言都會有自己喜歡、適合的編輯環境，從開始寫程式到現在我也用過不少開發環境，最後選擇 VS Code (Visual Studio Code) 搭配 WSL (Ubuntu)。</p>
-<h3 id="環境選擇"><a class="markdownIt-Anchor" href="#環境選擇">#</a> 環境選擇</h3>
-<p>本篇文章會介紹 Visual Studio 2022，另有文章介紹 VS Code + WSL 的組合。<br>
-如果平常以 C 或 C++ 為主，又不想耗費太多時間安裝東西 (非資訊本科)，想要一次搞定的話就可以用 Visual studio XXXX (年份)，缺點是介面美感有待加強，跟我阿嬤衣櫃一樣的紫色 QQ (不過後期的紫色蠻好看的，主要缺點是很大，肥肥一隻，占掉很多空間)。<br>
-想要一步步建置環境的話，選擇 VS Code + WSL，WSL 是 Windows 子系統 Linux 版，可以藉由 WSL 在 Windows 上 執行 Linux 的二進位檔。就好像現在的大學聯盟，我在成大的時候很想選一些酷酷的體育課，但沒有特別對我味的，這時我看到中山大學有帆船課就可以透過台綜大系統去申請，這樣我也可以用成大學生的身分去上一些原本中山大學學生才能上的課。 選擇安裝 Ubuntu 在裡面安裝 gcc (complier , 若要寫 c++ 就要使用 g++) 把我們寫的高階語言翻譯成組合語言再藉由 assembler 轉譯執行，這個過程一步一步接近電腦底層，從軟體進到硬體。想要安裝 gcc 也不一定要選擇 WSL-Ubuntu ，minGW 也很多人推薦喔！</p>
-<h3 id="visual-studio-2022"><a class="markdownIt-Anchor" href="#visual-studio-2022">#</a> Visual Studio 2022</h3>
-<p>搜尋 Visual Studio ，點選下方進入網站，就可以看到歷年的 Visual Studio 版本，選擇自己喜歡的，這裡以 2022 做示範，滑到最下面會有作業系統選擇，這裡以 Windows 做示範。</p>
-<p><img data-src="https://i.imgur.com/NhHc7o1.png" alt=""></p>
-<p>下載完成後會跑出以下視窗，依照自己的使用習慣勾選，要記得把每一項都大致看過一遍喔，如果是寫 c 或 c++ 的人要<strong>記得把 c++ 勾選起來</strong>，不然是沒有內建 c 的喔 (以前有，這版主打輕量就沒有了 @@，勾選之後開始安裝，我勾完之後是 3.69GB 肥肥一隻 (不過跟以前相比算是瘦身有成，我之前的電腦硬碟才 128GB，真的很佔空間)，安裝需要一點時間可以喝杯咖啡再回來</p>
-<p><img data-src="https://i.imgur.com/2upD0Ah.png" alt=""></p>
-<p>到此為止安裝完成，可以開始寫程式了，我的建議是<strong>建立新專案</strong>，這樣他就會幫你建一個資料夾，之後寫的.c 檔以及編譯後的.exe 檔 (可執行檔) 都會存在這個資料夾。專案名稱可以功能取向 (比如 HW1-1)，建議專案名稱不要出現中文，寫好程式可能會寄給別人，由於.exe 檔會被阻攔，往往要使用壓縮方式將檔案提交，壓縮時檔案名稱不可以出現中文喔</p>
-<p><img data-src="https://i.imgur.com/3blXSCV.png" alt=""></p>
-<p>進入專案之後點選<strong>空白專案</strong>，設定名稱 (建議功能取向)，這邊使用 helloworld (大家的第一支程式)</p>
-<p><img data-src="https://i.imgur.com/3pierEI.png" alt=""></p>
-<p>進入之後會發現主畫面什麼都沒有，不要緊張，從上方點選<strong>專案 -&gt; 加入新項目</strong> (或者使用快捷鍵 ctrl+shift+A)，這樣就跑出來了，值得注意的是，Visual Studio 2022 在預設情況下沒辦法直接建 c 專案，<strong>只能建 c++ 專案</strong>，但仍保有編譯 c 原始碼的功能喔！</p>
-<p><img data-src="https://i.imgur.com/YBLdQ3H.png" alt=""></p>
-<p>打好程式碼之後在上方點選建置 -&gt; 建置方案，即可完成編譯，如果程式碼沒有問題最下方會顯示建置成功，若建置失敗或出現警告，最下方也會出現相關資訊，<strong>若是修改後的程式碼要重新編譯，那就要選擇建置 -&gt; 重建方案</strong></p>
-<p><img data-src="https://i.imgur.com/2RoDH8u.png" alt=""></p>
-<p>最後在終端機 (按下桌面開始鍵搜尋終端機) 輸入 cd (開啟檔案的意思) 把建置成功的檔案位置貼上， enter 之後輸入 ./ 檔名.exe 就是執行囉！</p>
-<p><img data-src="https://i.imgur.com/2o5aZJ1.png" alt=""></p>
-<p>到此為止會發現其實 Visual Studio 2022 很適合新手使用，一鍵編譯也不用花時間去搞清楚甚麼是編譯器，偵錯功能很強大，一打錯立刻出現紅色蚯蚓提醒你，但使用 Visual Studio 2022 寫 C 語言其實不太友善，標準 I/O scanf 立刻報錯給你看，跳出一堆警告的時候都很想對編譯器喊：我要怎麼寫 code 你管不著！！因此想要寫 c 語言時記得在專案 -&gt; 屬性 -&gt; 前置處理器<br>
-加上 CRT_SECURE_NO_WARNINGS</p>
-<p>本篇文章到此結束，祝福所有小白寫扣順利，我第一次用時看到終端機跑出來就覺得自己是拯救世界的駭客 (但現在看到深色主題就覺得眼睛好痛 QQ)</p>
+    <h3 id="概要"><a class="markdownIt-Anchor" href="#概要">#</a> 概要</h3>
+<p>對現在電腦而言，排程式一件很重要的技術，打開電腦有很多事情想做，又很希望電腦趕快做完，就算沒有真的在做也給我們一點回應，讓我們知道他需要一點時間處理，本文主要探討常見的 CPU 排程方法 (包含 mulititasking 和 multiple-processor (下篇))</p>
+<h3 id="評估標準-criteria"><a class="markdownIt-Anchor" href="#評估標準-criteria">#</a> 評估標準 Criteria</h3>
+<p>由於人類具有慣老闆天性，對於電腦這種不會抱怨的員工更是要求一人當三人用一刻不得閒，所以我們評估排程好壞的標準大概可以由以下幾點決定</p>
+<ol>
+<li><strong>CPU utilization</strong> (CPU 使用率) 指的是 CPU 工作的時間，絕對是越高越好， CPU 不准休息 ，就算是在多處理器的系統，也要讓每顆 CPU 工作分配平均 (大家都很忙，不能有躺分仔的概念)</li>
+<li><strong>Throughput</strong> (產能) 單位時間內能完成的工作越多越好，所以這個值也是越高越好</li>
+<li><strong>Turnaround time</strong> (從開始執行到結束的時間) 希望能夠越快做完越好，所以這個數值是越低越好</li>
+<li><strong>Waiting time</strong> 一個 process 在 ready queue 等待的時間，就像我們去郵局從抽號碼牌到被叫到的這段時間，等待時間越短越好，所以數值越小越好</li>
+<li><strong>Response time</strong> (回應時間) 這在電腦裡面是很重要的，告訴使用者我有在動啦不要再叫了！我們點兩下滑鼠打開一個程式，游標會出現一個藍色圈圈在轉，就算該軟體介面還沒出現在螢幕上，我們看到藍色圈圈也會安心不少，就不會一直瘋狂點滑鼠，回應時間越短越好，所以數值越小越好</li>
+</ol>
+<p>了解以上幾點評估標準後我們就可以更進一步來比較各種排程方法</p>
+<h3 id="為何需要排程"><a class="markdownIt-Anchor" href="#為何需要排程">#</a> 為何需要排程</h3>
+<p>現在的電腦多是 multitaskong 也就是說 CPU 可以同時一次處理好幾個 process 但這裡的同時並不是說 CPU 像千手觀音那樣，同一時刻處理好多事情，而是說 CPU 先做 A process ，做一下子後儲存 A 的狀態再換去做 B ，B 做完一些後再回來做 A ，在一段時間內多處跑的概念，到這裡人類可能會想這是哪門子的同時呀，但電腦執行的速度很快，在人類有感時間一秒內，電腦可能已經處理完好幾個 process 了<br>
+既然 CPU 是這樣在 process 之間來回走跳，決定他下一步該去哪個 process 就很重要，也是排程的精髓</p>
+<h3 id="過程"><a class="markdownIt-Anchor" href="#過程">#</a> 過程</h3>
+<ol>
+<li>Short-term-scheuler 會從 ready queue 挑選一個要被執行的 process 給 CPU ，這個過程稱為 Dispatch</li>
+<li>CPU 做到一個程度後 (這個程度會依據不同的排程演算法而有不一樣的條件) 做 context switch (在 context switch 之前 重複第一步驟)</li>
+<li>CPU 執行第二個 process 直到達到終止條件</li>
+</ol>
+<p>這三步驟不斷重複直到我們把電腦關機</p>
+<h3 id="常見演算法"><a class="markdownIt-Anchor" href="#常見演算法">#</a> 常見演算法</h3>
+<ul>
+<li>
+<p><strong>First Come First Served</strong> (FCFS) 先進先出，最直覺的排序方式，先到 ready queue 的就先執行，直到做完再換下一個，然而這樣的排程方法無法保證 waiting time 最低，以下方例子來說，有三個 process 執行時間分別是 6,4,2 ，照以下順序執行，平均等待時間為 (6+4)/3</p>
+<p><img data-src="https://i.imgur.com/BD6CXb7.png" alt=""></p>
+<p>但如果把執行順序改成這樣，平均等待時間就變成 (4+2)/6</p>
+<p><img data-src="https://i.imgur.com/n2YCvwB.png" alt=""></p>
+<p>換句話說，<strong>當三個 process 在差不多時間抵達時</strong>，<strong>把時間短的作為第一個效果會比較好</strong>，如果完全依照先進先出反而會在某些情況浪費時間，這樣的想法進而引發 shortest job first 的排程技術</p>
+</li>
+<li>
+<p><strong>Shortest job first</strong> (SJF) 時間短的先進行，這種排程方法是 optimal (最佳的)，能確保最短的 waiting time ，但我們要如何預測 process 的執行時間呢？假設我們現在執行第 n 個 process ，第 n+1 個 process 執行時間可預測為 (預測和真實不同)<br>
+<img data-src="https://i.imgur.com/4WI49j3.png" alt=""></p>
+<p>其中 t 表示真實的時間。<br>
+除了一般的 SJF 排程，還有一種是 preemptive 的 SJF，所謂的 preemptive 是搶先的，當現在出現一個比 CPU 正在執行的 process 所需時間更短的 process 時， CPU 會先把手上的工作做完再去執行他呢？還是立刻剔除現在在執行的，換到他？如果是後者稱為 preemptive，而 preemptive 的 SJF 就是 <strong>shortest-remaining-time-first</strong>，我們以下面例子說明</p>
+<p><img data-src="https://i.imgur.com/r1Bt5gs.png" alt=""></p>
+<p><img data-src="https://i.imgur.com/EtmSz8x.png" alt=""></p>
+<p>時間為 1 時， B 抵達因為所需時間比 A 少，所以立即停止做 A 改做 B ，時間為 5 時，B 已經做完，D 所需時間最少所以做 D ，依此類推</p>
+</li>
+<li>
+<p><strong>Priority Scheduling</strong> (優先權排序)，這種把事情程度分級的做法在生活中很常見，比如醫療上常見的檢傷分類，把最緊急最有生命危險的作為最先救助，其實 SJF 也算一種 Priority Scheduling 只是他的評估標是時間，對電腦而言常見的優先順序依序是</p>
+<ol>
+<li>system processes</li>
+<li>interactive processes</li>
+<li>interactive editing processes</li>
+<li>batch processes</li>
+<li>student processes</li>
+</ol>
+<p>到這裡難免有些難過 student process 竟然最低，然而平常寫程式資料量通常都很小所以跑很快 &gt; &lt;(老師叫我們不要灰心)<br>
+ Priority Scheduling 雖然很符合人的理想，事情有輕重緩急，確實本該分類，然而會造成 <strong>Starvation</strong> ，當有大型傳染病發生時，醫院的醫療資源可能就會被大量的傳染病患者佔據，壓縮到原先非傳染病患者的資源 (比如需長時間治療的慢性病)，最後這些慢性病患者可能就會因為資源不足而病情惡化，Starvation 就是在形容這種狀況，因為優先權太低而等不到資源最後無法被執行，解決 starvation 的方法是 <strong>Aging</strong>，每隔一段時間就提升在等待的 process 的優先權，比如 A process 原本優先權是 3 ，他在 ready queue 等一段時間後便上升為 2 ，只要等得夠久有一天一定能變成優先權最高最先被執行</p>
+</li>
+<li>
+<p><strong>Round Roubine</strong>，這種排程方式在生活中也很常見，假設一群人到遊樂園玩海盜船，玩完一次 10 分鐘，覺得意猶未盡還想再玩該怎麼辦呢？就要離開遊戲區到外面重排直到又輪到自己 ，Round Roubin 就是這樣，把時間切成好幾塊，每個人執行一次，若還沒跑完再重新排，因此時間區塊的大小很重要，如果切太大，每個人都在一塊時間內就跑玩那就和 FCFS 沒兩樣，如果時間切太小塊，又會浪費太多時間在做 context switch 我們以下面例子來說明，假設每塊時間為 4</p>
+<p><img data-src="https://i.imgur.com/lhWsqX7.png" alt=""></p>
+<p><img data-src="https://i.imgur.com/HXYWl7m.png" alt=""></p>
+</li>
+</ul>
+<p>以上就是目前電腦常見的排程方式，我在下篇會提到 multi queue (多個 ready queue) 以及 multiple processor 所需的注意事項和 real-time system</p>
 
       <div class="tags">
-          <a href="/tags/%E7%A8%8B%E5%BC%8F%E6%96%B0%E6%89%8B/" rel="tag"><i class="ic i-tag"></i> 程式新手</a>
-          <a href="/tags/Visual-studio-2022/" rel="tag"><i class="ic i-tag"></i> Visual studio 2022</a>
+          <a href="/tags/OS/" rel="tag"><i class="ic i-tag"></i> OS</a>
+          <a href="/tags/scheduling/" rel="tag"><i class="ic i-tag"></i> scheduling</a>
       </div>
   </div>
 
@@ -200,7 +235,7 @@ Lu Ying = Lu Ying's home</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2022-04-16 12:07:40" itemprop="dateModified" datetime="2022-04-16T12:07:40+08:00">2022-04-16</time>
+    <time title="Modified: 2022-04-24 13:53:38" itemprop="dateModified" datetime="2022-04-24T13:53:38+08:00">2022-04-24</time>
   </span>
 </div>
 
@@ -213,7 +248,7 @@ Lu Ying = Lu Ying's home</title>
   </li>
   <li class="link">
     <strong>Post link: </strong>
-    <a href="https://lu1hoao.github.io/2022/04/14/program-lesson-1/" title="環境建置 --Visual Studio 2022">https://lu1hoao.github.io/2022/04/14/program-lesson-1/</a>
+    <a href="https://lu1hoao.github.io/2022/04/23/os-1/" title="CPU Scheduling (上)">https://lu1hoao.github.io/2022/04/23/os-1/</a>
   </li>
   <li class="license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> unless stating additionally.
@@ -230,16 +265,16 @@ Lu Ying = Lu Ying's home</title>
 
 <div class="post-nav">
     <div class="item left">
-    </div>
-    <div class="item right">
       
 
-  <a href="/2022/04/18/program-lesson-2/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;i.imgur.com&#x2F;UPgiKWx.jpg" title="環境建置--VS Code + WSL">
-  <span class="type">Next Post</span>
+  <a href="/2022/04/22/program-lesson-3/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;i.imgur.com&#x2F;dW1YTP6.jpg" title="Debug C 語言的方法">
+  <span class="type">Previous Post</span>
   <span class="category"><i class="ic i-flag"></i> 程式小白</span>
-  <h3>環境建置--VS Code + WSL</h3>
+  <h3>Debug C 語言的方法</h3>
   </a>
 
+    </div>
+    <div class="item right">
     </div>
 </div>
 
@@ -256,11 +291,11 @@ Lu Ying = Lu Ying's home</title>
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="Contents">
-          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%9C%E6%96%BC%E6%88%91"><span class="toc-number">1.</span> <span class="toc-text"> 關於我</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%92%B0%E5%A2%83%E9%81%B8%E6%93%87"><span class="toc-number">2.</span> <span class="toc-text"> 環境選擇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#visual-studio-2022"><span class="toc-number">3.</span> <span class="toc-text"> Visual Studio 2022</span></a></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text"> 概要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A9%95%E4%BC%B0%E6%A8%99%E6%BA%96-criteria"><span class="toc-number">2.</span> <span class="toc-text"> 評估標準 Criteria</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%82%BA%E4%BD%95%E9%9C%80%E8%A6%81%E6%8E%92%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text"> 為何需要排程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%8E%E7%A8%8B"><span class="toc-number">4.</span> <span class="toc-text"> 過程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A6%8B%E6%BC%94%E7%AE%97%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text"> 常見演算法</span></a></li></ol>
       </div>
       <div class="related panel pjax" data-title="Related">
         <ul>
-          <li class="active"><a href="/2022/04/14/program-lesson-1/" rel="bookmark" title="環境建置--Visual Studio 2022">環境建置--Visual Studio 2022</a></li><li><a href="/2022/04/18/program-lesson-2/" rel="bookmark" title="環境建置--VS Code + WSL">環境建置--VS Code + WSL</a></li><li><a href="/2022/04/22/program-lesson-3/" rel="bookmark" title="Debug C 語言的方法">Debug C 語言的方法</a></li>
+          <li class="active"><a href="/2022/04/23/os-1/" rel="bookmark" title="CPU Scheduling (上)">CPU Scheduling (上)</a></li>
         </ul>
       </div>
       <div class="overview panel" data-title="Overview">
@@ -375,7 +410,7 @@ Lu Ying = Lu Ying's home</title>
 <a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
 </div>
 
-    <span><a href="/2022/04/18/program-lesson-2/" title="環境建置--VS Code + WSL">環境建置--VS Code + WSL</a></span>
+    <span><a href="/2022/04/14/program-lesson-1/" title="環境建置--Visual Studio 2022">環境建置--Visual Studio 2022</a></span>
   </li>
 
       
@@ -385,7 +420,7 @@ Lu Ying = Lu Ying's home</title>
 <a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
 </div>
 
-    <span><a href="/2022/04/14/program-lesson-1/" title="環境建置--Visual Studio 2022">環境建置--Visual Studio 2022</a></span>
+    <span><a href="/2022/04/18/program-lesson-2/" title="環境建置--VS Code + WSL">環境建置--VS Code + WSL</a></span>
   </li>
 
   </ul>
@@ -428,7 +463,7 @@ Lu Ying = Lu Ying's home</title>
   </div>
 <script data-config type="text/javascript">
   var LOCAL = {
-    path: '2022/04/14/program-lesson-1/',
+    path: '2022/04/23/os-1/',
     favicon: {
       show: "（●´3｀●）Goooood",
       hide: "(´Д｀)Booooom"
