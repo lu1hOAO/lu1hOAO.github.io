@@ -161,34 +161,27 @@ Lu Ying = Lu Ying's home</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <h3 id="概要"><a class="markdownIt-Anchor" href="#概要">#</a> 概要</h3>
-<p>本文主要講述 Synchronization tools ，中文稱為同步，電腦中如果有兩個以上的 process 要存取同一個變數 (改變他的值) 我們必須確保這些變化是同步的不然就會造成同一個變數在不同 process 中有不同的值，本文主在討論<strong>確保他們是同步</strong>的這個過程</p>
-<h3 id="問題起源"><a class="markdownIt-Anchor" href="#問題起源">#</a> 問題起源</h3>
-<p>首先我們先來看下面這個情況，假設有兩個 process 互為 consumer 和 prodeucer 的關係，producer 完成一個任務後會把它放到 buffer ，consumer 則是會從 buffer 拿走任務，這時候就需要一個 counter 來記錄 buffer 內的任務數目，如果 counter 太小，就要叫 producer 做快一點，或者叫 consumer 拿慢一點，反之若 counter 太大，就要叫 producer 慢一點或 consumer 快一點，所以對 producer 來說他有以下程式碼</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">  <span class="keyword">while</span>(counter==BUFFER_SUZE);</span><br><span class="line">  buffer[in]=next_produced;</span><br><span class="line">  in=(in+<span class="number">1</span>)%BUFFER_SIZE;</span><br><span class="line">  counter++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>為甚麼要  <code>%BUFFER_SIZE</code>  呢？這是因為 buffer 的大小通常是有限的，後面放完又會從最前面開始放<br>
-對 consumer 來說他則有以下程式碼</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">  <span class="keyword">while</span>(counter==<span class="number">0</span>);</span><br><span class="line">  next_consumed=buffer[out];</span><br><span class="line">  out=(out+<span class="number">1</span>)%BUFFER_SIZE;</span><br><span class="line">  counter--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>看起來非常合理，然而在 C 語言中， <code>counter++</code>   <code>counter--</code>  這樣一行程式碼，在組合語言中卻是三行</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">register1=counter</span><br><span class="line">register1=register1+<span class="number">1</span></span><br><span class="line">counter=register1</span><br></pre></td></tr></table></figure>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">register2=counter</span><br><span class="line">register2=register2<span class="number">-1</span></span><br><span class="line">counter=register2</span><br></pre></td></tr></table></figure>
-<p>如果這三行沒有一口氣做完，而是做到一半就被 context switch ，那 counter 的值就不會被更新，為了解決這個問題，我們訂了 Critical section problem，對每一個 process 都有一段 code 表示 critical srction , 一旦這個 process 進到 critical section 就代表只有他能夠更改共同變數，其他人不可以更改！進到 ceitical section 要確認別人不在 critical section ，離開時也要把門打開讓別人可以進來，因此可以用下面程式碼範例簡單說明</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">  entrysection</span><br><span class="line">    critical section</span><br><span class="line">  exitsection</span><br><span class="line">    remainder section <span class="comment">/*非 critical section*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="解法-petersons-solution"><a class="markdownIt-Anchor" href="#解法-petersons-solution">#</a> 解法 Peterson’s Solution</h3>
-<p>一個正確的 critical section problem 解法，應該滿足以下三項</p>
+    <h3 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h3><p>本文主要講述 Synchronization tools ，中文稱為同步，電腦中如果有兩個以上的 process 要存取同一個變數 (改變他的值)我們必須確保這些變化是同步的不然就會造成同一個變數在不同 process 中有不同的值，本文主在討論<strong>確保他們是同步</strong>的這個過程</p>
+<h3 id="問題起源"><a href="#問題起源" class="headerlink" title="問題起源"></a>問題起源</h3><p>首先我們先來看下面這個情況，假設有兩個 process 互為 consumer 和 prodeucer 的關係，producer 完成一個任務後會把它放到 buffer ，consumer 則是會從 buffer 拿走任務，這時候就需要一個 counter 來記錄 buffer 內的任務數目，如果 counter 太小，就要叫 producer 做快一點，或者叫 consumer 拿慢一點，反之若 counter 太大，就要叫 producer 慢一點或 consumer 快一點，所以對 producer 來說他有以下程式碼</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">  <span class="keyword">while</span>(counter==BUFFER_SIZE);</span><br><span class="line">  buffer[in]=next_produced;</span><br><span class="line">  in=(in+<span class="number">1</span>)%BUFFER_SIZE;</span><br><span class="line">  counter++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>為甚麼要 <code>%BUFFER_SIZE</code> 呢？這是因為 buffer 的大小通常是有限的，後面放完又會從最前面開始放<br>對 consumer 來說他則有以下程式碼</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">  <span class="keyword">while</span>(counter==<span class="number">0</span>);</span><br><span class="line">  next_consumed=buffer[out];</span><br><span class="line">  out=(out+<span class="number">1</span>)%BUFFER_SIZE;</span><br><span class="line">  counter--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看起來非常合理，然而在 C 語言中，<code>counter++</code> <code>counter--</code> 這樣一行程式碼，在組合語言中卻是三行</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">register1=counter</span><br><span class="line">register1=register1+<span class="number">1</span></span><br><span class="line">counter=register1</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">register2=counter</span><br><span class="line">register2=register2<span class="number">-1</span></span><br><span class="line">counter=register2</span><br></pre></td></tr></table></figure>
+<p>如果這三行沒有一口氣做完，而是做到一半就被 context switch ，那 counter 的值就不會被更新，為了解決這個問題，我們訂了 Critical section problem，對每一個 process 都有一段 code 表示 critical srction ,一旦這個 process 進到 critical section 就代表只有他能夠更改共同變數，其他人不可以更改！進到 ceitical section 要確認別人不在 critical section ，離開時也要把門打開讓別人可以進來，因此可以用下面程式碼範例簡單說明</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">  entrysection</span><br><span class="line">    critical section</span><br><span class="line">  exitsection</span><br><span class="line">    remainder section <span class="comment">/*非 critical section*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="解法-Peterson’s-Solution"><a href="#解法-Peterson’s-Solution" class="headerlink" title="解法 Peterson’s Solution"></a>解法 Peterson’s Solution</h3><p>一個正確的 critical section problem 解法，應該滿足以下三項</p>
 <ol>
 <li><strong>Mutual Exclusion</strong> ，互斥性，當我在 critical section 的時候別人都不能進</li>
 <li><strong>Progress</strong> ，運行順暢，大家都能很自由順利的進入 critical section 不會卡住</li>
 <li><strong>Bounded Waiting</strong>，等待時間短，避免有人輪不到</li>
 </ol>
 <p>Peterson’s Solution 是這個問題的軟體解法，用以下程式說明</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">  flag[i]=<span class="literal">true</span>;</span><br><span class="line">  turn=j;</span><br><span class="line">  <span class="keyword">while</span>(flag[j]&amp;&amp;turn==j);</span><br><span class="line">  critical section</span><br><span class="line">  flag[i]=<span class="literal">false</span>;</span><br><span class="line">  remainder section    </span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>假設現在輪到 process i，他想進去 critical section ，所以他就把自己的 flag 設為 1，但 critical section 不是他想進去就能進去的，必需沒有人在裡面，甚麼情況是有人在裡面？就是  <code>flag[j]==1</code>  而且現在是 turn j (也就是說現在是輪到 process j)，那如果  <code>flag[j]!=1 </code>  但 turn j 代表甚麼呢？代表 process j 可能已經死了，他無法自己拿起 flag 設為 1 ，那 turn i ， <code>flag[j]==1</code>  ，代表雖然 process j 想進現在卻不是他的 turn ，他必須等到他的 turn 才能改，換句話說這是一個雙重確認的機制，有 flag 和 turn 兩個機制確保運作流暢，如果只保留這兩個中的其中一個，那上面提到三項標準的後兩項是無法滿足的</p>
-<h3 id="synchronization-hardware"><a class="markdownIt-Anchor" href="#synchronization-hardware">#</a> Synchronization Hardware</h3>
-<p>有軟體解法也有硬體解法，而這兩種解法的觀念都圍繞著一個核心就是 locking ，我把自己鎖起來，沒人可以打斷我，因此硬體指令就是提供 atomic (non-interruptible)，我們用比較高階的語言來理解這些機器指令的原理，然而這其實是微指令<br>
-<strong> test_and_set Instructuon</strong><br>
- (有共用的變數 lock，假設初始值是 FALSE，表示沒有其他 process 被 lock)</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">boolean <span class="title function_">test_and_set</span><span class="params">(boolean *target)</span>&#123;</span><br><span class="line">  boolean rv=*target;</span><br><span class="line">  *target=TRUE;</span><br><span class="line">  <span class="keyword">return</span> rv;</span><br><span class="line">&#125;</span><br><span class="line">```c=</span><br><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">  <span class="keyword">while</span>(test_and_set(&amp;lock));</span><br><span class="line">  critical section </span><br><span class="line">  lock=<span class="literal">false</span>;</span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">  flag[i]=<span class="literal">true</span>;</span><br><span class="line">  turn=j;</span><br><span class="line">  <span class="keyword">while</span>(flag[j]&amp;&amp;turn==j);</span><br><span class="line">  critical section</span><br><span class="line">  flag[i]=<span class="literal">false</span>;</span><br><span class="line">  remainder section    </span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>假設現在輪到 process i，他想進去 critical section ，所以他就把自己的 flag 設為 1，但 critical section 不是他想進去就能進去的，必需沒有人在裡面，甚麼情況是有人在裡面？就是 <code>flag[j]==1</code> 而且現在是 turn j (也就是說現在是輪到 process j )，那如果 <code>flag[j]!=1 </code> 但 turn j 代表甚麼呢？代表 process j 可能已經死了，他無法自己拿起 flag 設為 1 ，那 turn i ，<code>flag[j]==1</code> ，代表雖然 process j 想進現在卻不是他的 turn ，他必須等到他的 turn 才能改，換句話說這是一個雙重確認的機制，有 flag 和 turn 兩個機制確保運作流暢，如果只保留這兩個中的其中一個，那上面提到三項標準的後兩項是無法滿足的</p>
+<h3 id="Synchronization-Hardware"><a href="#Synchronization-Hardware" class="headerlink" title="Synchronization Hardware"></a>Synchronization Hardware</h3><p>有軟體解法也有硬體解法，而這兩種解法的觀念都圍繞著一個核心就是 locking ，我把自己鎖起來，沒人可以打斷我，因此硬體指令就是提供 atomic (non-interruptible)，我們用比較高階的語言來理解這些機器指令的原理，然而這其實是微指令<br><strong>test_and_set Instructuon</strong><br>(有共用的變數 lock，假設初始值是 FALSE，表示沒有其他 process 被lock)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">boolean <span class="title function_">test_and_set</span><span class="params">(boolean *target)</span>&#123;</span><br><span class="line">  boolean rv=*target;</span><br><span class="line">  *target=TRUE;</span><br><span class="line">  <span class="keyword">return</span> rv;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">```c=</span><br><span class="line"></span><br><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">  <span class="keyword">while</span>(test_and_set(&amp;lock));</span><br><span class="line">  critical section </span><br><span class="line">  lock=<span class="literal">false</span>;</span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
 <p>lock 就像軟體解法中的 turn ，而修改 target 的值就像軟體中把自己的 flag 設為 1 ，這個做法很厲害幾乎是現在通用的作法，不過這其實是 IBM 的專利，所以其他公司後來發展出 compare_and_swap Instruction ，不過核心概念都是相同的我們就不多贅述了</p>
 
       <div class="tags">
@@ -205,7 +198,7 @@ Lu Ying = Lu Ying's home</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2022-04-27 19:34:09" itemprop="dateModified" datetime="2022-04-27T19:34:09+08:00">2022-04-27</time>
+    <time title="Modified: 2022-04-27 20:23:11" itemprop="dateModified" datetime="2022-04-27T20:23:11+08:00">2022-04-27</time>
   </span>
 </div>
 
@@ -261,7 +254,7 @@ Lu Ying = Lu Ying's home</title>
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="Contents">
-          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text"> 概要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%95%8F%E9%A1%8C%E8%B5%B7%E6%BA%90"><span class="toc-number">2.</span> <span class="toc-text"> 問題起源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95-petersons-solution"><span class="toc-number">3.</span> <span class="toc-text"> 解法 Peterson’s Solution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#synchronization-hardware"><span class="toc-number">4.</span> <span class="toc-text"> Synchronization Hardware</span></a></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">概要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%95%8F%E9%A1%8C%E8%B5%B7%E6%BA%90"><span class="toc-number">2.</span> <span class="toc-text">問題起源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95-Peterson%E2%80%99s-Solution"><span class="toc-number">3.</span> <span class="toc-text">解法 Peterson’s Solution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Synchronization-Hardware"><span class="toc-number">4.</span> <span class="toc-text">Synchronization Hardware</span></a></li></ol>
       </div>
       <div class="related panel pjax" data-title="Related">
         <ul>
@@ -360,7 +353,7 @@ Lu Ying = Lu Ying's home</title>
 <a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
 </div>
 
-    <span><a href="/2022/04/27/os-3/" title="Synchronization Tools">Synchronization Tools</a></span>
+    <span><a href="/2022/04/25/os-2/" title="CPU Scheduling (下)">CPU Scheduling (下)</a></span>
   </li>
 
       
@@ -370,17 +363,7 @@ Lu Ying = Lu Ying's home</title>
 <a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
 </div>
 
-    <span><a href="/2022/04/23/os-1/" title="CPU Scheduling (上)">CPU Scheduling (上)</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
-</div>
-
-    <span><a href="/2022/04/18/program-lesson-2/" title="環境建置--VS Code + WSL">環境建置--VS Code + WSL</a></span>
+    <span><a href="/2022/04/27/os-3/" title="Synchronization Tools">Synchronization Tools</a></span>
   </li>
 
       
@@ -407,10 +390,20 @@ Lu Ying = Lu Ying's home</title>
   <li class="item">
     
 <div class="breadcrumb">
+<a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
+</div>
+
+    <span><a href="/2022/04/18/program-lesson-2/" title="環境建置--VS Code + WSL">環境建置--VS Code + WSL</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
 <a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
 </div>
 
-    <span><a href="/2022/04/25/os-2/" title="CPU Scheduling (下)">CPU Scheduling (下)</a></span>
+    <span><a href="/2022/04/23/os-1/" title="CPU Scheduling (上)">CPU Scheduling (上)</a></span>
   </li>
 
   </ul>
