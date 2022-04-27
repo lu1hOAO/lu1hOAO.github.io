@@ -148,8 +148,10 @@
 
     <h3><a href="/2022/04/27/os-3/" itemprop="url" title="Synchronization Tools">Synchronization Tools</a></h3>
     <div class="excerpt">
-        概要本文主要講述 Synchronization tools ，中文稱為同步，電腦中如果有兩個以上的 process 要存取同一個變數 (改變他的值)我們必須確保這些變化是同步的不然就會造成同一個變數在不同 process 中有不同的值，本文主在討論確保他們是同步的這個過程
-問題起源首先我們先來看下面這個情況，假設有兩個 process 互為 consumer 和 prodeucer 的關係，producer 完成一個任務後會把它放到 buffer ，consumer 則是會從 buffer 拿走任務，這時候就需要一個 counter 來記錄 buffer 內的任務數目，如果 counter...
+        # 概要
+本文主要講述 Synchronization tools ，中文稱為同步，電腦中如果有兩個以上的 process 要存取同一個變數 (改變他的值) 我們必須確保這些變化是同步的不然就會造成同一個變數在不同 process 中有不同的值，本文主在討論確保他們是同步的這個過程
+# 問題起源
+首先我們先來看下面這個情況，假設有兩個 process 互為 consumer 和 prodeucer 的關係，producer 完成一個任務後會把它放到 buffer ，consumer 則是會從 buffer 拿走任務，這時候就需要一個 counter 來記錄 buffer 內的任務數目，如果...
     </div>
     <div class="meta footer">
       <span>
@@ -500,27 +502,7 @@ CPU utilization (CPU 使用率) 指的是 CPU 工作的時間，絕對是越高�
 <a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
 </div>
 
-    <span><a href="/2022/04/18/program-lesson-2/" title="環境建置--VS Code + WSL">環境建置--VS Code + WSL</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
-</div>
-
-    <span><a href="/2022/04/27/os-3/" title="Synchronization Tools">Synchronization Tools</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
-</div>
-
-    <span><a href="/2022/04/23/os-1/" title="CPU Scheduling (上)">CPU Scheduling (上)</a></span>
+    <span><a href="/2022/04/22/program-lesson-3/" title="Debug C 語言的方法">Debug C 語言的方法</a></span>
   </li>
 
       
@@ -540,7 +522,7 @@ CPU utilization (CPU 使用率) 指的是 CPU 工作的時間，絕對是越高�
 <a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
 </div>
 
-    <span><a href="/2022/04/25/os-2/" title="CPU Scheduling (下)">CPU Scheduling (下)</a></span>
+    <span><a href="/2022/04/27/os-3/" title="Synchronization Tools">Synchronization Tools</a></span>
   </li>
 
       
@@ -550,7 +532,27 @@ CPU utilization (CPU 使用率) 指的是 CPU 工作的時間，絕對是越高�
 <a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
 </div>
 
-    <span><a href="/2022/04/22/program-lesson-3/" title="Debug C 語言的方法">Debug C 語言的方法</a></span>
+    <span><a href="/2022/04/18/program-lesson-2/" title="環境建置--VS Code + WSL">環境建置--VS Code + WSL</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
+</div>
+
+    <span><a href="/2022/04/25/os-2/" title="CPU Scheduling (下)">CPU Scheduling (下)</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
+</div>
+
+    <span><a href="/2022/04/23/os-1/" title="CPU Scheduling (上)">CPU Scheduling (上)</a></span>
   </li>
 
   </ul>
