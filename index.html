@@ -18,7 +18,7 @@
 <link rel="alternate" type="application/rss+xml" title="Lu Ying's home" href="https://lu1hoao.github.io/rss.xml" />
 <link rel="alternate" type="application/atom+xml" title="Lu Ying's home" href="https://lu1hoao.github.io/atom.xml" />
 <link rel="alternate" type="application/json" title="Lu Ying's home" href="https://lu1hoao.github.io/feed.json" />
-
+<link rel="stylesheet" href="/js/prism/prism.css">
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
 <link rel="stylesheet" href="/css/app.css?v=0.2.5">
@@ -148,10 +148,8 @@
 
     <h3><a href="/2022/04/27/os-3/" itemprop="url" title="Synchronization Tools">Synchronization Tools</a></h3>
     <div class="excerpt">
-        # 概要
-本文主要講述 Synchronization tools ，中文稱為同步，電腦中如果有兩個以上的 process 要存取同一個變數 (改變他的值) 我們必須確保這些變化是同步的不然就會造成同一個變數在不同 process 中有不同的值，本文主在討論確保他們是同步的這個過程
-# 問題起源
-首先我們先來看下面這個情況，假設有兩個 process 互為 consumer 和 prodeucer 的關係，producer 完成一個任務後會把它放到 buffer ，consumer 則是會從 buffer 拿走任務，這時候就需要一個 counter 來記錄 buffer 內的任務數目，如果...
+        概要本文主要講述 Synchronization tools ，中文稱為同步，電腦中如果有兩個以上的 process 要存取同一個變數 (改變他的值)我們必須確保這些變化是同步的不然就會造成同一個變數在不同 process 中有不同的值，本文主在討論確保他們是同步的這個過程
+問題起源首先我們先來看下面這個情況，假設有兩個 process 互為 consumer 和 prodeucer 的關係，producer 完成一個任務後會把它放到 buffer ，consumer 則是會從 buffer 拿走任務，這時候就需要一個 counter 來記錄 buffer 內的任務數目，如果 counter...
     </div>
     <div class="meta footer">
       <span>
@@ -438,21 +436,6 @@ VS Code搜尋 VS Code...
     <a href="/" rel="section"><i class="ic i-home"></i>Home</a>
   </li>
 
-    
-  <li class="item">
-    <a href="/categories/" rel="section"><i class="ic i-th"></i>Categories</a>
-  </li>
-
-    
-  <li class="item">
-    <a href="/tags/" rel="section"><i class="ic i-tags"></i>Tags</a>
-  </li>
-
-    
-  <li class="item">
-    <a href="/about/" rel="section"><i class="ic i-user"></i>About</a>
-  </li>
-
 
 </ul>
 
@@ -509,16 +492,6 @@ VS Code搜尋 VS Code...
 <a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
 </div>
 
-    <span><a href="/2022/04/14/program-lesson-1/" title="環境建置--Visual Studio 2022">環境建置--Visual Studio 2022</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
-</div>
-
     <span><a href="/2022/04/18/program-lesson-2/" title="環境建置--VS Code + WSL">環境建置--VS Code + WSL</a></span>
   </li>
 
@@ -536,6 +509,16 @@ VS Code搜尋 VS Code...
   <li class="item">
     
 <div class="breadcrumb">
+<a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
+</div>
+
+    <span><a href="/2022/04/14/program-lesson-1/" title="環境建置--Visual Studio 2022">環境建置--Visual Studio 2022</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
 <a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
 </div>
 
@@ -543,10 +526,6 @@ VS Code搜尋 VS Code...
   </li>
 
   </ul>
-</div>
-<div>
-  <h2>Recent Comments</h2>
-  <ul class="leancloud-recent-comment"></ul>
 </div>
 
         </div>
@@ -571,9 +550,6 @@ VS Code搜尋 VS Code...
       <i class="ic i-coffee"></i>
     </span>
     <span title="Reading time total">10 mins.</span>
-  </div>
-  <div class="powered-by">
-    Powered by <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
   </div>
 </div>
 
@@ -606,7 +582,7 @@ VS Code搜尋 VS Code...
 </script>
 
 <script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
-
+<script src="/js/prism/prism.js" async></script>
 <script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
 
 <script src="/js/app.js?v=0.2.5"></script>
