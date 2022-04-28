@@ -76,7 +76,7 @@ Lu Ying = Lu Ying's home</title>
       <i class="ic i-pen"></i>
     </span>
     <span class="text">Symbols count in article</span>
-    <span>2.6k</span>
+    <span>2.7k</span>
     <span class="text">words</span>
   </span>
   <span class="item" title="Reading time">
@@ -161,61 +161,49 @@ Lu Ying = Lu Ying's home</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <h3 id="概要"><a class="markdownIt-Anchor" href="#概要">#</a> 概要</h3>
-<p>對現在電腦而言，排程是一件很重要的技術，打開電腦有很多事情想做，又很希望電腦趕快做完，就算沒有真的在做也給我們一點回應，讓我們知道他需要一點時間處理，本文主要探討常見的 CPU 排程方法 (包含 mulititasking 和 multiple-processor (下篇))</p>
-<h3 id="評估標準-criteria"><a class="markdownIt-Anchor" href="#評估標準-criteria">#</a> 評估標準 Criteria</h3>
-<p>由於人類具有慣老闆天性，對於電腦這種不會抱怨的員工更是要求一人當三人用一刻不得閒，所以我們評估排程好壞的標準大概可以由以下幾點決定</p>
+    <h3 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h3><p>對現在電腦而言，排程是一件很重要的技術，打開電腦有很多事情想做，又很希望電腦趕快做完，就算沒有真的在做也給我們一點回應，讓我們知道他需要一點時間處理，本文主要探討常見的 CPU 排程方法 (包含 mulititasking 和 multiple-processor(下篇))</p>
+<h3 id="評估標準-Criteria"><a href="#評估標準-Criteria" class="headerlink" title="評估標準 Criteria"></a>評估標準 Criteria</h3><p>由於人類具有慣老闆天性，對於電腦這種不會抱怨的員工更是要求一人當三人用一刻不得閒，所以我們評估排程好壞的標準大概可以由以下幾點決定</p>
 <ol>
 <li><strong>CPU utilization</strong> (CPU 使用率) 指的是 CPU 工作的時間，絕對是越高越好， CPU 不准休息 ，就算是在多處理器的系統，也要讓每顆 CPU 工作分配平均 (大家都很忙，不能有躺分仔的概念)</li>
 <li><strong>Throughput</strong> (產能) 單位時間內能完成的工作越多越好，所以這個值也是越高越好</li>
 <li><strong>Turnaround time</strong> (從開始執行到結束的時間) 希望能夠越快做完越好，所以這個數值是越低越好</li>
-<li><strong>Waiting time</strong> 一個 process 在 ready queue 等待的時間，就像我們去郵局從抽號碼牌到被叫到的這段時間，等待時間越短越好，所以數值越小越好</li>
-<li><strong>Response time</strong> (回應時間) 這在電腦裡面是很重要的，告訴使用者我有在動啦不要再叫了！我們點兩下滑鼠打開一個程式，游標會出現一個藍色圈圈在轉，就算該軟體介面還沒出現在螢幕上，我們看到藍色圈圈也會安心不少，就不會一直瘋狂點滑鼠，回應時間越短越好，所以數值越小越好</li>
+<li><strong>Waiting time</strong> 一個process在ready queue 等待的時間，就像我們去郵局從抽號碼牌到被叫到的這段時間，等待時間越短越好，所以數值越小越好</li>
+<li><strong>Response time</strong> (回應時間)這在電腦裡面是很重要的，告訴使用者我有在動啦不要再叫了！我們點兩下滑鼠打開一個程式，游標會出現一個藍色圈圈在轉，就算該軟體介面還沒出現在螢幕上，我們看到藍色圈圈也會安心不少，就不會一直瘋狂點滑鼠，回應時間越短越好，所以數值越小越好</li>
 </ol>
 <p>了解以上幾點評估標準後我們就可以更進一步來比較各種排程方法</p>
-<h3 id="為何需要排程"><a class="markdownIt-Anchor" href="#為何需要排程">#</a> 為何需要排程</h3>
-<p>multitasking 是說 CPU 可以同時一次處理好幾個 process 但這裡的同時並不是說 CPU 像千手觀音那樣，同一時刻處理好多事情，而是說 CPU 先做 A process ，做一下子後儲存 A 的狀態再換去做 B ，B 做完一些後再回來做 A ，在一段時間內多處跑的概念，到這裡人類可能會想這是哪門子的同時呀，但電腦執行的速度很快，在人類有感時間一秒內，電腦可能已經處理完好幾個 process 了，既然 CPU 是這樣在 process 之間來回走跳，決定他下一步該去哪個 process 就很重要，也是排程的精髓</p>
-<h3 id="過程"><a class="markdownIt-Anchor" href="#過程">#</a> 過程</h3>
-<ol>
+<h3 id="為何需要排程"><a href="#為何需要排程" class="headerlink" title="為何需要排程"></a>為何需要排程</h3><p>multitasking 是說 CPU 可以同時一次處理好幾個 process 但這裡的同時並不是說 CPU 像千手觀音那樣，同一時刻處理好多事情，而是說 CPU 先做 A process ，做一下子後儲存 A 的狀態再換去做 B ，B 做完一些後再回來做 A ，在一段時間內多處跑的概念，到這裡人類可能會想這是哪門子的同時呀，但電腦執行的速度很快，在人類有感時間一秒內，電腦可能已經處理完好幾個 process 了，既然 CPU 是這樣在 process 之間來回走跳，決定他下一步該去哪個 process 就很重要，也是排程的精髓</p>
+<h3 id="過程"><a href="#過程" class="headerlink" title="過程"></a>過程</h3><ol>
 <li>Short-term-scheuler 會從 ready queue 挑選一個要被執行的 process 給 CPU ，這個過程稱為 Dispatch</li>
-<li>CPU 做到一個程度後 (這個程度會依據不同的排程演算法而有不一樣的條件) 做 context switch (在 context switch 之前 重複第一步驟)</li>
+<li>CPU 做到一個程度後(這個程度會依據不同的排程演算法而有不一樣的條件)做 context switch (在context switch 之前 重複第一步驟)</li>
 <li>CPU 執行第二個 process 直到達到終止條件</li>
 </ol>
 <p>這三步驟不斷重複直到我們把電腦關機</p>
-<h3 id="常見演算法"><a class="markdownIt-Anchor" href="#常見演算法">#</a> 常見演算法</h3>
-<ul>
-<li>
-<p><strong>First Come First Served</strong> (FCFS) 先進先出，最直覺的排序方式，先到 ready queue 的就先執行，直到做完再換下一個，然而這樣的排程方法無法保證 waiting time 最低，以下方例子來說，有三個 process 執行時間分別是 6,4,2 ，照以下順序執行，平均等待時間為 (6+4)/3</p>
-<p><img data-src="https://i.imgur.com/BD6CXb7.png" alt=""></p>
-<p>但如果把執行順序改成這樣，平均等待時間就變成 (4+2)/6</p>
-<p><img data-src="https://i.imgur.com/n2YCvwB.png" alt=""></p>
-<p>換句話說，<strong>當三個 process 在差不多時間抵達時</strong>，<strong>把時間短的作為第一個效果會比較好</strong>，如果完全依照先進先出反而會在某些情況浪費時間，這樣的想法進而引發 shortest job first 的排程技術</p>
+<h3 id="常見演算法"><a href="#常見演算法" class="headerlink" title="常見演算法"></a>常見演算法</h3><ul>
+<li><p><strong>First Come First Served</strong> (FCFS) 先進先出，最直覺的排序方式，先到 ready queue 的就先執行，直到做完再換下一個，然而這樣的排程方法無法保證 waiting time 最低，以下方例子來說，有三個 process 執行時間分別是 6,4,2 ，照以下順序執行，平均等待時間為 (6+4)&#x2F;3</p>
+<p>  <img data-src="https://i.imgur.com/BD6CXb7.png"></p>
+<p>  但如果把執行順序改成這樣，平均等待時間就變成(4+2)&#x2F;6</p>
+<p>  <img data-src="https://i.imgur.com/n2YCvwB.png"></p>
+<p>  換句話說，<strong>當三個 process 在差不多時間抵達時</strong>，<strong>把時間短的作為第一個效果會比較好</strong>，如果完全依照先進先出反而會在某些情況浪費時間，這樣的想法進而引發 shortest job first 的排程技術</p>
 </li>
-<li>
-<p><strong>Shortest job first</strong> (SJF) 時間短的先進行，這種排程方法是 optimal (最佳的)，能確保最短的 waiting time ，但我們要如何預測 process 的執行時間呢？假設我們現在執行第 n 個 process ，第 n+1 個 process 執行時間可預測為 (預測和真實不同)<br>
-<img data-src="https://i.imgur.com/4WI49j3.png" alt=""></p>
-<p>其中 t 表示真實的時間。<br>
-除了一般的 SJF 排程，還有一種是 preemptive 的 SJF，所謂的 preemptive 是搶先的，當現在出現一個比 CPU 正在執行的 process 所需時間更短的 process 時， CPU 會先把手上的工作做完再去執行他呢？還是立刻剔除現在在執行的，換到他？如果是後者稱為 preemptive，而 preemptive 的 SJF 就是 <strong>shortest-remaining-time-first</strong>，我們以下面例子說明</p>
-<p><img data-src="https://i.imgur.com/r1Bt5gs.png" alt=""></p>
-<p><img data-src="https://i.imgur.com/EtmSz8x.png" alt=""></p>
-<p>時間為 1 時， B 抵達因為所需時間比 A 少，所以立即停止做 A 改做 B ，時間為 5 時，B 已經做完，D 所需時間最少所以做 D ，依此類推</p>
+<li><p><strong>Shortest job first</strong> (SJF) 時間短的先進行，這種排程方法是 optimal (最佳的)，能確保最短的 waiting time ，但我們要如何預測 process 的執行時間呢？假設我們現在執行第 n 個 process ，第 n+1 個 process 執行時間可預測為(預測和真實不同)<br>  <img data-src="https://i.imgur.com/4WI49j3.png"></p>
+<p>其中 t 表示真實的時間。<br>除了一般的 SJF 排程，還有一種是 preemptive 的 SJF，所謂的 preemptive 是搶先的，當現在出現一個比 CPU 正在執行的 process 所需時間更短的 process 時， CPU 會先把手上的工作做完再去執行他呢？還是立刻剔除現在在執行的，換到他？如果是後者稱為 preemptive，而 preemptive 的SJF 就是 <strong>shortest-remaining-time-first</strong>，我們以下面例子說明</p>
+<p>  <img data-src="https://i.imgur.com/r1Bt5gs.png"></p>
+<p>  <img data-src="https://i.imgur.com/EtmSz8x.png"></p>
+<p>  時間為 1 時， B 抵達因為所需時間比 A 少，所以立即停止做 A 改做 B ，時間為 5 時，B 已經做完，D 所需時間最少所以做 D ，依此類推</p>
 </li>
-<li>
-<p><strong>Priority Scheduling</strong> (優先權排序)，這種把事情程度分級的做法在生活中很常見，比如醫療上常見的檢傷分類，把最緊急最有生命危險的作為最先救助，其實 SJF 也算一種 Priority Scheduling 只是他的評估標是時間，對電腦而言常見的優先順序依序是</p>
+<li><p><strong>Priority Scheduling</strong>(優先權排序)，這種把事情程度分級的做法在生活中很常見，比如醫療上常見的檢傷分類，把最緊急最有生命危險的作為最先救助，其實 SJF 也算一種 Priority Scheduling 只是他的評估標是時間，對電腦而言常見的優先順序依序是</p>
 <ol>
-<li>system processes</li>
+<li>system processes   </li>
 <li>interactive processes</li>
 <li>interactive editing processes</li>
 <li>batch processes</li>
 <li>student processes</li>
 </ol>
-<p>到這裡難免有些難過 student process 竟然最低，然而平常寫程式資料量通常都很小所以跑很快 &gt; &lt;(老師叫我們不要灰心)<br>
- Priority Scheduling 雖然很符合人的理想，事情有輕重緩急，確實本該分類，然而會造成 <strong>Starvation</strong> ，當有大型傳染病發生時，醫院的醫療資源可能就會被大量的傳染病患者佔據，壓縮到原先非傳染病患者的資源 (比如需長時間治療的慢性病)，最後這些慢性病患者可能就會因為資源不足而病情惡化，Starvation 就是在形容這種狀況，因為優先權太低而等不到資源最後無法被執行，解決 starvation 的方法是 <strong>Aging</strong>，每隔一段時間就提升在等待的 process 的優先權，比如 A process 原本優先權是 3 ，他在 ready queue 等一段時間後便上升為 2 ，只要等得夠久有一天一定能變成優先權最高最先被執行</p>
+<p>  到這裡難免有些難過 student process 竟然最低，然而平常寫程式資料量通常都很小所以跑很快 &gt; &lt; (老師叫我們不要灰心)<br>  Priority Scheduling 雖然很符合人的理想，事情有輕重緩急，確實本該分類，然而會造成 <strong>Starvation</strong> ，當有大型傳染病發生時，醫院的醫療資源可能就會被大量的傳染病患者佔據，壓縮到原先非傳染病患者的資源 (比如需長時間治療的慢性病)，最後這些慢性病患者可能就會因為資源不足而病情惡化，Starvation 就是在形容這種狀況，因為優先權太低而等不到資源最後無法被執行，解決 starvation 的方法是 <strong>Aging</strong>，每隔一段時間就提升在等待的 process 的優先權，比如 A process 原本優先權是 3 ，他在 ready queue 等一段時間後便上升為 2 ，只要等得夠久有一天一定能變成優先權最高最先被執行</p>
 </li>
-<li>
-<p><strong>Round Roubine</strong>，這種排程方式在生活中也很常見，假設一群人到遊樂園玩海盜船，玩完一次 10 分鐘，覺得意猶未盡還想再玩該怎麼辦呢？就要離開遊戲區到外面重排直到又輪到自己 ，Round Roubin 就是這樣，把時間切成好幾塊，每個人執行一次，若還沒跑完再重新排，因此時間區塊的大小很重要，如果切太大，每個人都在一塊時間內就跑玩那就和 FCFS 沒兩樣，如果時間切太小塊，又會浪費太多時間在做 context switch 我們以下面例子來說明，假設每塊時間為 4</p>
-<p><img data-src="https://i.imgur.com/lhWsqX7.png" alt=""></p>
-<p><img data-src="https://i.imgur.com/HXYWl7m.png" alt=""></p>
+<li><p><strong>Round Roubine</strong>，這種排程方式在生活中也很常見，假設一群人到遊樂園玩海盜船，玩完一次 10 分鐘，覺得意猶未盡還想再玩該怎麼辦呢？就要離開遊戲區到外面重排直到又輪到自己 ，Round Roubin就是這樣，把時間切成好幾塊，每個人執行一次，若還沒跑完再重新排，因此時間區塊的大小很重要，如果切太大，每個人都在一塊時間內就跑玩那就和 FCFS 沒兩樣，如果時間切太小塊，又會浪費太多時間在做 context switch 我們以下面例子來說明，假設每塊時間為 4</p>
+<p>  <img data-src="https://i.imgur.com/lhWsqX7.png"></p>
+<p>  <img data-src="https://i.imgur.com/HXYWl7m.png"></p>
 </li>
 </ul>
 <p>以上就是目前電腦常見的排程方式，我在下篇會提到 multi queue (多個 ready queue) 以及 multiple processor 所需的注意事項和 real-time system</p>
@@ -298,7 +286,7 @@ Lu Ying = Lu Ying's home</title>
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="Contents">
-          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text"> 概要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A9%95%E4%BC%B0%E6%A8%99%E6%BA%96-criteria"><span class="toc-number">2.</span> <span class="toc-text"> 評估標準 Criteria</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%82%BA%E4%BD%95%E9%9C%80%E8%A6%81%E6%8E%92%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text"> 為何需要排程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%8E%E7%A8%8B"><span class="toc-number">4.</span> <span class="toc-text"> 過程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A6%8B%E6%BC%94%E7%AE%97%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text"> 常見演算法</span></a></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">概要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A9%95%E4%BC%B0%E6%A8%99%E6%BA%96-Criteria"><span class="toc-number">2.</span> <span class="toc-text">評估標準 Criteria</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%82%BA%E4%BD%95%E9%9C%80%E8%A6%81%E6%8E%92%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">為何需要排程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%8E%E7%A8%8B"><span class="toc-number">4.</span> <span class="toc-text">過程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A6%8B%E6%BC%94%E7%AE%97%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">常見演算法</span></a></li></ol>
       </div>
       <div class="related panel pjax" data-title="Related">
         <ul>
@@ -336,6 +324,7 @@ Lu Ying = Lu Ying's home</title>
 
 <div class="social">
       <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2x1MWhPQU8=" title="https:&#x2F;&#x2F;github.com&#x2F;lu1hOAO"><i class="ic i-github"></i></span>
+      <a href="/ring910224@gmail.com" title="ring910224@gmail.com" class="item email"><i class="ic i-envelope"></i></a>
 </div>
 
 <ul class="menu">
@@ -396,20 +385,10 @@ Lu Ying = Lu Ying's home</title>
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
-</div>
-
-    <span><a href="/2022/04/22/program-lesson-3/" title="Debug C 語言的方法">Debug C 語言的方法</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
 <a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
 </div>
 
-    <span><a href="/2022/04/25/os-2/" title="CPU Scheduling (下)">CPU Scheduling (下)</a></span>
+    <span><a href="/2022/04/27/os-3/" title="Synchronization Tools">Synchronization Tools</a></span>
   </li>
 
       
@@ -429,7 +408,7 @@ Lu Ying = Lu Ying's home</title>
 <a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
 </div>
 
-    <span><a href="/2022/04/27/os-3/" title="Synchronization Tools">Synchronization Tools</a></span>
+    <span><a href="/2022/04/23/os-1/" title="CPU Scheduling (上)">CPU Scheduling (上)</a></span>
   </li>
 
       
@@ -439,7 +418,7 @@ Lu Ying = Lu Ying's home</title>
 <a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
 </div>
 
-    <span><a href="/2022/04/23/os-1/" title="CPU Scheduling (上)">CPU Scheduling (上)</a></span>
+    <span><a href="/2022/04/25/os-2/" title="CPU Scheduling (下)">CPU Scheduling (下)</a></span>
   </li>
 
       
@@ -450,6 +429,16 @@ Lu Ying = Lu Ying's home</title>
 </div>
 
     <span><a href="/2022/04/18/program-lesson-2/" title="環境建置--VS Code + WSL">環境建置--VS Code + WSL</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
+</div>
+
+    <span><a href="/2022/04/22/program-lesson-3/" title="Debug C 語言的方法">Debug C 語言的方法</a></span>
   </li>
 
   </ul>

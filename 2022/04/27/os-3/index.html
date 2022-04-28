@@ -76,7 +76,7 @@ Lu Ying = Lu Ying's home</title>
       <i class="ic i-pen"></i>
     </span>
     <span class="text">Symbols count in article</span>
-    <span>2.4k</span>
+    <span>2.6k</span>
     <span class="text">words</span>
   </span>
   <span class="item" title="Reading time">
@@ -189,7 +189,9 @@ Lu Ying = Lu Ying's home</title>
 <strong> test_and_set Instructuon</strong><br>
  (有共用的變數 lock，假設初始值是 FALSE，表示沒有其他 process 被 lock)</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">boolean <span class="title function_">test_and_set</span><span class="params">(boolean *target)</span>&#123;</span><br><span class="line">  boolean rv=*target;</span><br><span class="line">  *target=TRUE;</span><br><span class="line">  <span class="keyword">return</span> rv;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">  <span class="keyword">while</span>(test_and_set(&amp;lock));</span><br><span class="line">  critical section </span><br><span class="line">  lock=<span class="literal">false</span>;</span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
-<p>lock 就像軟體解法中的 turn ，而修改 target 的值就像軟體中把自己的 flag 設為 1 ，這個做法很厲害幾乎是現在通用的作法，不過這其實是 IBM 的專利，所以其他公司後來發展出 compare_and_swap Instruction ，不過核心概念都是相同的我們就不多贅述了</p>
+<p>lock 就像軟體解法中的 turn ，而修改 target 的值就像軟體中把自己的 flag 設為 1 ，這個做法很厲害幾乎是現在通用的作法，不過這其實是 IBM 的專利，所以其他公司後來發展出 <strong>compare_and_swap Instruction</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">compare_and_swqp</span><span class="params">(<span class="type">int</span> *value,<span class="type">int</span> expected,<span class="type">int</span> new_value)</span>&#123;</span><br><span class="line">  <span class="type">int</span> temp=*value;</span><br><span class="line">  <span class="keyword">if</span>(*value==expected)</span><br><span class="line">    *value=new_value;</span><br><span class="line">  <span class="keyword">return</span> temp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">  <span class="keyword">while</span>(compare_and_swap(&amp;lock,<span class="number">0</span>,<span class="number">1</span>));</span><br><span class="line">  critical section</span><br><span class="line">  lock=<span class="number">0</span>;</span><br><span class="line">  remainder section</span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<p>以上就是實現 Synchronization 的方法，祝大家閱讀愉快</p>
 
       <div class="tags">
           <a href="/tags/OS/" rel="tag"><i class="ic i-tag"></i> OS</a>
@@ -205,7 +207,7 @@ Lu Ying = Lu Ying's home</title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2022-04-27 20:35:42" itemprop="dateModified" datetime="2022-04-27T20:35:42+08:00">2022-04-27</time>
+    <time title="Modified: 2022-04-28 12:22:41" itemprop="dateModified" datetime="2022-04-28T12:22:41+08:00">2022-04-28</time>
   </span>
 </div>
 
@@ -299,6 +301,7 @@ Lu Ying = Lu Ying's home</title>
 
 <div class="social">
       <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2x1MWhPQU8=" title="https:&#x2F;&#x2F;github.com&#x2F;lu1hOAO"><i class="ic i-github"></i></span>
+      <a href="/ring910224@gmail.com" title="ring910224@gmail.com" class="item email"><i class="ic i-envelope"></i></a>
 </div>
 
 <ul class="menu">
@@ -357,10 +360,20 @@ Lu Ying = Lu Ying's home</title>
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
+<a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
 </div>
 
-    <span><a href="/2022/04/22/program-lesson-3/" title="Debug C 語言的方法">Debug C 語言的方法</a></span>
+    <span><a href="/2022/04/23/os-1/" title="CPU Scheduling (上)">CPU Scheduling (上)</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
+</div>
+
+    <span><a href="/2022/04/25/os-2/" title="CPU Scheduling (下)">CPU Scheduling (下)</a></span>
   </li>
 
       
@@ -371,6 +384,16 @@ Lu Ying = Lu Ying's home</title>
 </div>
 
     <span><a href="/2022/04/27/os-3/" title="Synchronization Tools">Synchronization Tools</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
+</div>
+
+    <span><a href="/2022/04/22/program-lesson-3/" title="Debug C 語言的方法">Debug C 語言的方法</a></span>
   </li>
 
       
@@ -391,26 +414,6 @@ Lu Ying = Lu Ying's home</title>
 </div>
 
     <span><a href="/2022/04/18/program-lesson-2/" title="環境建置--VS Code + WSL">環境建置--VS Code + WSL</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
-</div>
-
-    <span><a href="/2022/04/23/os-1/" title="CPU Scheduling (上)">CPU Scheduling (上)</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
-</div>
-
-    <span><a href="/2022/04/25/os-2/" title="CPU Scheduling (下)">CPU Scheduling (下)</a></span>
   </li>
 
   </ul>
