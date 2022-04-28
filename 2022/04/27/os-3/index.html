@@ -223,7 +223,7 @@ counter<span class="token operator">=</span>register2<span aria-hidden="true" cl
   lock<span class="token operator">=</span>false<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token keyword">while</span><span class="token punctuation">(</span>true<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>lock 就像軟體解法中的 turn ，而修改 target 的值就像軟體中把自己的 flag 設為 1 ，這個做法很厲害幾乎是現在通用的作法，不過這其實是 IBM 的專利，所以其他公司後來發展出 <strong>compare_and_swap Instruction</strong> </p>
+<p>lock 就像軟體解法中的 turn ，而修改 target 的值就像軟體中把自己的 flag 設為 1 ，這個做法很厲害幾乎是現在通用的作法，不過這其實是 IBM 的專利，所以其他公司後來發展出 <strong>compare_and_swap Instruction</strong> 但觀念是一樣的只是寫起來比較複雜</p>
 <pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">compare_and_swqp</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">*</span>value<span class="token punctuation">,</span><span class="token keyword">int</span> expected<span class="token punctuation">,</span><span class="token keyword">int</span> new_value<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
   <span class="token keyword">int</span> temp<span class="token operator">=</span><span class="token operator">*</span>value<span class="token punctuation">;</span>
   <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">*</span>value<span class="token operator">==</span>expected<span class="token punctuation">)</span>
@@ -253,7 +253,7 @@ counter<span class="token operator">=</span>register2<span aria-hidden="true" cl
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">Edited on</span>
-    <time title="Modified: 2022-04-28 18:08:11" itemprop="dateModified" datetime="2022-04-28T18:08:11+08:00">2022-04-28</time>
+    <time title="Modified: 2022-04-28 21:03:54" itemprop="dateModified" datetime="2022-04-28T21:03:54+08:00">2022-04-28</time>
   </span>
 </div>
 
@@ -404,6 +404,26 @@ counter<span class="token operator">=</span>register2<span aria-hidden="true" cl
 <a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
 </div>
 
+    <span><a href="/2022/04/22/program-lesson-3/" title="Debug C 語言的方法">Debug C 語言的方法</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
+</div>
+
+    <span><a href="/2022/04/23/os-1/" title="CPU Scheduling (上)">CPU Scheduling (上)</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
+</div>
+
     <span><a href="/2022/04/18/program-lesson-2/" title="環境建置--VS Code + WSL">環境建置--VS Code + WSL</a></span>
   </li>
 
@@ -425,26 +445,6 @@ counter<span class="token operator">=</span>register2<span aria-hidden="true" cl
 </div>
 
     <span><a href="/2022/04/14/program-lesson-1/" title="環境建置--Visual Studio 2022">環境建置--Visual Studio 2022</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E5%B0%8F%E7%A7%91%E6%99%AE/" title="In 作業系統小科普">作業系統小科普</a>
-</div>
-
-    <span><a href="/2022/04/23/os-1/" title="CPU Scheduling (上)">CPU Scheduling (上)</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/" title="In 程式小白">程式小白</a>
-</div>
-
-    <span><a href="/2022/04/22/program-lesson-3/" title="Debug C 語言的方法">Debug C 語言的方法</a></span>
   </li>
 
   </ul>
