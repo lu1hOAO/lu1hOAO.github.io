@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://lu1hoao.github.io</id>
+    <title>Lu Ying • Posts by &#34;wsl&#34; tag</title>
+    <link href="https://lu1hoao.github.io" />
+    <updated>2022-04-18T08:42:28.000Z</updated>
+    <category term="OS" />
+    <category term="scheduling" />
+    <category term="Synchronization" />
+    <category term="Deadlock" />
+    <category term="Memory" />
+    <category term="combination" />
+    <category term="C" />
+    <category term="permutation" />
+    <category term="程式新手" />
+    <category term="Visual studio 2022" />
+    <category term="VS Code" />
+    <category term="WSL" />
+    <category term="sort" />
+    <category term="debug" />
+    <entry>
+        <id>https://lu1hoao.github.io/2022/04/18/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/program-lesson-2/</id>
+        <title>環境建置--VS Code + WSL</title>
+        <link rel="alternate" href="https://lu1hoao.github.io/2022/04/18/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/program-lesson-2/"/>
+        <content type="html">&lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
+&lt;p&gt;本篇文章會介紹使用 VS Code 搭配 WSL 的方式來建置寫程式環境，我覺得這個過程對於剛進到程式領域的人來說會學到很多，但安裝起來步驟比較繁瑣，過程中可能也會碰到一些問題，如果想要比較輕鬆的建立環境可以參考另一篇 Visual Studuio 2022 喔！選擇 WSL 的原因是因為它可以在 Windows 模擬 Linux，我們可以在 Ubuntu 輸入基本的 Linux 指令，也可以使用 vim 寫程式。&lt;/p&gt;
+&lt;h3 id=&#34;vs-code&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#vs-code&#34;&gt;#&lt;/a&gt; VS Code&lt;/h3&gt;
+&lt;p&gt;搜尋 VS Code ，點進以下網頁，依照自己的電腦規格安裝&lt;br /&gt;
+&lt;img data-src=&#34;https://i.imgur.com/QPB4WjG.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;等待安裝的過程中先在自己的電腦建立資料夾，這個資料夾是要放之後所寫的程式的，我自己是用語言分類。以我為例我就是在文件當中建立 c 語言的資料夾&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/MnDrSCy.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;安裝進行到最後一步建議勾選&lt;strong&gt;建立桌面圖示&lt;/strong&gt;，這樣 VS Code 就會出在桌面，提醒我們一打開電腦就要工作。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/VnG2Orf.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;VS Code 的側邊欄有很多功能，第四個有一隻蟲蟲是 debug ，安裝延伸模組就可以啟用，透過設定中斷點的方式觀察變數的變化，之後在 debug 文章會介紹，第五個則是延伸模組。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/dSmkfti.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;wsl-ubuntu&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#wsl-ubuntu&#34;&gt;#&lt;/a&gt; WSL-Ubuntu&lt;/h3&gt;
+&lt;p&gt;第一步先從電腦的設定 &amp;gt; 應用程式 &amp;gt; 選用功能 &amp;gt; 更多 Windows 功能把&lt;strong&gt;虛擬機器平&lt;/strong&gt;台勾選起來&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/tJeTRB1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;然後在商店搜尋 Windows Subsystem 選取企鵝圖示，開使安裝。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/gPK52Wn.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;完成後接著在商店搜尋 Ubuntu 選擇評分高或安裝次數多的版本，開始安裝&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/Jm5SBDk.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;安裝完成後開啟 Ubuntu ，輸入&lt;br /&gt;
+ &lt;code&gt;sudo apt update&lt;/code&gt; &lt;br /&gt;
+ 接著&lt;br /&gt;
+ &lt;code&gt;sudo apt upgrade &lt;/code&gt; &lt;br /&gt;
+sudo 是一種應用程式，可以讓使用者在安全情況下執行特權指令，初次輸入的時候需要設定使用者名稱和密碼，之後每次使用都要輸入使用者密碼喔！ &lt;code&gt;apt update&lt;/code&gt;  和 &lt;code&gt;apt upgrade&lt;/code&gt;  都是軟體更新的指令。&lt;br /&gt;
+最後來安裝 gcc 編譯器，在 Ubuntu 輸入&lt;br /&gt;
+ &lt;code&gt;sudo apt install gcc&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;如果要編譯 c++ 則輸入&lt;br /&gt;
+ &lt;code&gt;sudo apt install g++&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;最後安裝&lt;br /&gt;
+ &lt;code&gt;sudo apt install gdb&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;gdb 是幫助我們 debug 的之後會教到&lt;/p&gt;
+&lt;h3 id=&#34;再次開啟-vs-code&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#再次開啟-vs-code&#34;&gt;#&lt;/a&gt; 再次開啟 VS Code&lt;/h3&gt;
+&lt;p&gt;到此部分就真的是最後一步了，打開 VS Code ，選取側邊欄第五個 (延伸模組) 搜尋 WSL ，開始安裝&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/GwsijKB.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;確認左下方綠色框框顯示與 WSL 連線&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/E06CziD.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;然後點選檔案 &amp;gt; 開啟資料夾 (選則我們第一步建立的資料夾) &amp;gt; 新增檔案 &amp;gt; 寫 Hello&lt;br /&gt;
+ 寫好之後，存檔，從下方拉出終端機，輸入&lt;br /&gt;
+ &lt;code&gt;gcc hello.c &lt;/code&gt; &lt;br /&gt;
+hello 是檔名視檔案不同而有所改變，編譯後若沒有出現錯誤訊息就輸入&lt;br /&gt;
+ &lt;code&gt;./a.out&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/J1ca6ZG.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;a.out 是編譯後的預設檔名，如果想要改變檔名可以在上一步改成&lt;br /&gt;
+ &lt;code&gt;gcc -o hello hello.c&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;接著就是 &lt;code&gt;./hello&lt;/code&gt;  而不是  &lt;code&gt;./a.out&lt;/code&gt;  了喔！&lt;/p&gt;
+&lt;p&gt;如此大功告成！祝各位小白安裝順利&lt;/p&gt;
+</content>
+        <category term="程式新手" />
+        <category term="VS Code" />
+        <category term="WSL" />
+        <updated>2022-04-18T08:42:28.000Z</updated>
+    </entry>
+</feed>

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://lu1hoao.github.io</id>
+    <title>Lu Ying • Posts by &#34;visual studio 2022&#34; tag</title>
+    <link href="https://lu1hoao.github.io" />
+    <updated>2022-04-14T08:42:28.000Z</updated>
+    <category term="OS" />
+    <category term="scheduling" />
+    <category term="Synchronization" />
+    <category term="Deadlock" />
+    <category term="Memory" />
+    <category term="combination" />
+    <category term="C" />
+    <category term="permutation" />
+    <category term="程式新手" />
+    <category term="Visual studio 2022" />
+    <category term="VS Code" />
+    <category term="WSL" />
+    <category term="sort" />
+    <category term="debug" />
+    <entry>
+        <id>https://lu1hoao.github.io/2022/04/14/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/program-lesson-1/</id>
+        <title>環境建置--Visual Studio 2022</title>
+        <link rel="alternate" href="https://lu1hoao.github.io/2022/04/14/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/program-lesson-1/"/>
+        <content type="html">&lt;h3 id=&#34;關於我&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#關於我&#34;&gt;#&lt;/a&gt; 關於我&lt;/h3&gt;
+&lt;p&gt;平常撰寫以 C 語言為主，Python 為輔，每個人、每個語言都會有自己喜歡、適合的編輯環境，從開始寫程式到現在我也用過不少開發環境，最後選擇 VS Code (Visual Studio Code) 搭配 WSL (Ubuntu)。&lt;/p&gt;
+&lt;h3 id=&#34;環境選擇&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#環境選擇&#34;&gt;#&lt;/a&gt; 環境選擇&lt;/h3&gt;
+&lt;p&gt;本篇文章會介紹 Visual Studio 2022，另有文章介紹 VS Code + WSL 的組合。&lt;br /&gt;
+如果平常以 C 或 C++ 為主，又不想耗費太多時間安裝東西 (非資訊本科)，想要一次搞定的話就可以用 Visual studio XXXX (年份)，缺點是介面美感有待加強，跟我阿嬤衣櫃一樣的紫色 QQ (不過後期的紫色蠻好看的，主要缺點是很大，肥肥一隻，占掉很多空間)。&lt;br /&gt;
+想要一步步建置環境的話，選擇 VS Code + WSL，WSL 是 Windows 子系統 Linux 版，可以藉由 WSL 在 Windows 上 執行 Linux 的二進位檔。就好像現在的大學聯盟，我在成大的時候很想選一些酷酷的體育課，但沒有特別對我味的，這時我看到中山大學有帆船課就可以透過台綜大系統去申請，這樣我也可以用成大學生的身分去上一些原本中山大學學生才能上的課。 選擇安裝 Ubuntu 在裡面安裝 gcc (complier , 若要寫 c++ 就要使用 g++) 把我們寫的高階語言翻譯成組合語言再藉由 assembler 轉譯執行，這個過程一步一步接近電腦底層，從軟體進到硬體。想要安裝 gcc 也不一定要選擇 WSL-Ubuntu ，minGW 也很多人推薦喔！&lt;/p&gt;
+&lt;h3 id=&#34;visual-studio-2022&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#visual-studio-2022&#34;&gt;#&lt;/a&gt; Visual Studio 2022&lt;/h3&gt;
+&lt;p&gt;搜尋 Visual Studio ，點選下方進入網站，就可以看到歷年的 Visual Studio 版本，選擇自己喜歡的，這裡以 2022 做示範，滑到最下面會有作業系統選擇，這裡以 Windows 做示範。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/NhHc7o1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;下載完成後會跑出以下視窗，依照自己的使用習慣勾選，要記得把每一項都大致看過一遍喔，如果是寫 c 或 c++ 的人要&lt;strong&gt;記得把 c++ 勾選起來&lt;/strong&gt;，不然是沒有內建 c 的喔 (以前有，這版主打輕量就沒有了 @@，勾選之後開始安裝，我勾完之後是 3.69GB 肥肥一隻 (不過跟以前相比算是瘦身有成，我之前的電腦硬碟才 128GB，真的很佔空間)，安裝需要一點時間可以喝杯咖啡再回來&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/2upD0Ah.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;到此為止安裝完成，可以開始寫程式了，我的建議是&lt;strong&gt;建立新專案&lt;/strong&gt;，這樣他就會幫你建一個資料夾，之後寫的.c 檔以及編譯後的.exe 檔 (可執行檔) 都會存在這個資料夾。專案名稱可以功能取向 (比如 HW1-1)，建議專案名稱不要出現中文，寫好程式可能會寄給別人，由於.exe 檔會被阻攔，往往要使用壓縮方式將檔案提交，壓縮時檔案名稱不可以出現中文喔&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/3blXSCV.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;進入專案之後點選&lt;strong&gt;空白專案&lt;/strong&gt;，設定名稱 (建議功能取向)，這邊使用 helloworld (大家的第一支程式)&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/3pierEI.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;進入之後會發現主畫面什麼都沒有，不要緊張，從上方點選&lt;strong&gt;專案 -&amp;gt; 加入新項目&lt;/strong&gt; (或者使用快捷鍵 ctrl+shift+A)，這樣就跑出來了，值得注意的是，Visual Studio 2022 在預設情況下沒辦法直接建 c 專案，&lt;strong&gt;只能建 c++ 專案&lt;/strong&gt;，但仍保有編譯 c 原始碼的功能喔！&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/YBLdQ3H.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;打好程式碼之後在上方點選建置 -&amp;gt; 建置方案，即可完成編譯，如果程式碼沒有問題最下方會顯示建置成功，若建置失敗或出現警告，最下方也會出現相關資訊，&lt;strong&gt;若是修改後的程式碼要重新編譯，那就要選擇建置 -&amp;gt; 重建方案&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/2RoDH8u.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;最後在終端機 (按下桌面開始鍵搜尋終端機) 輸入 cd (開啟檔案的意思) 把建置成功的檔案位置貼上， enter 之後輸入 ./ 檔名.exe 就是執行囉！&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/2o5aZJ1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;到此為止會發現其實 Visual Studio 2022 很適合新手使用，一鍵編譯也不用花時間去搞清楚甚麼是編譯器，偵錯功能很強大，一打錯立刻出現紅色蚯蚓提醒你，但使用 Visual Studio 2022 寫 C 語言其實不太友善，標準 I/O scanf 立刻報錯給你看，跳出一堆警告的時候都很想對編譯器喊：我要怎麼寫 code 你管不著！！因此想要寫 c 語言時記得在專案 -&amp;gt; 屬性 -&amp;gt; 前置處理器&lt;br /&gt;
+加上 CRT_SECURE_NO_WARNINGS&lt;/p&gt;
+&lt;p&gt;本篇文章到此結束，祝福所有小白寫扣順利，我第一次用時看到終端機跑出來就覺得自己是拯救世界的駭客 (但現在看到深色主題就覺得眼睛好痛 QQ)&lt;/p&gt;
+</content>
+        <category term="程式新手" />
+        <category term="Visual studio 2022" />
+        <updated>2022-04-14T08:42:28.000Z</updated>
+    </entry>
+</feed>
