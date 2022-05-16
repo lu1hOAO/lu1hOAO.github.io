@@ -12,14 +12,14 @@
         <category>Synchronization</category>
         <category>Deadlock</category>
         <category>Memory</category>
-        <category>combination</category>
-        <category>C</category>
         <category>permutation</category>
+        <category>C</category>
+        <category>combination</category>
         <category>程式新手</category>
         <category>Visual studio 2022</category>
+        <category>sort</category>
         <category>VS Code</category>
         <category>WSL</category>
-        <category>sort</category>
         <category>debug</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/04/25/os/os-2/</guid>

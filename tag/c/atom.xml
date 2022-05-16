@@ -9,14 +9,14 @@
     <category term="Synchronization" />
     <category term="Deadlock" />
     <category term="Memory" />
-    <category term="combination" />
-    <category term="C" />
     <category term="permutation" />
+    <category term="C" />
+    <category term="combination" />
     <category term="程式新手" />
     <category term="Visual studio 2022" />
+    <category term="sort" />
     <category term="VS Code" />
     <category term="WSL" />
-    <category term="sort" />
     <category term="debug" />
     <entry>
         <id>https://lu1hoao.github.io/2022/05/14/%E4%B8%80%E9%BB%9E%E9%BB%9E%E6%BC%94%E7%AE%97%E6%B3%95/combination/</id>
@@ -70,8 +70,8 @@
 &lt;h3 id=&#34;非遞迴解法&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#非遞迴解法&#34;&gt;#&lt;/a&gt; 非遞迴解法&lt;/h3&gt;
 &lt;p&gt;呼應前面提到作遞迴解法時也可以思考是否存在非遞迴解法，比如這題就可以用 4 個迴圈實作出非遞迴解法喔，有興趣可以試試看！&lt;/p&gt;
 </content>
-        <category term="combination" />
         <category term="C" />
+        <category term="combination" />
         <updated>2022-05-14T08:42:28.000Z</updated>
     </entry>
     <entry>
@@ -122,8 +122,8 @@
 &lt;/ol&gt;
 &lt;p&gt;有興趣也可以自己試試喔&lt;/p&gt;
 </content>
-        <category term="C" />
         <category term="permutation" />
+        <category term="C" />
         <updated>2022-05-07T08:42:28.000Z</updated>
     </entry>
     <entry>
