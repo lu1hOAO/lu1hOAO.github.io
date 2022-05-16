@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://lu1hOAO.github.io</id>
-    <title>Lu Ying&#39;s home</title>
-    <link href="https://lu1hOAO.github.io" />
+    <id>https://lu1hoao.github.io</id>
+    <title>Lu Ying</title>
+    <link href="https://lu1hoao.github.io" />
     <updated>2022-05-14T08:42:28.000Z</updated>
     <category term="OS" />
     <category term="scheduling" />
