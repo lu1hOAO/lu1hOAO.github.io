@@ -1,0 +1,20 @@
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "Lu Ying • All posts by \"wsl\" tag",
+    "description": "",
+    "home_page_url": "https://lu1hoao.github.io",
+    "items": [
+        {
+            "id": "https://lu1hoao.github.io/2022/04/18/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/program-lesson-2/",
+            "url": "https://lu1hoao.github.io/2022/04/18/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/program-lesson-2/",
+            "title": "環境建置--VS Code + WSL",
+            "date_published": "2022-04-18T08:42:28.000Z",
+            "content_html": "<h3 id=\"概要\"><a class=\"anchor\" href=\"#概要\">#</a> 概要</h3>\n<p>本篇文章會介紹使用 VS Code 搭配 WSL 的方式來建置寫程式環境，我覺得這個過程對於剛進到程式領域的人來說會學到很多，但安裝起來步驟比較繁瑣，過程中可能也會碰到一些問題，如果想要比較輕鬆的建立環境可以參考另一篇 Visual Studuio 2022 喔！選擇 WSL 的原因是因為它可以在 Windows 模擬 Linux，我們可以在 Ubuntu 輸入基本的 Linux 指令，也可以使用 vim 寫程式。</p>\n<h3 id=\"vs-code\"><a class=\"anchor\" href=\"#vs-code\">#</a> VS Code</h3>\n<p>搜尋 VS Code ，點進以下網頁，依照自己的電腦規格安裝<br />\n<img data-src=\"https://i.imgur.com/QPB4WjG.png\" alt=\"\" /></p>\n<p>等待安裝的過程中先在自己的電腦建立資料夾，這個資料夾是要放之後所寫的程式的，我自己是用語言分類。以我為例我就是在文件當中建立 c 語言的資料夾</p>\n<p><img data-src=\"https://i.imgur.com/MnDrSCy.png\" alt=\"\" /></p>\n<p>安裝進行到最後一步建議勾選<strong>建立桌面圖示</strong>，這樣 VS Code 就會出在桌面，提醒我們一打開電腦就要工作。</p>\n<p><img data-src=\"https://i.imgur.com/VnG2Orf.png\" alt=\"\" /></p>\n<p>VS Code 的側邊欄有很多功能，第四個有一隻蟲蟲是 debug ，安裝延伸模組就可以啟用，透過設定中斷點的方式觀察變數的變化，之後在 debug 文章會介紹，第五個則是延伸模組。</p>\n<p><img data-src=\"https://i.imgur.com/dSmkfti.png\" alt=\"\" /></p>\n<h3 id=\"wsl-ubuntu\"><a class=\"anchor\" href=\"#wsl-ubuntu\">#</a> WSL-Ubuntu</h3>\n<p>第一步先從電腦的設定 &gt; 應用程式 &gt; 選用功能 &gt; 更多 Windows 功能把<strong>虛擬機器平</strong>台勾選起來</p>\n<p><img data-src=\"https://i.imgur.com/tJeTRB1.png\" alt=\"\" /></p>\n<p>然後在商店搜尋 Windows Subsystem 選取企鵝圖示，開使安裝。</p>\n<p><img data-src=\"https://i.imgur.com/gPK52Wn.png\" alt=\"\" /></p>\n<p>完成後接著在商店搜尋 Ubuntu 選擇評分高或安裝次數多的版本，開始安裝</p>\n<p><img data-src=\"https://i.imgur.com/Jm5SBDk.png\" alt=\"\" /></p>\n<p>安裝完成後開啟 Ubuntu ，輸入<br />\n <code>sudo apt update</code> <br />\n 接著<br />\n <code>sudo apt upgrade </code> <br />\nsudo 是一種應用程式，可以讓使用者在安全情況下執行特權指令，初次輸入的時候需要設定使用者名稱和密碼，之後每次使用都要輸入使用者密碼喔！ <code>apt update</code>  和 <code>apt upgrade</code>  都是軟體更新的指令。<br />\n最後來安裝 gcc 編譯器，在 Ubuntu 輸入<br />\n <code>sudo apt install gcc</code></p>\n<p>如果要編譯 c++ 則輸入<br />\n <code>sudo apt install g++</code></p>\n<p>最後安裝<br />\n <code>sudo apt install gdb</code></p>\n<p>gdb 是幫助我們 debug 的之後會教到</p>\n<h3 id=\"再次開啟-vs-code\"><a class=\"anchor\" href=\"#再次開啟-vs-code\">#</a> 再次開啟 VS Code</h3>\n<p>到此部分就真的是最後一步了，打開 VS Code ，選取側邊欄第五個 (延伸模組) 搜尋 WSL ，開始安裝</p>\n<p><img data-src=\"https://i.imgur.com/GwsijKB.png\" alt=\"\" /></p>\n<p>確認左下方綠色框框顯示與 WSL 連線</p>\n<p><img data-src=\"https://i.imgur.com/E06CziD.png\" alt=\"\" /></p>\n<p>然後點選檔案 &gt; 開啟資料夾 (選則我們第一步建立的資料夾) &gt; 新增檔案 &gt; 寫 Hello<br />\n 寫好之後，存檔，從下方拉出終端機，輸入<br />\n <code>gcc hello.c </code> <br />\nhello 是檔名視檔案不同而有所改變，編譯後若沒有出現錯誤訊息就輸入<br />\n <code>./a.out</code></p>\n<p><img data-src=\"https://i.imgur.com/J1ca6ZG.png\" alt=\"\" /></p>\n<p>a.out 是編譯後的預設檔名，如果想要改變檔名可以在上一步改成<br />\n <code>gcc -o hello hello.c</code></p>\n<p>接著就是 <code>./hello</code>  而不是  <code>./a.out</code>  了喔！</p>\n<p>如此大功告成！祝各位小白安裝順利</p>\n",
+            "tags": [
+                "程式新手",
+                "VS Code",
+                "WSL"
+            ]
+        }
+    ]
+}

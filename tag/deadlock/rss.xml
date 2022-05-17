@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+    <channel>
+        <title>Lu Ying • Posts by &#34;deadlock&#34; tag</title>
+        <link>https://lu1hoao.github.io</link>
+        <description></description>
+        <language>en</language>
+        <pubDate>Mon, 02 May 2022 21:23:28 +0800</pubDate>
+        <lastBuildDate>Mon, 02 May 2022 21:23:28 +0800</lastBuildDate>
+        <category>OS</category>
+        <category>scheduling</category>
+        <category>Synchronization</category>
+        <category>Deadlock</category>
+        <category>Memory</category>
+        <category>array</category>
+        <category>C</category>
+        <category>combination</category>
+        <category>sort</category>
+        <category>permutation</category>
+        <category>程式新手</category>
+        <category>Visual studio 2022</category>
+        <category>debug</category>
+        <category>VS Code</category>
+        <category>WSL</category>
+        <item>
+            <guid isPermalink="true">https://lu1hoao.github.io/2022/05/02/os/os-7/</guid>
+            <title>Deadlocks(下)</title>
+            <link>https://lu1hoao.github.io/2022/05/02/os/os-7/</link>
+            <category>OS</category>
+            <category>Deadlock</category>
+            <pubDate>Mon, 02 May 2022 21:23:28 +0800</pubDate>
+            <description><![CDATA[ &lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
+&lt;p&gt;本篇文主要講述 deadlock prevention 和 deadlock avoidence ，前者是在開始執行之前就先預防，避免產生 deadlock ，後者則是邊執行邊看，確保走的每一步都會讓系統維持在安全狀態，不過這兩者的核心概念都是避免達到四項條件&lt;/p&gt;
+&lt;h3 id=&#34;deadlock-prevention&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#deadlock-prevention&#34;&gt;#&lt;/a&gt; Deadlock prevention&lt;/h3&gt;
+&lt;p&gt;我們依照四項條件逐一攻破&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Mutex Exclusion&lt;/strong&gt; 既然是互斥，一次只能允許一個 process 存取一項資源，那我們就盡考能讓資源共享化，只要不是明確規定說不可以分享的，我們都讓他分享&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Hold and Wait&lt;/strong&gt; 這個原本是說我拿到一項資源了但是還沒湊齊所有我需要的，所以我正等待著，打破這條件的方法就是規定一定要一次拿齊所有東西，不可以先拿著某些東西然後等待，要就要全拿不然就兩手空空&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;No preemption&lt;/strong&gt; 這個是指該 process 除非是自願放棄否則無法被搶先，解決該問題的方法，就是有一個 process 當自願者，當她所需的資源一直要不到時，他就自願放棄釋出他已經拿到的資源，讓系統重新分配&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Circular wait&lt;/strong&gt; ，這個是指互相等待的情況，解決這個問題的方法就是把資源編號，假設 process a 需要 1 3 資源， process b 需要 3 4 資源 process c 需要 1 4 資源，原本可能會 a 拿到 1，b 拿到  3 ，c 拿到 4 ，進而互相等待，但如果規定一定要從自己所需資源中編號小的開始拿取那麼 c 拿不到 1 ，他也無法拿 4 ，系統就不會形成 circular wait&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;接下來我們就來看看這些方法是如何解決 dining philiphers deadlock，下面是最一開始的程式碼&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;do&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token function&#34;&gt;wait&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;chopstick&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token function&#34;&gt;wait&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;chopstick&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;i&lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;     &lt;span class=&#34;token comment&#34;&gt;//eat&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token function&#34;&gt;signal&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;chopstick&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  &lt;span class=&#34;token function&#34;&gt;signal&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;chopstick&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;   &lt;span class=&#34;token comment&#34;&gt;//think&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;while&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;true&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;如果所有哲學家都先拿起自己左邊的筷子，他們永遠拿不到自己右邊的筷子，造成 deadlock。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;使用方法一 mutex：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;我們設定一個仲裁器規定現在輪到哪個哲學家吃東西，只有在輪到他時他才可以吃，這樣一次只有一個哲學家可以吃東西，但保證大家都吃得到&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;使用方法 2 打破 hold and wait&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;我沒辦法一次拿兩支筷子那我就不拿了，乍看之下這個方法有解，他也確實不會造成 deadlock，但可能會引發新的問題，稱為 &lt;strong&gt;livelock&lt;/strong&gt; ，想像現在這群哲學家一個口令一個動作的全部同時舉起左邊筷子，發現無法拿起右邊，於是又全部同時一起放下，接著又全部同時憶起舉起右邊，發現無法舉起左邊，又全部同時一起放下，這樣來來回回雖然沒有 deadlock ，卻依然吃不到東西。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;使用方法 3 打破 No preemption：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;先把一位哲學家移出餐桌，剩下的人就可以順利執行，之後再請那位先犧牲小我的哲學家回來，所以方法 3 是行得通的。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;使用方法 4 按照次序拿取資源：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;這樣第 n 位哲學家就沒辦法順利的吃飯，剩下的幾個人可以，那這個 deadlock 就順利被解開了&lt;/p&gt;
+&lt;h3 id=&#34;deadlock-avoidence&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#deadlock-avoidence&#34;&gt;#&lt;/a&gt; Deadlock Avoidence&lt;/h3&gt;
+&lt;p&gt;是先預防雖然有效，但會造成資源的使用率很低，有沒有甚麼方法可以邊做邊看呢？那就是 &lt;strong&gt;Banker&#39;s  Algorithm&lt;/strong&gt;，把作業系統想成是銀行， process 是要借貸的客戶，資源是電腦的資產，銀行應該要優先把資源借給那些&lt;strong&gt;要求沒超過自己負荷量的客戶&lt;/strong&gt;，比如總資產 2000 元，一個人想借 200 元，一個人想借 3000 元，先借兩百元的自己才不會破產，我們用表格來說明&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;已拿到&lt;/th&gt;
+&lt;th&gt;所有需要的&lt;/th&gt;
+&lt;th&gt;還需要的&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;P1&lt;/td&gt;
+&lt;td&gt;0014&lt;/td&gt;
+&lt;td&gt;0656&lt;/td&gt;
+&lt;td&gt;0642&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;P2&lt;/td&gt;
+&lt;td&gt;1432&lt;/td&gt;
+&lt;td&gt;1942&lt;/td&gt;
+&lt;td&gt;0510&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;P3&lt;/td&gt;
+&lt;td&gt;1354&lt;/td&gt;
+&lt;td&gt;1356&lt;/td&gt;
+&lt;td&gt;0002&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;P4&lt;/td&gt;
+&lt;td&gt;1000&lt;/td&gt;
+&lt;td&gt;1750&lt;/td&gt;
+&lt;td&gt;0750&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;數字並不是四位數而是代表這些 process 需要四種資源，以及他們所需該資源的個數，假設電腦現在可負擔 1520 ，那他應該要先把資源給 P2， 因為 P1 他給不起，給完 P2 後他就可以把 P2 的資源收回來 (P2 已經做完了)，現在電腦資源變成 2952 可以給 P3 ，再把 P3 的資源收回來... 依此類推，如果我們可以找到一個執行順序讓每一個 process 都可以被順利執行，那我們就會稱為這是一個安全狀態，我們要確保系統永遠都會在安全狀態，走了住一步之後下一步還有路可走才不會 deadlock ，大概就是這個意思。&lt;/p&gt;
+&lt;p&gt;以上就是 deadlock 的預防和避免，祝大家閱讀愉快&lt;/p&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">https://lu1hoao.github.io/2022/05/02/os/os-6/</guid>
+            <title>Deadlocks(上)</title>
+            <link>https://lu1hoao.github.io/2022/05/02/os/os-6/</link>
+            <category>OS</category>
+            <category>Deadlock</category>
+            <pubDate>Mon, 02 May 2022 20:23:28 +0800</pubDate>
+            <description><![CDATA[ &lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
+&lt;p&gt;Deadlocks 是指多個 process 在執行時因為達到某些條件，使得所有 process 都無法運作只能待在原地發呆的情況，本文主要講述達成 Deadlock 的條件 (Coffman&#39;s conditions)、Handling Deadlocks、下篇則會講述 deadlock prevention (在開始執行之前就先確保 deadlock 不會發生，預防的概念) 和 deadlock avoidence&lt;/p&gt;
+&lt;h3 id=&#34;resource-allocation-graph&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#resource-allocation-graph&#34;&gt;#&lt;/a&gt; Resource-Allocation Graph&lt;/h3&gt;
+&lt;p&gt;在開始之前我們先來看一 下電腦資分配圖，會有助於我們對 deadlock 條件的了解，假設電腦有不同的資源型態 R1、R2、R3 ，每個型態的資源個數不一定為一，而有多個 process p1、p2、p3，每個 process 會根據自己的需求去要所需的資源，假設 p1 request R3 (p3 需要資源 3)，我們就畫一個箭頭從 p1 指向 R3，(箭頭方向很重要喔)，假設 R2 分給 pj (亦即 pj 需要 R2 且系統核准了那麼 R2 就分給 pj)，畫一個箭頭從 R2 指向 pj，得到下圖&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/P56ApDW.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;但要注意 R3 型態的資源不一定只有一個，所以如果現在又有一個 process 需要 R3 資源他未必要等待，這就好像是一間自助洗衣店裡面，有洗衣機 (假設 4 台) 有烘衣機 (假設 8 台) 有兌幣機 (假設 1 台) 有洗衣精販賣機 (假設 1 台)，今天來了兩個客人，他們一個要用洗衣機，一個要用烘衣機，那就各自用各自的，一切很順暢，但如果兩個人都要用兌幣機，就需要等待，我們待會會用 resource-allocation graph 來描述 circular wait&lt;/p&gt;
+&lt;h3 id=&#34;deadlock-characterization&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#deadlock-characterization&#34;&gt;#&lt;/a&gt; Deadlock Characterization&lt;/h3&gt;
+&lt;p&gt;deadlock characterization ，又稱為 Coffman&#39;s conditions，是只會造成 deadlock 的條件，以下四個條件&lt;strong&gt;同時&lt;/strong&gt;發生時就會產生 deadlock&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Mutual execlusion&lt;/strong&gt; 互斥，當一次只有一個 process 可以使用該資源物件時 (一台洗衣機一次只能給一個使用者使用)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Hold and wait&lt;/strong&gt; 某 process　需要兩個以上資源才能運作，他拿了其中一個，卻在等另一個，沒等到他也不能動（就像某人去自助洗衣店，還沒換好零錢就先把衣服丟到洗衣機裡佔位，但兌幣機前大排長龍，他沒兌到幣也不能洗）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;No preemption&lt;/strong&gt; 這個 process 是不能被搶先的，就算他握有很珍貴的資源卻執行很慢，後面的人還是不能把它的資源搶過來做，除非他自願放棄&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Circular wait&lt;/strong&gt; 循環等待， A 等 B，B 等 C，C 等 A，大家等來等去甚麼事都不能做，把 Circular wait 的 resource allocation grapg 畫出來會發現他們繞成一個圈，但不代表繞成一個圈就一定會 dwadlock 喔，如果該資源只有一件時才會 deadlock，兩者並非若且為若的關係&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;這張圖片以長方形表示資源 (不同顏色表示不同型態)，把 recource allocation 畫出來發現可以找到兩個圈，這張會造成 deadlock，因為 p1 在等 p2 ， p2 在等 p3， p3 在等 p1 或 p2&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/qWdJvjA.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;然而下面這個情況卻不一定會產生 deadlock，因為 p3 不一定要等待 p1，他也可以等 p4&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/NnFUWlX.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;methods-for-handling-deadlocks&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#methods-for-handling-deadlocks&#34;&gt;#&lt;/a&gt; Methods for Handling Deadlocks&lt;/h3&gt;
+&lt;p&gt;既然我們剛剛已經介紹 deadlock 的行程條件，接下來就來看看電腦是如何處理 deadlock 的&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;確保 deadlock 永遠不會發生，使用 deadlock prevention (事先預防) 和 deadlock avoidence (過程中避免)&lt;/li&gt;
+&lt;li&gt;如果沒辦法做到上面，真的執行中遇到 deadlock 了，那就只好選一個受害者 process ，把他強制結束，釋放他原本持有的資源再重新分配&lt;/li&gt;
+&lt;li&gt;最後一種就是都不要管，我作業系統不負責處理 deadlock，其實這是大多數作業系統的態度，認為避免 deadlock 是使用者的義務，然而這麼做不代表 deadlock 不重要，在網路上 deadlock 的避免就是很重要的技術&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;本文主要介紹了達成 deadlock 的四項條件，並從 resource-allocation 圖中辨別是否會造成 deadlock ，下篇會講解 deadlock prevention 和 deadlock avoidence ，主要就是避免系統達到四項條件，祝大家閱讀愉快&lt;/p&gt;
+ ]]></description>
+        </item>
+    </channel>
+</rss>

@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://lu1hoao.github.io</id>
+    <title>Lu Ying • Posts by &#34;memory&#34; tag</title>
+    <link href="https://lu1hoao.github.io" />
+    <updated>2022-05-12T13:23:28.000Z</updated>
+    <category term="OS" />
+    <category term="scheduling" />
+    <category term="Synchronization" />
+    <category term="Deadlock" />
+    <category term="Memory" />
+    <category term="array" />
+    <category term="C" />
+    <category term="combination" />
+    <category term="sort" />
+    <category term="permutation" />
+    <category term="程式新手" />
+    <category term="Visual studio 2022" />
+    <category term="debug" />
+    <category term="VS Code" />
+    <category term="WSL" />
+    <entry>
+        <id>https://lu1hoao.github.io/2022/05/12/os/os-9/</id>
+        <title>Main Memory (下)</title>
+        <link rel="alternate" href="https://lu1hoao.github.io/2022/05/12/os/os-9/"/>
+        <content type="html">&lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
+&lt;p&gt;本篇文主要講述 page table 和更多 paging 細節，並對整個 main maemory 做回顧，強烈建議搭配上篇一同觀看&lt;/p&gt;
+&lt;h3 id=&#34;implementation-of-page-table&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#implementation-of-page-table&#34;&gt;#&lt;/a&gt; Implementation of Page Table&lt;/h3&gt;
+&lt;p&gt;依照上篇提過的 page 方法，我們發現從 page 轉到 frame 需要一個 page table ，而這個 page table 就存在 memory 裡，然而問題來了，我們把資料放進 memory 得過程竟然要存取兩次 memory (一次到 page pagetable 一次到 frame) 這樣也太沒效率了吧！因此我們把 page table 放在一個類似 cache 的硬體，稱作 translation look-aside buffers (TLBs)，如果我們要找的 page 沒出現在 TLB ，這時候稱為 miss ，我們必須到主記憶體去把他的轉換資料找出來並放到 TLB 內，但有了 TLB 這個硬體可以大幅幫助我們提升效率&lt;br /&gt;
+加了 TLB 的 address transfer 如下圖&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/NZVxgy8.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;effevtive-access-time&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#effevtive-access-time&#34;&gt;#&lt;/a&gt; Effevtive Access Time&lt;/h3&gt;
+&lt;p&gt;雖然字面上說增加 TLB 可以提高效率，但還是很沒有實感，那我們就來看看一個例子吧：&lt;br /&gt;
+假設 TLB 的存取速度是 20ns ，記憶體的存取速度是 100ns ，有百分之八十的 page 在 TLB 當中就可以取得轉換資訊，那麼平均存取時間就是&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/XKke5l4.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;意義是有百分之八十的 page 存取一次 TLB 存取一次 memory ，百分之二十的 page ，存取一次 TLB 沒找到，又再去 page table 找 (存取第一次記憶體) 找到 fram number 後又存取第二次記憶體&lt;br /&gt;
+因此若有越高的比率可以在 TLB 就找到資訊，存取速度就會越快&lt;/p&gt;
+&lt;h3 id=&#34;memory-protection&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#memory-protection&#34;&gt;#&lt;/a&gt; Memory Protection&lt;/h3&gt;
+&lt;p&gt;Page table 除了給予 page 對應到 frame 的位置資訊，也會有一些 bit 記錄這些 page 的其他資訊，像是 valid-invalid bit，因為同一時刻 page table 內可能會有多個 process 的資訊，要避免存取到不是自己的 page ，又或者紀錄這個 page 是否被更動過。對於某些共用部分 code 的 process 而言，我們把這些 shared code 稱為 reentrant，含有這些 code 的 page 可能就會常駐在 TLB 中，一般而言，每次 context switch ，TLB 和 page table 也要被更新&lt;/p&gt;
+&lt;h3 id=&#34;structure-of-page-table&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#structure-of-page-table&#34;&gt;#&lt;/a&gt; Structure of page table&lt;/h3&gt;
+&lt;p&gt;前面提過 page table 的大小和 page size 有關，假設今天有個 process 的資訊量是 2 的 32 次方，而 page size 是 4KB (2 的 12 次方)，所以這個 process 會用掉 1M ( 2 的 20 次方 ) 個 page，換句話說會有 1M 個 page 地址，假設每個地址需要 4 byte 空間，1M 個地址就會佔去 4M ，佔據記憶體 4M 的空間實在太大了，更何況我們不一定會真正利用到 page table 中的每項資訊，因此如何使放在記憶體當中的資訊不要那麼多，就發展出了以下三種作法&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Hierarchical Paging&lt;/li&gt;
+&lt;li&gt;Hashed Page Tables&lt;/li&gt;
+&lt;li&gt;Inverted Page Tables&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;其中，Hierarchical Paging 又被稱為 multi-level paging 或 Two-level paging 或 forward-mapped paging ，是實務上最常見的方法&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Hierarchical Paging&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;是把 page table 在做分割，假設現在圖書館有 1000 本書，我們分成 100 個書架，每個書架有 10 本書，要找一本書的時候就先看他在哪一個書架再去該書架找 (這是原本的 page) 現在又把這 100 個書架分成 10 區，每區有 10 個書架，要找一本書的時候先看他在哪一區，再看他在該區的哪一個書架，最後再到該書架的 10 本書中去找，後者就是 Two-level paging&lt;/p&gt;
+&lt;p&gt;原本的 logical address 包含兩個部分，一個是 page number ，一個是 offset ，page number 表示該 page 在 page table 的 index，現在我們把 page number 切成兩個部分，一個表示他對應到哪一個 page table  (又稱 outer page)，一個表示他在該 page table 中的 index (又稱 inner page)。&lt;/p&gt;
+&lt;p&gt;我們把圖書館的例子用圖片說明，單純的 page 收到以下訊號&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/kb8lRiZ.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;代表第 83 個書架中的第六本書，而這個圖書館必須在門口張貼一張表，表上有 100 個書架的位置&lt;/p&gt;
+&lt;p&gt;two level paging 收到這樣的訊號則會做以下解讀&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/sglq3Z8.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;代表第 8 區、第 3 個書架、第 6 本書，而這個圖書館必須張貼一張表，表上有 10 個區域的位置，每個區域入口處也要有屬於該區 10 個書架的位置。&lt;/p&gt;
+&lt;p&gt;對記憶體而言 (相當於對圖書館而言) 他需要紀錄的東西從 100 個書架的位址縮小成 10 個區域的位置，減少了很大的負擔。對 CPU 而言 (相當於要找書的人而言)，也不需要修改自己表示資訊的方式 (address 長度不變)，只要換個角度看待資訊就好了。在主記憶體當中只需要存放一個 page table (即圖書館門口的區域位置表)，對每一個 page table 而言，專屬於他們的第二層 page table (相當於各區域門口的書架位址) 放在 disk 即可，需要的時候再去拿，而拿取的技術可以使用前一篇文章提到的 memory image&lt;br /&gt;
+ 在 two level paging 中會收到兩個位址資訊，其中第一個位址資訊又會成為第二個位址資訊的查詢基礎，有點指來指去的概念。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Hashed Page Table&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;顧名思義就是利用雜湊函數對資料作處理，在主記憶體當中存放雜湊表，假設收到以下資訊&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/mPu26jr.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;我們先把 83 mod 7 ，發現餘 6 ，於是找到第六項在去做更進一步處理，看是利用 linklist 或是第二個 page table 還是怎樣都可以，但主記憶體當中只需要存取一個有 7 個項目的雜湊表 (餘數從 0 到 6)，在做雜湊表的時候我們都常會假設資訊是 sparse 的，意思是平均分散的，這樣可以避免 link list 過長。&lt;/p&gt;
+&lt;h3 id=&#34;intel-32&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#intel-32&#34;&gt;#&lt;/a&gt; Intel 32&lt;/h3&gt;
+&lt;p&gt;在實務上也不是只有利用一種方法做 virtual address 的轉換， Intel 32 就是結合 segmentation 和 paging 的例子，這樣可以結合兩者的優點， segmentation 比較符合人類的分法， 把同樣性質的資料放在一起，paging 則是可以避免 external fragmentation ，所以在 Intel 32 是這樣做的，在 logical address 階段，會得到 segment 資訊和 offset，segmet 資訊稱為  selector，是一個指標，然後在到 descriptor table 中找到他的 base 和 limit ，把 offset 加上 base 之後得到 linear address ，linear assdess 再透過兩次 paging 得到 physical address ，以圖片說明下&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/lOacBea.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;以上就是記憶體的小小小科普，祝大家閱讀愉快&lt;/p&gt;
+</content>
+        <category term="OS" />
+        <category term="Memory" />
+        <updated>2022-05-12T13:23:28.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://lu1hoao.github.io/2022/05/11/os/os-8/</id>
+        <title>Main Memory (上)</title>
+        <link rel="alternate" href="https://lu1hoao.github.io/2022/05/11/os/os-8/"/>
+        <content type="html">&lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
+&lt;p&gt;本文主要講述 Memory 的管理，從背景、 Contiguous Memory Allocation 講到 Segmentation、Paging，對 multiprogramming 的系統而言，記憶體管理很重要，他也會大大影響到執行速度&lt;/p&gt;
+&lt;h3 id=&#34;背景&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#背景&#34;&gt;#&lt;/a&gt; 背景&lt;/h3&gt;
+&lt;p&gt;我們寫的程式要被執行，必須先被載入到主記憶體當中，CPU 再從 Memory (含 cache) 或 register 去讀取資訊並執行，然而 CPU 看到的這些指令與變數位址並不代表他們真正在記憶體當中的位置，舉例來說，CPU 看到「請執行第十行的指令」這個敘述不表示第十行指令的位址真的在記憶體當中的第十行， 10 這個數字是相對位址，相當於這個程式的第十行，而這個程式的第十行被儲存在記憶體的哪個位置呢？我們需要透過 Memory Management Unit ( MMU ) 搭配 Translation lookaside buffer 來做轉換 ( TLB )，示意圖如下&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/niAzWW5.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Memory Management Unit&lt;/strong&gt; (MMU) : 把虛擬地址轉成真實地址的硬體&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Translation Lookaside Buffer&lt;/strong&gt; (TLB): 告訴 MMU 怎麼轉的表 ( a cache for the MMU&#39;s virtual-to-physical translation table )&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;base-and-limit-registers&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#base-and-limit-registers&#34;&gt;#&lt;/a&gt; Base and Limit Registers&lt;/h3&gt;
+&lt;p&gt;我們先來看一下簡單的 MMU 轉換例子，假設系統會提供一個 base register ，表示這個程式開端所在的記憶體位址 (真實位址)，那這個程式的每一個指令或變數的真實位址就是他們的相對位址加上這個 base register，這個 base register 又稱為 relocation register，所以可以得到&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;virtual address + relocation register = physical address&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;今天執行程式的 relocation register 和明天執行程式的 relocation register 可能不一樣，因為記憶體空間配置的情形有所差異，但如果程式碼沒有修改，今天和明天的 virtual address 應該是相同的&lt;br /&gt;
+大部分時候， complier 會提供 limit register 表示這個程式最大可存取的空間，供系統去做檢查，如果發現這個程式有某個指令或變數位址超過了 relocation register + limit register 的值，我們就可以發覺這個程式應該是有誤的，他會侵犯到別人的空間，以圖片說明：&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/jn5GWNf.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;那我們是甚麼時候得到相對位址甚麼時候得到絕對位址的呢？&lt;br /&gt;
+這時候就要先來看看程式從寫好到被執行經過了哪些步驟&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;complier&lt;/li&gt;
+&lt;li&gt;linker &amp;amp; loader&lt;/li&gt;
+&lt;li&gt;execution&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在上面三步中我們是在最後一部才得到真實位址，前面兩部都只是得到相對位址，這裡也要注意所謂的程式起始位置，對不同型態資料來說就會有不同的基準值喔，以下方程式碼說明&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;JUMP X&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;ADD #&lt;span class=&#34;token number&#34;&gt;4&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;LOAD Y&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;X 是指第幾行程式碼， Y 則是一個變數，他們在不同的 segment&lt;br /&gt;
+ 基準位址就不一樣，在 segmentation 中會有更進一步的說明&lt;/p&gt;
+&lt;h3 id=&#34;swapping&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#swapping&#34;&gt;#&lt;/a&gt; Swapping&lt;/h3&gt;
+&lt;p&gt;swapping 中文是交換的意思，在這裡是指當記憶體位置不足又想跑一個大程式時，我們會把優先權比較低的程式踢去 disk (Backing store) ，讓比較高優先權體積又比較大的程式先跑，這種情況其實很少發生，因為這是下下策，工程師應概要設法用比較好的記憶體管理演算法讓空間使用率最佳化。但不幸出現這種事時，我們會把低優先權程式在記憶體中的狀態原封不動地搬到 disk ，稱為 memory image ，再次啟動低優先權 process 時就不需要再透過檔案系統開啟&lt;/p&gt;
+&lt;h3 id=&#34;contiguous-allocation&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#contiguous-allocation&#34;&gt;#&lt;/a&gt; Contiguous Allocation&lt;/h3&gt;
+&lt;p&gt;現在我們終於可以來看一下記憶體是如何被使用的了，一般來說記憶體被分為兩大塊 (two partitions) 一塊給 OS ，一塊給我們要跑的程式，在 multiprogramming 系統中，又把放置 user process 的記憶體切成多塊，切法又可分為以下兩種：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Fixed Partition&lt;/strong&gt;&lt;br /&gt;
+ 顧名思義，這裡的記憶體被切成等大的片段，每個片段放置一個 process，假設現在記憶體當中有 3 個 process ，那我們就說現在 degree 是 3，但是切成等大的片段會造成空間利用率不高，對於那些所需空間小於一個片段的 process 來說，我們多給的片段他也用不到，這種被浪費掉的空間稱為 &lt;strong&gt;Interal Fragmentation&lt;/strong&gt;，對於大小超過一個片段的 process 他也放不進去無法被執行，因此這個做法還有很多變形，像是執行一個大 process 時，不需要把整個 process 都放到記憶體，只需要放正在執行的片段就可以了&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Variable-Partition&lt;/strong&gt;&lt;br /&gt;
+Variable-Partition 就是把記憶體切成大小不一的片段，以符合每個 process 不同的空間需求&lt;br /&gt;
+&lt;strong&gt; (1) Buddy&#39;s System：&lt;/strong&gt;&lt;br /&gt;
+Buddy&#39;s system 是指讓每塊記憶體片段都是 2 的指數次方大小，比如 2、4、8、16、64，假設今天來了一個 35 大小的 process 他就選擇 64 這個記憶體片段，但假如今天 64 大小的都用完了怎麼辦呢？就選擇 128 大小的，但把 128 切成兩塊 64，一塊給 35 ，剩下的一塊就待命&lt;br /&gt;
+&lt;strong&gt; (2) 一般的 variable partition ：&lt;/strong&gt;&lt;br /&gt;
+就是依照 process 大小給與剛好空的空間&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;當 process 離開記憶體後他原本佔據的空間就會空出來，稱為 &lt;strong&gt;hole&lt;/strong&gt; (也可以說，沒被 process 佔據的空間都視為 hole)，當新的 process 要進來記憶體時，就從這些 hole 挑選一個適合大小給 process，怎麼挑呢？又可以分為以下幾種&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;First-fit&lt;/strong&gt;：找到第一個是大小大於或等於 proess 的 hole 就結束&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Best-fit&lt;/strong&gt;：找到大小大於或等於 process 的 hole，且這個 hole 是所有可供 process 運用的 hole 當中最小的&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Next-fit&lt;/strong&gt;：從上一個找到的 hole 作為起點，當找到第一個大小大於或等於 process 的 hole 之後就結束&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;以圖片說明，假設灰色是以被占據的記憶體空間，白色是 hole，現在來了一個需要 16 大小的 proess，那根據不同的選法就會有不一樣的結果&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/BxorVjG.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;一般來說， first-fit 會讓上面的記憶體更常被選到，經常使用意味著更容易壞掉， best-fit 則需要全部搜尋一遍有點浪費時間，next-fit 算是比較折衷的方法但是也可能會選到 worst fit (適合 process 的 hole 中，最大的那一個)&lt;/p&gt;
+&lt;p&gt;如果今天有一個大小為 3 的洞，和一個大小為 5 的洞，來了一個大小為 7 的 process 要怎麼辦呢？ 如果系統沒辦法透過調整記憶體中 process 的位置來解決這個問題，我們就稱這兩個洞是 &lt;strong&gt;External Fragmentation&lt;/strong&gt;，雖然是可運用的空間卻無法真正被利用。為了解決這個問題，我們需要 &lt;strong&gt;Compaction&lt;/strong&gt; ，調整記憶體中 process 的位置，讓這兩個洞合併成一個大洞供 process 使用，調整 process 位置就需要最一開始提到的 relocation code 才有辦法&lt;/p&gt;
+&lt;h3 id=&#34;segmentation&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#segmentation&#34;&gt;#&lt;/a&gt; Segmentation&lt;/h3&gt;
+&lt;p&gt;我們的程式是由不同的 segment 組成的，比如變數存在 data segment，程式碼存在 code segment，當我們要找出這些變數或程式碼的真實位置時，就需要取他們的虛擬位置加上 segment 資訊。&lt;br /&gt;
+一般來說，logical address (virtual address) 是由兩個數字組成，一個表示他在哪一個 segment (他們的型態) ，通常為 segment-table base register (STBR，指向該 segment table 在記憶體中的位址) 和他們的 offset (位移，相當於對該 segment 起點的位移)，我們透過 segment table 可以得到 base 和 limit 資訊，進而得到 physical address ，以圖片說明&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/6BJyXtk.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;paging&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#paging&#34;&gt;#&lt;/a&gt; Paging&lt;/h3&gt;
+&lt;p&gt;Paging ，是把 process 分成大小相同的區塊稱為 page (和 segment 不同喔， 每塊 segment 大小可能不同)，然後在真實記憶體當中，我們也切成大小相同的好幾塊，稱為 frame ，一塊 frame 的體積和一塊 page 的體積大小相同，透過 page table ，把 page 資訊放到 frame 當中。這樣的做法可以避免 external fragmentation，但依然會有 internal fragmentation 以下方簡圖說明&lt;br /&gt;
+ CPU 得到的 logical address (virtual address)，包含兩個數字，一個是 &lt;strong&gt;virtual page number&lt;/strong&gt; (VPN)，是一個 index ，表示這個 page 在 page table 中的位置，和一個 Page offse 該資料相對於這個 page 的起始位址位移多少，在 page table 中則會記載每一個 page table 對應到真實記憶體當中的哪一個 frame&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/Zd8yrER.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;這裡要注意從 page 對應到 memory 不一定要依照 page 的次序，舉例來說第一塊 page 不一定要對應到第一塊 frame，也可以是第五塊，因為每一塊 frame 大小都相同，所以對應到哪一塊其實沒差，隱含著一個重要訊息，&lt;strong&gt;在真實記憶體當中，一個 process 存放的空間可以是不連續的&lt;/strong&gt;，事實上 page 分類在 disk 就已經完成，後面會更詳細解說。 我們用下面例子說明空間使用情況&lt;br /&gt;
+假設一個 page 是 2048 bytes，有一個 72766 bytes 的 process ，這樣他需要 36 個 pages ，但最後一個 page 沒有裝滿，會有 962 bytes 的 internal fragmentation&lt;br /&gt;
+ 如果一個 page 容量越大，就可能會造成越多 internal fragmentation ，如果單一 page 容量很小又會造成 page table 很大，因為他要存放這些 page 的位址，不過依電腦趨勢而言， page 的尺寸是越做越大&lt;/p&gt;
+&lt;p&gt;原本想要一篇打完的，但內容好多，剩下的留到下篇，祝大家閱讀愉快&lt;/p&gt;
+</content>
+        <category term="OS" />
+        <category term="Memory" />
+        <updated>2022-05-11T13:23:28.000Z</updated>
+    </entry>
+</feed>

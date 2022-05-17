@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+    <channel>
+        <title>Lu Ying • Posts by &#34;combination&#34; tag</title>
+        <link>https://lu1hoao.github.io</link>
+        <description></description>
+        <language>en</language>
+        <pubDate>Sat, 14 May 2022 16:42:28 +0800</pubDate>
+        <lastBuildDate>Sat, 14 May 2022 16:42:28 +0800</lastBuildDate>
+        <category>OS</category>
+        <category>scheduling</category>
+        <category>Synchronization</category>
+        <category>Deadlock</category>
+        <category>Memory</category>
+        <category>array</category>
+        <category>C</category>
+        <category>combination</category>
+        <category>sort</category>
+        <category>permutation</category>
+        <category>程式新手</category>
+        <category>Visual studio 2022</category>
+        <category>debug</category>
+        <category>VS Code</category>
+        <category>WSL</category>
+        <item>
+            <guid isPermalink="true">https://lu1hoao.github.io/2022/05/14/%E4%B8%80%E9%BB%9E%E9%BB%9E%E6%BC%94%E7%AE%97%E6%B3%95/combination/</guid>
+            <title>C 語言組合 (combination)</title>
+            <link>https://lu1hoao.github.io/2022/05/14/%E4%B8%80%E9%BB%9E%E9%BB%9E%E6%BC%94%E7%AE%97%E6%B3%95/combination/</link>
+            <category>C</category>
+            <category>combination</category>
+            <pubDate>Sat, 14 May 2022 16:42:28 +0800</pubDate>
+            <description><![CDATA[ &lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
+&lt;p&gt;本篇文章講述以 C 語言實作排列組合中的「組合」，輸出從 m 個數當中取 n 個數的所有取法，在組合當中核心概念是遞迴，之後也會用專門文章來介紹遞迴的概念與其他應用&lt;/p&gt;
+&lt;h3 id=&#34;分析&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#分析&#34;&gt;#&lt;/a&gt; 分析&lt;/h3&gt;
+&lt;p&gt;在做遞迴相關題目時，個人覺得有幾件事非常重要&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;設定 return 條件&lt;/strong&gt;&lt;br /&gt;
+遞迴一定要 return ，不然會永無止盡的呼叫下去最後 stackoverflow ， 如果沒設定 return 條件編譯器也會提醒我們。&lt;br /&gt;
+那麼在 m 個數中取出 n 個數，這個問題的 return 條件是甚麼呢？ return 條件的意思就是：到了這個條件就不需要再遞迴下去了！已經夠了，所以在組合問題中的 return 條件就是&lt;strong&gt;已經選了 n 個數的時候&lt;/strong&gt;，已經挑好 n 個數了現在只需要印出來就好，不用再遞迴。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;判斷 return 之後需不需要修改狀態&lt;/strong&gt;&lt;br /&gt;
+函數 return 後會回到呼叫他的函數，並從呼叫後的下一行開始執行，有時候我們會在這裡修改某一些數的值，讓函數再次遞回達到新的條件，在組合中就會遇到這樣的情況，通常是在做&lt;strong&gt;要或不要&lt;/strong&gt;這種問題時會發生，對某一個元素而言，選或不選都要考慮，那就要確保這兩種情況都會發生，假設第一次是選， return 之後就要把值改成不選&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;思索非遞迴解法&lt;/strong&gt;&lt;br /&gt;
+第三步比較困難， 但理論上所有的遞迴解法都可以展開變成非遞迴解法，做這一步主要是進一步去思考遞迴真的有比較好嗎？會不會有更好的做法？畢竟答案不是對就好，還要快、省空間&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;圖說&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#圖說&#34;&gt;#&lt;/a&gt; 圖說&lt;/h3&gt;
+&lt;p&gt;假設我們要從這 9 個數中取出 4 個數，設定一個變數叫作 count，表示選了幾個數，最初 count=0&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/S21TtRO.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;指標從第一個數出發，要選嗎？要！因為這時 count=0，0&amp;lt;4，還沒達到 return 條件所以選，然後 count 變成 1&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/WEh7PjD.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;接著把指標移到第二個數，要選嗎？要 (1&amp;lt;4) 選了之後 count=2&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/0aRz215.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;指標移到第三個數，要選嗎？要 (2&amp;lt;4) 選了之後 count=3&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/Gt59us8.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;指標移到第四個數，要選嗎？要 (3&amp;lt;4) 選了之後 count=4&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/r9tmFyW.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;指標移到第 5 個數，發現 count 已經等於 4 了，所以印出 5 9 3 1&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/Oi1PaTF.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;然後 return ，return 後把 1 改成不選，count-1 (變成 3 因為 1 不選)&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/WQyrIXc.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;把指標移到 2 要選嗎？要 ，因為 (3&amp;lt;4)，選完之後 count 變成 4&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/Inud9Ba.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;接著把指標移到 8 ，發現 count=4 ，所以印出 5 9 3 2&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/bQ9ns3s.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;然後 return ，把 2 改成不選，count - 1&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/vPGZKjh.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;如此反覆最後就會得到所有組合。&lt;br /&gt;
+把步驟條列話可以得到以下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;把輸入的數字存成陣列&lt;/li&gt;
+&lt;li&gt;指標由左到右移動，若 count &amp;lt;4，就把該數字的布林值設為 1 (表示選擇)，count 也加 1&lt;/li&gt;
+&lt;li&gt;當 count=4 時，輸出所選數字，並 return 把最後一個選擇的數字移除&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;接著來看程式碼&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token macro property&#34;&gt;&lt;span class=&#34;token directive-hash&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;token directive keyword&#34;&gt;define&lt;/span&gt; &lt;span class=&#34;token macro-name&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;token expression&#34;&gt;&lt;span class=&#34;token number&#34;&gt;4&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token macro property&#34;&gt;&lt;span class=&#34;token directive-hash&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;token directive keyword&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&amp;lt;stdio.h&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token macro property&#34;&gt;&lt;span class=&#34;token directive-hash&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;token directive keyword&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&amp;lt;stdbool.h&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;com&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; index&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; base&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;bool is_select&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; count&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;num&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;com&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; index&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;count&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;n&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;10&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;for&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; j&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;j&lt;span class=&#34;token operator&#34;&gt;&amp;lt;&lt;/span&gt;num&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;j&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;11&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;            &lt;span class=&#34;token keyword&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;is_select&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;j&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;12&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                &lt;span class=&#34;token function&#34;&gt;printf&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;%d &#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;base&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;j&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;13&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;            &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;14&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;15&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token function&#34;&gt;printf&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;\n&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;16&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;17&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt; &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;18&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;for&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; i&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;index&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;i&lt;span class=&#34;token operator&#34;&gt;&amp;lt;&lt;/span&gt;num&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;19&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        is_select&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;20&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        count&lt;span class=&#34;token operator&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;21&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token function&#34;&gt;com&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;i&lt;span class=&#34;token operator&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;22&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        is_select&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;i&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;23&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        count&lt;span class=&#34;token operator&#34;&gt;--&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;24&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;25&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;在這裡比較需要注意的是&lt;strong&gt;每次遞迴都只能考慮該 index 之後的狀況，前面的狀況要等到 return 才能修改&lt;/strong&gt;。index 表示指標，現在從哪裡開始作遞迴的意思， count 表示選了幾個數，初值為 0 ，m 和 n 都是可以自由修改的變數，表示我們要從 m 個數中取出 n 個數，bool 陣列則是在記錄這個數要選或不選，初值大家都為 0 表示尚未選擇&lt;/p&gt;
+&lt;h3 id=&#34;小結&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#小結&#34;&gt;#&lt;/a&gt; 小結&lt;/h3&gt;
+&lt;p&gt;組合是生活中很常遇到的問題，數學上也有很多很複雜的組合題目，不光是選出特定個數而已，選出的的這些元素還要達成其他條件，比如不同色啊、重量超過多少呀等等的，這裡示範的程式碼只是最簡單的情況，但上述情況都脫離不了遞迴的思考觀念，有些更進階題目可以使用動態規劃 (Dynamic programming)，把問題分成幾個子集合，對每個子集合選出最佳解之後就找到整體的最佳解了 (前提是要確保題目本身符合最佳子結構的條件啦)，之後在遞迴的文章中也會說明&lt;/p&gt;
+&lt;h3 id=&#34;非遞迴解法&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#非遞迴解法&#34;&gt;#&lt;/a&gt; 非遞迴解法&lt;/h3&gt;
+&lt;p&gt;呼應前面提到作遞迴解法時也可以思考是否存在非遞迴解法，比如這題就可以用 4 個迴圈實作出非遞迴解法喔，有興趣可以試試看！&lt;/p&gt;
+ ]]></description>
+        </item>
+    </channel>
+</rss>

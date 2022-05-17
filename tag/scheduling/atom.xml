@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://lu1hoao.github.io</id>
+    <title>Lu Ying • Posts by &#34;scheduling&#34; tag</title>
+    <link href="https://lu1hoao.github.io" />
+    <updated>2022-04-25T12:23:28.000Z</updated>
+    <category term="OS" />
+    <category term="scheduling" />
+    <category term="Synchronization" />
+    <category term="Deadlock" />
+    <category term="Memory" />
+    <category term="array" />
+    <category term="C" />
+    <category term="combination" />
+    <category term="sort" />
+    <category term="permutation" />
+    <category term="程式新手" />
+    <category term="Visual studio 2022" />
+    <category term="debug" />
+    <category term="VS Code" />
+    <category term="WSL" />
+    <entry>
+        <id>https://lu1hoao.github.io/2022/04/25/os/os-2/</id>
+        <title>CPU Scheduling (下)</title>
+        <link rel="alternate" href="https://lu1hoao.github.io/2022/04/25/os/os-2/"/>
+        <content type="html">&lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
+&lt;p&gt;本篇文章會先從 multilevel queue 說起，提到 thread scheduling 和 multiprocessor 排程所需注意的事情，最後說明 real-time system。&lt;/p&gt;
+&lt;h3 id=&#34;multilevel-queue&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#multilevel-queue&#34;&gt;#&lt;/a&gt; Multilevel queue&lt;/h3&gt;
+&lt;p&gt;對一個 CPU 有多條 ready queue 我們就稱為 multilevel queue，為甚麼一個 CPU 需要多條 queue 呢？只有一個服務台耶？不過現實生活中也會有這種情況，一間小吃店可能在同一時刻收到現場內用訂單和來自外送平台的訂單，這兩筆訂單來自不同的排隊系統，那小吃店應該先完成哪一筆呢？或許每家店都有不同的做法，對電腦來說也是如此，通常會有 foreground (前景) 和 batch (背景) 兩條 queue，foreground 是直接面對使用者的，所以電腦採取的排程做法多是 Round Roubin ，背景則是 First Come First Served， CPU 也會放不同的比重在這兩條 queue ，比如前景佔百分之 80 ，背景佔百分之 20 ，那一個 process 可以在不同 queue 之間跑來跑去嗎？如果可以我們就稱這種 queue  為 &lt;strong&gt;multilevel feedback queue&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;thread-scheduling&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#thread-scheduling&#34;&gt;#&lt;/a&gt; Thread Scheduling&lt;/h3&gt;
+&lt;p&gt;thread 中文叫做執行緒，一個 process 由很多 thread 組成，可以視為小的執行單位，對 user-level 的 thread 來說和她一起競爭  CPU 資源的是和他同屬一個 process 的其他 thread ，我們稱為 process-contention scope (PCS)，對 kernel-thread 則是 system-contention scope (SCS)，和所有系統中的 thread 競爭資源&lt;/p&gt;
+&lt;h3 id=&#34;multiple-processor-scheduling&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#multiple-processor-scheduling&#34;&gt;#&lt;/a&gt; Multiple-Processor Scheduling&lt;/h3&gt;
+&lt;p&gt;現在的電腦多是 Symmetric multiprocessing (SMP)，亦即每一個 CPU 都可以執行排程，所有 process 會在一條共有的 ready queue 等待被執行，或者每一個 CPU 都有獨立的 queue 存放等待被執行的 process，然而在多個 CPU 的情況下存在著 Non Uniform Memory Access， CPU 在自己家的 memory 存取速度比較快，在別人家的比較慢，換句話說，原本有一個 process 在 A CPU 執行，接著要換去 B CPU 執行， B CPU 要去 A 那裡拿資料就比較慢。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/H1vIZ8l.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;不想要讓這種事情太常發生我們就需要 &lt;strong&gt;Processor affinity&lt;/strong&gt; (親和性)，換句話說就是要儘可能讓同一個 process 在同一個 CPU 上面跑。&lt;br /&gt;
+另外之前也說過，在電腦裡面不可以有倘分仔是很重要的概念，所以每個 CPU 的工作量要平均，稱為 Load balancing，有 &lt;strong&gt;Push migration&lt;/strong&gt; 和 &lt;strong&gt;Pull migration&lt;/strong&gt; 兩種做法，前者是多的給少的，比如規定每個 CPU 的工作不得超過十件， CPU A 有 12 件，他就問：有沒有人有空幫我做呀？，這時 B 舉手，他只有 6 件，所以 A 就把工作分給 B，後者則是 B 看到 A 超過 10 件，而自己沒有，於是發揮暖男精神主動跑去幫忙 A。&lt;/p&gt;
+&lt;h3 id=&#34;multicore-processor&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#multicore-processor&#34;&gt;#&lt;/a&gt; Multicore Processor&lt;/h3&gt;
+&lt;p&gt;對 multicore system 而言，我們通常會派發不只一條 thread 給一個 core ，因為當 processor 要去存取 memory 而耗費大量時間時我們稱為 memory stall，當一個 thread 還在等待 memory 時 (遭遇  memory stall) 我們就先執行另一個 thread，以提高速率，下圖以黃色表示 compute cycle，藍色表示 memory stall cycle&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/bpIH6SW.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;real-time-cpu-scheduling&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#real-time-cpu-scheduling&#34;&gt;#&lt;/a&gt; Real-time CPU Scheduling&lt;/h3&gt;
+&lt;p&gt;對某些電腦而言他們要執行的動作其實是週期性重複的，比如裝在衛星上的電腦，衛星拍攝一張照片、攝影機冷卻、調整衛星位置、再拍一張照片，就是這幾個動作在重複，不會突然跑出：喂，電腦給我播放 youtube 影片這樣的要求，但這些指令卻是一定要被執行的，試想核電廠的運作如果有一個指令突然沒執行，就可能會造成難以承受的災害，這種指令一定要在一個期限內完成的系統稱為  &lt;strong&gt;real-time system&lt;/strong&gt; 這種系統通常用 priority system ，&lt;strong&gt;而重複週期越短的 process 優先權越高&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;以上就是 CPU 排程下篇，這裡提到的都只是簡單的小科普，其實每一個主題背後都有更深入的技術值得探討，比如為甚麼會有 memory stall 呢？因為 cache miss，不過再討論下去，篇幅就太長了，希望大家讀完有收穫。&lt;/p&gt;
+</content>
+        <category term="OS" />
+        <category term="scheduling" />
+        <updated>2022-04-25T12:23:28.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://lu1hoao.github.io/2022/04/23/os/os-1/</id>
+        <title>CPU Scheduling (上)</title>
+        <link rel="alternate" href="https://lu1hoao.github.io/2022/04/23/os/os-1/"/>
+        <content type="html">&lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
+&lt;p&gt;對現在電腦而言，排程是一件很重要的技術，打開電腦有很多事情想做，又很希望電腦趕快做完，就算沒有真的在做也給我們一點回應，讓我們知道他需要一點時間處理，本文主要探討常見的 CPU 排程方法 (包含 mulititasking 和 multiple-processor (下篇))&lt;/p&gt;
+&lt;h3 id=&#34;評估標準-criteria&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#評估標準-criteria&#34;&gt;#&lt;/a&gt; 評估標準 Criteria&lt;/h3&gt;
+&lt;p&gt;由於人類具有慣老闆天性，對於電腦這種不會抱怨的員工更是要求一人當三人用一刻不得閒，所以我們評估排程好壞的標準大概可以由以下幾點決定&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;CPU utilization&lt;/strong&gt; (CPU 使用率) 指的是 CPU 工作的時間，絕對是越高越好， CPU 不准休息 ，就算是在多處理器的系統，也要讓每顆 CPU 工作分配平均 (大家都很忙，不能有躺分仔的概念)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Throughput&lt;/strong&gt; (產能) 單位時間內能完成的工作越多越好，所以這個值也是越高越好&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Turnaround time&lt;/strong&gt; (從開始執行到結束的時間) 希望能夠越快做完越好，所以這個數值是越低越好&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Waiting time&lt;/strong&gt; 一個 process 在 ready queue 等待的時間，就像我們去郵局從抽號碼牌到被叫到的這段時間，等待時間越短越好，所以數值越小越好&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Response time&lt;/strong&gt; (回應時間) 這在電腦裡面是很重要的，告訴使用者我有在動啦不要再叫了！我們點兩下滑鼠打開一個程式，游標會出現一個藍色圈圈在轉，就算該軟體介面還沒出現在螢幕上，我們看到藍色圈圈也會安心不少，就不會一直瘋狂點滑鼠，回應時間越短越好，所以數值越小越好&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;了解以上幾點評估標準後我們就可以更進一步來比較各種排程方法&lt;/p&gt;
+&lt;h3 id=&#34;為何需要排程&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#為何需要排程&#34;&gt;#&lt;/a&gt; 為何需要排程&lt;/h3&gt;
+&lt;p&gt;multitasking 是說 CPU 可以同時一次處理好幾個 process 但這裡的同時並不是說 CPU 像千手觀音那樣，同一時刻處理好多事情，而是說 CPU 先做 A process ，做一下子後儲存 A 的狀態再換去做 B ，B 做完一些後再回來做 A ，在一段時間內多處跑的概念，到這裡人類可能會想這是哪門子的同時呀，但電腦執行的速度很快，在人類有感時間一秒內，電腦可能已經處理完好幾個 process 了，既然 CPU 是這樣在 process 之間來回走跳，決定他下一步該去哪個 process 就很重要，也是排程的精髓&lt;/p&gt;
+&lt;h3 id=&#34;過程&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#過程&#34;&gt;#&lt;/a&gt; 過程&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;Short-term-scheuler 會從 ready queue 挑選一個要被執行的 process 給 CPU ，這個過程稱為 Dispatch&lt;/li&gt;
+&lt;li&gt;CPU 做到一個程度後 (這個程度會依據不同的排程演算法而有不一樣的條件) 做 context switch (在 context switch 之前 重複第一步驟)&lt;/li&gt;
+&lt;li&gt;CPU 執行第二個 process 直到達到終止條件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;這三步驟不斷重複直到我們把電腦關機&lt;/p&gt;
+&lt;h3 id=&#34;常見演算法&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#常見演算法&#34;&gt;#&lt;/a&gt; 常見演算法&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;First Come First Served&lt;/strong&gt; (FCFS) 先進先出，最直覺的排序方式，先到 ready queue 的就先執行，直到做完再換下一個，然而這樣的排程方法無法保證 waiting time 最低，以下方例子來說，有三個 process 執行時間分別是 6,4,2 ，照以下順序執行，平均等待時間為 (6+4)/3&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/BD6CXb7.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;但如果把執行順序改成這樣，平均等待時間就變成 (4+2)/6&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/n2YCvwB.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;換句話說，&lt;strong&gt;當三個 process 在差不多時間抵達時&lt;/strong&gt;，&lt;strong&gt;把時間短的作為第一個效果會比較好&lt;/strong&gt;，如果完全依照先進先出反而會在某些情況浪費時間，這樣的想法進而引發 shortest job first 的排程技術&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Shortest job first&lt;/strong&gt; (SJF) 時間短的先進行，這種排程方法是 optimal (最佳的)，能確保最短的 waiting time ，但我們要如何預測 process 的執行時間呢？假設我們現在執行第 n 個 process ，第 n+1 個 process 執行時間可預測為 (預測和真實不同)&lt;br /&gt;
+&lt;img data-src=&#34;https://i.imgur.com/4WI49j3.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;其中 t 表示真實的時間。&lt;br /&gt;
+除了一般的 SJF 排程，還有一種是 preemptive 的 SJF，所謂的 preemptive 是搶先的，當現在出現一個比 CPU 正在執行的 process 所需時間更短的 process 時， CPU 會先把手上的工作做完再去執行他呢？還是立刻剔除現在在執行的，換到他？如果是後者稱為 preemptive，而 preemptive 的 SJF 就是 &lt;strong&gt;shortest-remaining-time-first&lt;/strong&gt;，我們以下面例子說明&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/r1Bt5gs.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/EtmSz8x.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;時間為 1 時， B 抵達因為所需時間比 A 少，所以立即停止做 A 改做 B ，時間為 5 時，B 已經做完，D 所需時間最少所以做 D ，依此類推&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Priority Scheduling&lt;/strong&gt; (優先權排序)，這種把事情程度分級的做法在生活中很常見，比如醫療上常見的檢傷分類，把最緊急最有生命危險的作為最先救助，其實 SJF 也算一種 Priority Scheduling 只是他的評估標是時間，對電腦而言常見的優先順序依序是&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;system processes&lt;/li&gt;
+&lt;li&gt;interactive processes&lt;/li&gt;
+&lt;li&gt;interactive editing processes&lt;/li&gt;
+&lt;li&gt;batch processes&lt;/li&gt;
+&lt;li&gt;student processes&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;到這裡難免有些難過 student process 竟然最低，然而平常寫程式資料量通常都很小所以跑很快 &amp;gt; &amp;lt;(老師叫我們不要灰心)&lt;br /&gt;
+ Priority Scheduling 雖然很符合人的理想，事情有輕重緩急，確實本該分類，然而會造成 &lt;strong&gt;Starvation&lt;/strong&gt; ，當有大型傳染病發生時，醫院的醫療資源可能就會被大量的傳染病患者佔據，壓縮到原先非傳染病患者的資源 (比如需長時間治療的慢性病)，最後這些慢性病患者可能就會因為資源不足而病情惡化，Starvation 就是在形容這種狀況，因為優先權太低而等不到資源最後無法被執行，解決 starvation 的方法是 &lt;strong&gt;Aging&lt;/strong&gt;，每隔一段時間就提升在等待的 process 的優先權，比如 A process 原本優先權是 3 ，他在 ready queue 等一段時間後便上升為 2 ，只要等得夠久有一天一定能變成優先權最高最先被執行&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Round Roubine&lt;/strong&gt;，這種排程方式在生活中也很常見，假設一群人到遊樂園玩海盜船，玩完一次 10 分鐘，覺得意猶未盡還想再玩該怎麼辦呢？就要離開遊戲區到外面重排直到又輪到自己 ，Round Roubin 就是這樣，把時間切成好幾塊，每個人執行一次，若還沒跑完再重新排，因此時間區塊的大小很重要，如果切太大，每個人都在一塊時間內就跑玩那就和 FCFS 沒兩樣，如果時間切太小塊，又會浪費太多時間在做 context switch 我們以下面例子來說明，假設每塊時間為 4&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/lhWsqX7.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/HXYWl7m.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以上就是目前電腦常見的排程方式，我在下篇會提到 multi queue (多個 ready queue) 以及 multiple processor 所需的注意事項和 real-time system&lt;/p&gt;
+</content>
+        <category term="OS" />
+        <category term="scheduling" />
+        <updated>2022-04-23T12:23:28.000Z</updated>
+    </entry>
+</feed>
