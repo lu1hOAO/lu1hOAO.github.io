@@ -3,7 +3,7 @@
     <id>https://lu1hoao.github.io</id>
     <title>Lu Ying • Posts by &#34;os&#34; tag</title>
     <link href="https://lu1hoao.github.io" />
-    <updated>2022-05-12T13:23:28.000Z</updated>
+    <updated>2022-05-27T13:23:28.000Z</updated>
     <category term="OS" />
     <category term="scheduling" />
     <category term="Synchronization" />
@@ -18,6 +18,65 @@
     <category term="debug" />
     <category term="VS Code" />
     <category term="WSL" />
+    <entry>
+        <id>https://lu1hoao.github.io/2022/05/27/os/os-10/</id>
+        <title>Virtual Memory (上)</title>
+        <link rel="alternate" href="https://lu1hoao.github.io/2022/05/27/os/os-10/"/>
+        <content type="html">&lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
+&lt;p&gt;本篇文章主要講述 Virtual memory 的管理，討論放在 Virtual memory 的資料如何被搬運至 main memory ，再拿取過程中會碰到甚麼問題又該如何解決，簡而言之就是討論 demand paging 。&lt;/p&gt;
+&lt;h3 id=&#34;背景&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#背景&#34;&gt;#&lt;/a&gt; 背景&lt;/h3&gt;
+&lt;p&gt;所謂的 virtual memory 指的是 disk ，當一個程式被執行時，他所用到的 data 都應被放在 main memory 中，可是某些程式很大，如果要把整個程式放到 memory 很佔空間，在做 context switch 時也很花時間。因此產生了 virtual memory 的想法，把程式分成很多個 page ，把這些 page 先存在 disk ，需要用他時再把單一個 page 從 disk 搬到 memory 中。&lt;br /&gt;
+我們可以用下圖來理解&lt;br /&gt;
+&lt;img data-src=&#34;https://i.imgur.com/5HPOkzv.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;電腦轉換步驟如下&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;CPU 把 logical arddress 傳給 MMU&lt;/li&gt;
+&lt;li&gt;MMU 去該 process 的 page table 找相對應的 frame number (page table 在 memory 中)&lt;/li&gt;
+&lt;li&gt;發現在 page table 中該 page 的 valid bit 為零，表示該 page 的資訊還沒被放入 memory&lt;/li&gt;
+&lt;li&gt;page table 中有一個指標指到 disk 中該 page 的位置&lt;/li&gt;
+&lt;li&gt;到 disk 去把他載入&lt;/li&gt;
+&lt;li&gt;CPU 開始執行&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在程式開始執行的那一刻，PCB 已建好，但所有的 page 都還未放入 memory ，直到 CPU 要執行發現 哇！怎麼都沒東西，這時候再去 disk 拿，而這個現象稱為 &lt;strong&gt;page fault&lt;/strong&gt; 拿完之後再回來跟 CPU 說我好了，你可以繼續執行了。&lt;br /&gt;
+可以這麼做的原因是因為我們可以把程式分成很多部分，不同部分之間若關聯性不大，那在執行時有沒有把全部都放到 memory 就不重要，稱為程式的 &lt;strong&gt;locality of reference&lt;/strong&gt;。但如果寫程式時規劃得不太好，把彼此有關聯的程式寫在相距很遠的地方，導致他們無法儲存在同一個 page ，執行時產生很多 page fault，我們就稱為 &lt;strong&gt;thrashing&lt;/strong&gt;&lt;br /&gt;
+ 所以 virtual mamory 的優點有以下幾個&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;program 大小不受記憶體大小限制&lt;/li&gt;
+&lt;li&gt;更多的 program 可以同時放到記憶體內 (因為每個 program 佔的空間變小)&lt;/li&gt;
+&lt;li&gt;CPU 使用率、產能、回應時間都變好&lt;/li&gt;
+&lt;li&gt;I/O 比較少 (因為部分程式碼產生的 I/O 應該會比全部程式碼產生的 I/O 少)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我們把該 program 存在 memory 的部分稱為 resident set ，resident set 大小會影響到可以放幾個 program 在 memory 中。&lt;/p&gt;
+&lt;h3 id=&#34;demand-paging&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#demand-paging&#34;&gt;#&lt;/a&gt; Demand Paging&lt;/h3&gt;
+&lt;p&gt;上一段解釋了 virtual memory 的觀念後，這一段要來說明更細節的注意事項。在 virtual memory 中，page table 會有一個 valid bit 表示這個 page 的狀態，valid 是 1 表示這個 page 在記憶體中，請到相對應的 frame 去取他，若 valid bit 為 0 則表示 page 不在 memory 中或者你存取到別人的位置了，這兩種情況會產生不同的 system call ， OS 也會做相對應的處理。如果是前者，那麼該 process 會被放到 blocking state ，CPU 先去做其他程式，而 OS 也不是透過一般的檔案系統去拿取 disk 中的資料，而是透過 swap 技術，執行這種行為的 swaper 又稱 &lt;strong&gt;Lazy swapper&lt;/strong&gt;、&lt;strong&gt;pager&lt;/strong&gt;，等到所需資料拿到了，CPU 再回頭繼續做這個程式。我們可以用以下圖片說明&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/yVbebtW.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;在開始執行之初，尚未在 memory 放入任何 page ，這種 demand paging 稱為 &lt;strong&gt;pure demand paging&lt;/strong&gt;，在同一個指令中也可能隱含著多個 page fault ，比如指令 move m1 to m2 ，可能 m1 、m2 分屬不同 page 兩個也都不在記憶體中，稱為 multiple page fault，為了避免過多的 page fault (因為到 disk 很花時間) locality reference 就很重要 (把會互相影響的東西放在一起)，從 disk 拿完資料回來後也要記得修改 valid bit&lt;/p&gt;
+&lt;h3 id=&#34;performance-of-demand-paging&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#performance-of-demand-paging&#34;&gt;#&lt;/a&gt; Performance of Demand Paging&lt;/h3&gt;
+&lt;p&gt;前面一直說 page fault 很花時間，這裡就用實例來看看，假設 memory access time 是 200 ns，有 page fault 時的拿取時間是&lt;br /&gt;
+ 8000000 ns，有 p 成的機率會產生 page fault ，那麼 effective access time 會變成&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;katex-display&#34;&gt;&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math xmlns=&#34;http://www.w3.org/1998/Math/MathML&#34; display=&#34;block&#34;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mo stretchy=&#34;false&#34;&gt;(&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo&gt;−&lt;/mo&gt;&lt;mi&gt;p&lt;/mi&gt;&lt;mo stretchy=&#34;false&#34;&gt;)&lt;/mo&gt;&lt;mo&gt;∗&lt;/mo&gt;&lt;mn&gt;200&lt;/mn&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mi&gt;p&lt;/mi&gt;&lt;mo&gt;∗&lt;/mo&gt;&lt;mn&gt;8000000&lt;/mn&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;(1-p)*200+p*8000000
+&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222222222222222em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mbin&#34;&gt;−&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222222222222222em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222222222222222em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mbin&#34;&gt;∗&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222222222222222em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.72777em;vertical-align:-0.08333em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222222222222222em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mbin&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222222222222222em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.6597200000000001em;vertical-align:-0.19444em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222222222222222em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mbin&#34;&gt;∗&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222222222222222em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.64444em;vertical-align:0em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;為了避免效率太差，我們應該努力讓 page fault 在 10% 以下。&lt;/p&gt;
+&lt;h3 id=&#34;demand-paging-optimuzation&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#demand-paging-optimuzation&#34;&gt;#&lt;/a&gt; Demand Paging Optimuzation&lt;/h3&gt;
+&lt;p&gt;要如何增進 demand paging 呢？有以下方法&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;swap I/O&lt;/strong&gt; ：前面有提到到 disk 拿資料的時候並不是使用 file system，這樣太慢了，我們是在 disk 建 process image 的 copy 然後用指標標明位置再直接到該位置搬進搬出&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;不一定要清空&lt;/strong&gt;： 之後會提到 replacement ，當 process 可用的 frame 不夠時，就要把一些再記憶體的資料清掉，把位置空出來給現在在跑的區段，但如果要清掉的區段都是程式碼，其實不輕質些讓新資料覆蓋也可以，因為 code 不會在執行期間被修改&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Copy-on-Write&lt;/strong&gt;：這是指當 parent fork child 時，不會一開始就真的複製一份，而是先讓這兩個 process 共用同一份，直到其中一個 process 修改內容，才產生複製，給他們一人一份，而這樣的 fork 也稱為 vfork&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;小節&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#小節&#34;&gt;#&lt;/a&gt; 小節&lt;/h3&gt;
+&lt;p&gt;本文者要介紹 demand paging 的觀念，其大部基礎都建立在之前講的 paging ，只是 demand  paging 是較省時又省空間的作法，雖然中途會遇到一些問題 (像是 page fault)，但工程師也總能找到相對應的解法，下一節會在講述 demand paging 中的其他細節，祝大家閱讀愉快&lt;/p&gt;
+</content>
+        <category term="OS" />
+        <category term="Memory" />
+        <updated>2022-05-27T13:23:28.000Z</updated>
+    </entry>
     <entry>
         <id>https://lu1hoao.github.io/2022/05/12/os/os-9/</id>
         <title>Main Memory (下)</title>
