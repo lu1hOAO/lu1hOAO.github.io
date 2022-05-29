@@ -20,7 +20,7 @@
     <category term="WSL" />
     <entry>
         <id>https://lu1hoao.github.io/2022/05/23/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/stack/</id>
-        <title>堆疊與佇列 (stack&amp;queue)</title>
+        <title>堆疊與佇列 (stack&amp;queue) (上)</title>
         <link rel="alternate" href="https://lu1hoao.github.io/2022/05/23/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/stack/"/>
         <content type="html">&lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
 &lt;p&gt;本篇文主要介紹堆疊 (stack)、佇列 (queue) 這種資料型態的特質，在 C 語言中實作 stack 和 queue 是使用 array 這種 type，但不是把它當成 array 喔！資料結構的精髓在於把資訊換一個角度解讀，用不同角度解讀就呈現出不同資料結構的特質，這些特質可以幫助我們解決現實生活中的問題或是提升電腦性能，下篇也會講述一些 stack 的實例，像是後序運算、火車交換 ( switching network)&lt;/p&gt;

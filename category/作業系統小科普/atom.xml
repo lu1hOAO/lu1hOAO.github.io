@@ -3,7 +3,7 @@
     <id>https://lu1hoao.github.io</id>
     <title>Lu Ying • Posts by &#34;作業系統小科普&#34; category</title>
     <link href="https://lu1hoao.github.io" />
-    <updated>2022-05-29T01:14:45.517Z</updated>
+    <updated>2022-05-29T14:23:28.000Z</updated>
     <category term="OS" />
     <category term="scheduling" />
     <category term="Synchronization" />
@@ -18,6 +18,41 @@
     <category term="debug" />
     <category term="VS Code" />
     <category term="WSL" />
+    <entry>
+        <id>https://lu1hoao.github.io/2022/05/29/os/os-12/</id>
+        <title>Virtual Memory (下)</title>
+        <link rel="alternate" href="https://lu1hoao.github.io/2022/05/29/os/os-12/"/>
+        <content type="html">&lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
+&lt;p&gt;本篇文是 virtual memory 的最後一篇 (終於) 主要說明 Allocation of Frame 的不同方法以及這隻中會遇到的問題，並提及 Memory-Mapped Files 的概念&lt;/p&gt;
+&lt;h3 id=&#34;allocation-of-frames&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#allocation-of-frames&#34;&gt;#&lt;/a&gt; Allocation of Frames&lt;/h3&gt;
+&lt;p&gt;在分配 frame 的理論中有一種稱為 &lt;strong&gt;Fixed Allocation&lt;/strong&gt; ，即該 process 在執行之前就已經知道自己可以拿到幾個 frame ，fixed allocation 又可以分為 &lt;strong&gt;equal allocation&lt;/strong&gt; 和 &lt;strong&gt;prpportional allocation&lt;/strong&gt; 前者是每個 process 都拿到相同數目的 frame ，後者是根據 process 大小調整分配到的 frame 數目，另外系統通常會保留一些 free frame 在 free frame buffer pool，以備不時之需。&lt;br /&gt;
+除了 Fixed Allocation 還有一種稱為 &lt;strong&gt;Prioroity Allociation&lt;/strong&gt; ，當優先權較高的 process frame 不夠時，可以拿取低優先權 process 的 frame ，又稱為 Global replacement ，這樣做會讓程式每次執行的時間都不太一樣，低優先權程式可能跑好久才跑完，但產率較高。&lt;br /&gt;
+在具有 non-uniform memory access 的系統中，則發展出 lgroups 的概念，把鄰近的 CPU 和 memory 組成群組，群組內可使用自己的排成和 paging 演算法，稱為 &lt;strong&gt;low latency groups&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;trashing&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#trashing&#34;&gt;#&lt;/a&gt; Trashing&lt;/h3&gt;
+&lt;p&gt;a process is busy swapping pages in and out 就稱為 Trashing，Trashing 的主因是因為太多 process 在 memory 中，造成每個 process 分到的 page frame 很少，產生很多 page fault，然而當這種情況發生時 CPU 的使用率會非常低，作業系統發現 CPU 使用率低又派發更多 process 導致不斷的惡性循環，我們以下方流程說明&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;page fault to get page&lt;/li&gt;
+&lt;li&gt;replace existing frame&lt;/li&gt;
+&lt;li&gt;but quickly need replaced frame block&lt;/li&gt;
+&lt;li&gt;another process added to the system&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;那 trashing 最常發生在甚麼時候呢？我們前面說過 demand paging 最重要的觀念就是執行時，放需要的程式碼進來就好，不會互相影響的區段放在 disk 也沒關係，假設現在有一個 process 由三個大迴圈組成，那 trashing 最容易發生在迴圈交界處，從第一個迴圈要跑到第二個迴圈時，所需的資料量橫跨第一個迴圈所屬的 page 和第二個迴圈所屬的 page 因此容易造成 page fault 。&lt;/p&gt;
+&lt;h3 id=&#34;working-set-model&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#working-set-model&#34;&gt;#&lt;/a&gt; Working-set Model&lt;/h3&gt;
+&lt;p&gt;我們使用 Working-set Model 來監看 trashing 是否會發生，核心概念是這樣：先訂出一段時間範圍，稱為 working set window ，看看在這段時間內有幾個 page 被 reference ，假設有 7 個，但所給予的 page frame 只有 4 個，那就容易造成 trashing。&lt;br /&gt;
+在做實驗的時候我們又是如何判斷這個 page 有沒有被 reference 呢？假設 working set window 是 10000 ns ，我給與每個 page 10 個 bit ，每一千秒的時候檢查一次，如果這個 page 被 reference 那就把對應到的 bit 設為 1 ，(比如四千秒時，編號 7 被 reference ，那編號 7 的第 4 個 bit 即為 1)，結束後，若該 page 有超過 5 個 bit 為 1 那我們就說該 page 在 working sets 裡面。&lt;br /&gt;
+然而使用 working sets 來監測 trashing 有點麻煩，所以實務上會使用 &lt;strong&gt;Page-Fault Frequency&lt;/strong&gt; 的概念，系統會設定一個 page fault 上限，若現在產生的 page fault 遠高於這個上限，那就趕快增加 page frame 給 process ，直到達到一個可以接受的範圍&lt;/p&gt;
+&lt;h3 id=&#34;memory-mapped-file&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#memory-mapped-file&#34;&gt;#&lt;/a&gt; Memory Mapped File&lt;/h3&gt;
+&lt;p&gt;memory mapped file I/O 是把 disk 中的 page 放到 memory 中，之後若對這個文件有甚麼更動，就相對於在記憶體中做更動，速度會快很多，在做更動之中也不需要立刻把解果從 memory 寫回 disk 中，關掉時在一次儲存就可以了，不過值得注意的是，在 mapping 到 memory 的過程中，是存放在 kernel 的 address space ，所以是耗掉 kernel 的記憶體。&lt;/p&gt;
+&lt;h3 id=&#34;slab-allocator&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#slab-allocator&#34;&gt;#&lt;/a&gt; Slab Allocator&lt;/h3&gt;
+&lt;p&gt;許多處理器架構上，系統每次分配記憶體都以 page 為單位，但系統執行時大部分資料結構都很小，為一個小物件分配一個 page 會造成很多 internel fragmentation ，所以 Linux 中使用 slab ，slab 把 page 切割成小塊在零售出去，而 cache 則是多個 slab ，kernel 的物件會存放在 cache 裡頭，我們以下圖理解&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/rS1DpQB.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;一個 pgae 被切成 4 個 slab ，每一個 cache 含有 8 個 slab 而 kenel object 就存放在 cache 中。&lt;/p&gt;
+&lt;p&gt;以上就是 virtual memory 的最終章，祝大家閱讀愉快&lt;/p&gt;
+</content>
+        <category term="OS" />
+        <category term="Memory" />
+        <updated>2022-05-29T14:23:28.000Z</updated>
+    </entry>
     <entry>
         <id>https://lu1hoao.github.io/2022/05/29/os/os-11/</id>
         <title>Virtual Memory (中)</title>
