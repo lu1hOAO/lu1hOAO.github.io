@@ -21,6 +21,7 @@
         <category>debug</category>
         <category>VS Code</category>
         <category>WSL</category>
+        <category>Disk</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/05/23/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/stack/</guid>
             <title>堆疊與佇列 (stack&amp;queue) (上)</title>

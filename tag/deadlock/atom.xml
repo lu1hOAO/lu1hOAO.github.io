@@ -18,6 +18,7 @@
     <category term="debug" />
     <category term="VS Code" />
     <category term="WSL" />
+    <category term="Disk" />
     <entry>
         <id>https://lu1hoao.github.io/2022/05/02/os/os-7/</id>
         <title>Deadlocks(下)</title>

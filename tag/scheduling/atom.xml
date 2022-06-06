@@ -18,6 +18,7 @@
     <category term="debug" />
     <category term="VS Code" />
     <category term="WSL" />
+    <category term="Disk" />
     <entry>
         <id>https://lu1hoao.github.io/2022/04/25/os/os-2/</id>
         <title>CPU Scheduling (下)</title>

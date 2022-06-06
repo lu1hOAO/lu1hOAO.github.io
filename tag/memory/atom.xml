@@ -18,6 +18,7 @@
     <category term="debug" />
     <category term="VS Code" />
     <category term="WSL" />
+    <category term="Disk" />
     <entry>
         <id>https://lu1hoao.github.io/2022/05/29/os/os-12/</id>
         <title>Virtual Memory (下)</title>

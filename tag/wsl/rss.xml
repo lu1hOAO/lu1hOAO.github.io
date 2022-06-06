@@ -21,6 +21,7 @@
         <category>debug</category>
         <category>VS Code</category>
         <category>WSL</category>
+        <category>Disk</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/04/18/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/program-lesson-2/</guid>
             <title>環境建置--VS Code + WSL</title>
