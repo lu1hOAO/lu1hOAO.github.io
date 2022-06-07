@@ -3,7 +3,7 @@
     <id>https://lu1hoao.github.io</id>
     <title>Lu Ying • Posts by &#34;作業系統小科普&#34; category</title>
     <link href="https://lu1hoao.github.io" />
-    <updated>2022-06-06T14:23:28.000Z</updated>
+    <updated>2022-06-07T14:23:28.000Z</updated>
     <category term="OS" />
     <category term="scheduling" />
     <category term="Synchronization" />
@@ -19,6 +19,97 @@
     <category term="VS Code" />
     <category term="WSL" />
     <category term="Disk" />
+    <entry>
+        <id>https://lu1hoao.github.io/2022/06/07/os/os-14/</id>
+        <title>I/O System</title>
+        <link rel="alternate" href="https://lu1hoao.github.io/2022/06/07/os/os-14/"/>
+        <content type="html">&lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
+&lt;p&gt;I/O System，輸入與輸出，是作業系統中很重要的一部份，本篇文章主要講述 I/O 如何與裝置和電腦溝通，以及在這過程中必須設想的各種情況。&lt;/p&gt;
+&lt;h3 id=&#34;io-hardware&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#io-hardware&#34;&gt;#&lt;/a&gt; I/O Hardware&lt;/h3&gt;
+&lt;p&gt;I/O 硬體有很多種類以因應不同需求，像是 Port 通常連接單一裝置，Bus - daisy chain 則可以連接很多裝置 (比如多螢幕)， 上述這些東西 (Bus、Port) 被 Controller (host adapter) 所控制。&lt;br /&gt;
+I/O 透過指令傳達給與電腦連接的裝置，這些裝置通常會有 register 讓驅動程式放置命令、資料或位置，系統在處理 I/O 相關指令通常會有兩種手法，第一種就是建立專門的 I/O 指令，第二種則稱作 &lt;strong&gt;Memory-mapd I/O&lt;/strong&gt; ，這裡是把 I/O 指令視為 Memory 指令，呼叫裝置的資料會被存放在呼叫該裝置的程式的 address space 內，再用 memory 指令對其進行操控。&lt;/p&gt;
+&lt;h3 id=&#34;外部裝置與電腦的溝通&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#外部裝置與電腦的溝通&#34;&gt;#&lt;/a&gt; 外部裝置與電腦的溝通&lt;/h3&gt;
+&lt;p&gt;一台電腦可能同時有很多 device 想要做 I/O，滑鼠、鍵盤等等，那 I/O 要怎麼安排呢？有兩種做法，一種叫 polling ，一種是用 interrupt&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Polling&lt;/strong&gt;：&lt;br /&gt;
+中文稱作輪巡，是 I/O 一個一個去詢問，一號裝置你好了嗎，如果好了 Host 就讀一號裝置的 data，然後開始執行一些動作， 在這步 controller 會把一號裝置的狀態設為 busy ，直到做完再恢復。這樣的作法又稱為 busy-wait cycle，又稱為 busy-wait cycle，想法雖然簡單易懂但實務上很少用，因為裝置要等待 I/O 來詢問才可以使用，這樣會使得 CPU 等太久，若 CPU 又換去做別的 task 也可能造成錯誤，總之會衍生出很多問題，所以現在多使用 interrupt。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Interrupt&lt;/strong&gt;&lt;br /&gt;
+ 每一個裝置想要使用 CPU ，就發出 interrupt，執行過程是這樣的，CPU 收到 interrupt 發送請求，確認後收到 interrupt，接著判斷該 interrupt 是否 maskable (可被遮蔽的)，如果不行就透過 interrupt vector 查找 interrupt vector table 找到相對應的處理方式，我們可以用下圖來理解&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/qt5pyIm.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;假設現在有個 proess 在執行過程中需要 disk 的資料，於是電腦上的驅動程式啟動 I/O ，disk 端也啟動 I/O (圖片右邊)，這時 I/O 開始讀資料，讀到以後發出 interrupt 給 CPU ，此時的 CPU 應該已經被 cotext switch 去做其他 task 了，CPU 收到 interrupt 把控制權交給 interrupt handler， 處理完之後，剛剛從 disk 中拿的資料已在 memory 中，CPU 又可以繼續執行該 process。&lt;/p&gt;
+&lt;h3 id=&#34;diret-memory-access&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#diret-memory-access&#34;&gt;#&lt;/a&gt; Diret Memory Access&lt;/h3&gt;
+&lt;p&gt;Direct Memory Access (DMA) 是為了避免以 program 形式的讀取 I/O ，透過 CPU 每次讀取一個 byte 的方式太慢了，當需要做大區塊資料般移的時候很沒效率，所以 DMA 可以繞過 CPU 直接對 mrmory 和 I/O 做存取。OS 會對 DMA 下指令，告訴他資料的位置與其他資訊，DMA 就直接從 A 地把資料搬到 B 地，換句話說  DMA 可以去搶 I/O bus，不過 DMA 和 CPU 都想搶 bus 要怎麼安排？早期是 DMA 叫 CPU 停下不要做了，現在則是使用 cycle stealing ，當 CPU 沒有要用 memory 時，DMA 就掌控 bus 。我們可以以下圖理解 (下圖文字很重要)&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/tktW7KT.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;io-介面-os-支援&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#io-介面-os-支援&#34;&gt;#&lt;/a&gt; I/O 介面 &amp;amp; OS 支援&lt;/h3&gt;
+&lt;p&gt;Kernel 必須提供一個統一的介面，內含各種豐富的功能以提供不同裝置對 I/O 的各種需求，I/O 應該要具有以下存取特性&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Character-stream or bloock，意思是讀取時可以讀一個字也可以讀一整個區塊，比如鍵盤就是讀一個字，disk 是讀一個區塊。&lt;/li&gt;
+&lt;li&gt;Sequential or random access，有次序或隨機存取&lt;/li&gt;
+&lt;li&gt;Synchronous or asynchronous&lt;/li&gt;
+&lt;li&gt;Sharable or dedicated&lt;br /&gt;
+ 我們可以用下表理解不同裝置對 I/O 的需求&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;aspect&lt;/th&gt;
+&lt;th&gt;variation&lt;/th&gt;
+&lt;th&gt;example&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;data-transer mode&lt;/td&gt;
+&lt;td&gt;charactert/block&lt;/td&gt;
+&lt;td&gt;terminal/disk&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;access method&lt;/td&gt;
+&lt;td&gt;swquential/random&lt;/td&gt;
+&lt;td&gt;modem CD-ROM&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;transfer schedule&lt;/td&gt;
+&lt;td&gt;synchronous/asychronous&lt;/td&gt;
+&lt;td&gt;table/keyboard&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;sharing&lt;/td&gt;
+&lt;td&gt;dedicated/sharable&lt;/td&gt;
+&lt;td&gt;tape/keyboard&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;另外系統需要 Memory mapped file access 以提高效率，在網路上則需要 Network sockets，而在 Unix 中就是使用 ioctl () 這個 system call 來送命令給 device control register 來執行 I/O 動作。&lt;br /&gt;
+在即時系統中因為對時間非常要求，所以會週期性的產生 interrupt，需要 Programmable interval timer 來計時。&lt;br /&gt;
+在執行 I/O 時也可以分成 Blocking 、 Non Blocking ，第一種是指 process 在執行到 I/O 時會暫停直到 I/O 好了，第二種則是藉由 multi-threading 來實現，一個 thread 去使用 I/O ，其他 thread 繼續跑，但會有 select ()、read ()、write () 來確認所需資料是否 ready ，不過後者通常不太好 debug ，因為時間很難抓，抓不好資料會出錯。我們用下圖理解 blocking 和 non-blocking ，左邊是 blocking ，process 會 wait ，右邊則是 non-blocking ，系統發出指令就不管了， process 繼續執行，過一段時間再來收 data。&lt;br /&gt;
+在 Unix 中有個指令叫做 readve ()，意思是允許一次讀許多個 I/O 指令，稱為 vector I/O ，這樣的好處在於可以減少 CPU context switch 的次數，因為每碰到一次 I/O 就要 context switch ，會造成 overhead。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/fJst2YK.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;為了讓 I/O 有效率，OS 也需要提供各種支援，以下介紹六種&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;buffering ：&lt;br /&gt;
+buffering 是為了協調各裝置的速度，有時候也會提供 double buffering，比如把網路上的資料先 copy 到 kernel 再 copy 到 user ，這樣比較穩健。&lt;/li&gt;
+&lt;li&gt;caching ：&lt;br /&gt;
+caching 這個字在不同領域有不同意思，通常是指 copy of data，有時會和 buffering 混用。&lt;/li&gt;
+&lt;li&gt;spooling ：&lt;br /&gt;
+spooling 是 hold output for a device，通常在裝置一次只能服務一人時，比如多台電腦連接同一台印表機，同時對該印表機下出影印指令，為了避免資料混印，就需要 spooling。&lt;/li&gt;
+&lt;li&gt;device reservation：&lt;br /&gt;
+就像之前說過的避免 deadlock 的一種方法，再需要之前把所有裝置都拿下。&lt;/li&gt;
+&lt;li&gt;error handling：&lt;br /&gt;
+通常在嘗試幾次失敗後會回傳錯誤代碼，比如網路常見的 404&lt;/li&gt;
+&lt;li&gt;I/O protection：&lt;br /&gt;
+通常 I/O 指令都是 privileged，也就是只能在 kernel 端執行，user 要通過 systemcall&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;kernel-data-structures&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#kernel-data-structures&#34;&gt;#&lt;/a&gt; Kernel Data Structures&lt;/h3&gt;
+&lt;p&gt;不同的作業系統會有不同的看待 I/O 的方式，比如 windows 就是使用 messape passing 的方式， Unix 則是當作檔案系統來管理，我們以下圖理解&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/pJwCOSS.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;小結&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#小結&#34;&gt;#&lt;/a&gt; 小結&lt;/h3&gt;
+&lt;p&gt;I/O 是一個很複雜的章節，牽扯到很多硬體架構，除上述之外還有電源管理等等，不過很多觀念也是前面章節有提過的，本中重點還是在於 I/O 與硬體指令，I/O 指令如何傳給各種裝置、怎麼處理之間的問題，還有作業系統在這之間扮演的角色與提供的支援。&lt;/p&gt;
+</content>
+        <category term="OS" />
+        <updated>2022-06-07T14:23:28.000Z</updated>
+    </entry>
     <entry>
         <id>https://lu1hoao.github.io/2022/06/06/os/os-13/</id>
         <title>Mass Storage System</title>
