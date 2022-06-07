@@ -105,7 +105,7 @@ spooling 是 hold output for a device，通常在裝置一次只能服務一人�
 &lt;p&gt;不同的作業系統會有不同的看待 I/O 的方式，比如 windows 就是使用 messape passing 的方式， Unix 則是當作檔案系統來管理，我們以下圖理解&lt;/p&gt;
 &lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/pJwCOSS.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 &lt;h3 id=&#34;小結&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#小結&#34;&gt;#&lt;/a&gt; 小結&lt;/h3&gt;
-&lt;p&gt;I/O 是一個很複雜的章節，牽扯到很多硬體架構，除上述之外還有電源管理等等，不過很多觀念也是前面章節有提過的，本中重點還是在於 I/O 與硬體指令，I/O 指令如何傳給各種裝置、怎麼處理之間的問題，還有作業系統在這之間扮演的角色與提供的支援。&lt;/p&gt;
+&lt;p&gt;I/O 是一個很複雜的章節，牽扯到很多硬體架構，除上述之外還有電源管理等等，不過很多觀念也是前面章節有提過的，本章重點還是在於 I/O 與硬體指令，I/O 指令如何傳給各種裝置、怎麼處理之間的問題，還有作業系統在這之間扮演的角色與提供的支援。&lt;/p&gt;
 </content>
         <category term="OS" />
         <updated>2022-06-07T14:23:28.000Z</updated>
