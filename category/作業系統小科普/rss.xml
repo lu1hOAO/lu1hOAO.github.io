@@ -5,8 +5,8 @@
         <link>https://lu1hoao.github.io</link>
         <description></description>
         <language>en</language>
-        <pubDate>Tue, 07 Jun 2022 22:23:28 +0800</pubDate>
-        <lastBuildDate>Tue, 07 Jun 2022 22:23:28 +0800</lastBuildDate>
+        <pubDate>Thu, 09 Jun 2022 22:23:28 +0800</pubDate>
+        <lastBuildDate>Thu, 09 Jun 2022 22:23:28 +0800</lastBuildDate>
         <category>OS</category>
         <category>scheduling</category>
         <category>Synchronization</category>
@@ -22,6 +22,100 @@
         <category>VS Code</category>
         <category>WSL</category>
         <category>Disk</category>
+        <item>
+            <guid isPermalink="true">https://lu1hoao.github.io/2022/06/09/os/os-15/</guid>
+            <title>File System</title>
+            <link>https://lu1hoao.github.io/2022/06/09/os/os-15/</link>
+            <category>OS</category>
+            <pubDate>Thu, 09 Jun 2022 22:23:28 +0800</pubDate>
+            <description><![CDATA[ &lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
+&lt;p&gt;本篇文章主要介紹 OS 處理檔案系統的方式，包含檔案架構、目錄、共享、保護，很多技術細節是前面章節所提過的，所以這單元也可以視為一種統整。&lt;/p&gt;
+&lt;h3 id=&#34;file-attributes&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#file-attributes&#34;&gt;#&lt;/a&gt; File Attributes&lt;/h3&gt;
+&lt;p&gt;電腦裡的檔案具有很多型態，可能是 Data ，包含數值、字元，也可能是執行檔、source file 等等，更詳盡的檔案資訊包含 Name、Indentfier、Type、Location、Size、Protection 甚至時間和 user identification ，具體須包含哪些內容，在不同作業系統中會有不同規定。我們可以從下表理解一些副檔名以及他們所代表的意義&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;file type&lt;/th&gt;
+&lt;th&gt;usual extension&lt;/th&gt;
+&lt;th&gt;function&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;exectutable&lt;/td&gt;
+&lt;td&gt;exe,com,bin&lt;/td&gt;
+&lt;td&gt;ready to run/machine-language program&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;object&lt;/td&gt;
+&lt;td&gt;obj,o&lt;/td&gt;
+&lt;td&gt;compiled,machine,language,not linked&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;source code&lt;/td&gt;
+&lt;td&gt;c,cc,java,pas,asm,a&lt;/td&gt;
+&lt;td&gt;source code in various languages&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;batch&lt;/td&gt;
+&lt;td&gt;bat,sh&lt;/td&gt;
+&lt;td&gt;commqands to the command interpreter&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;td&gt;txt,doc&lt;/td&gt;
+&lt;td&gt;textual data,documents&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;word processor&lt;/td&gt;
+&lt;td&gt;wp,tex,rtf,doc&lt;/td&gt;
+&lt;td&gt;various word-processor formats&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;library&lt;/td&gt;
+&lt;td&gt;lib,a,so,dll&lt;/td&gt;
+&lt;td&gt;libraries of routines for programmers&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;print or view&lt;/td&gt;
+&lt;td&gt;ps,pdf,jpg&lt;/td&gt;
+&lt;td&gt;ASCII or binary file in a format for printing or viewing&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;file-operation&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#file-operation&#34;&gt;#&lt;/a&gt; File Operation&lt;/h3&gt;
+&lt;p&gt;File 是一種抽象的資料型態，我們對她進行的常見操作有 create、write (at write poiinter)、read (at read pointer)、reposition within file (seek)、如果我們要 open file，OS 就會去 disk 中找 file 的位置，搬到 memory 中。一個 process open 的 file 會被紀錄在一個 file table 中，共享的檔案會記錄在 system file table 中，另外系統會提供 file-open counter 紀錄 file 被開啟的次數，如果有兩個 process 同時開啟一個 file，第一個 process 要關掉 file 了，他執行 close ，這時 file 應該會被存回 disk 中，但該 file 不能存回 disk，因為還有一個 process 在使用，也就是說當 file counter 的數字大於 1 的時候，關掉檔案時就要小心。&lt;br /&gt;
+我們在 C 語言中使用以下程式碼來 open file&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token macro property&#34;&gt;&lt;span class=&#34;token directive-hash&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;token directive keyword&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&amp;lt;stdio.h&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token macro property&#34;&gt;&lt;span class=&#34;token directive-hash&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;token directive keyword&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&amp;lt;fcntl.h&gt;&lt;/span&gt;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; &lt;span class=&#34;token keyword&#34;&gt;int&lt;/span&gt; f&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; f&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;filename&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;O_RDONLY&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token comment&#34;&gt;//READONLY&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;如果你在類 Unix 系統下，那就要在匯入  &lt;code&gt;&amp;lt;unistd.h&amp;gt;&lt;/code&gt; ，總之不同需求可能就會需要匯入不同 header ，建立新文件時，open 函數也需要三個引述才行，也可以使用  &lt;code&gt;fopen&lt;/code&gt; ，那會物件導向一點，在寫程式時最好也習慣加上檢查機制，不過這不是重點，需要時再去研究就行了。&lt;/p&gt;
+&lt;h3 id=&#34;accessing-a-file&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#accessing-a-file&#34;&gt;#&lt;/a&gt; Accessing a File&lt;/h3&gt;
+&lt;p&gt;存取 file 大致可以分為 Secquential access 和 Random access&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Sequential ：&lt;br /&gt;
+依序存取，從頭開始讀取所有 byte ，如果使用磁帶或者需要整個程式資訊時這樣的做法就挺方便的，雖然不支援跳來跳去但有時可以倒回去讀 (move back)。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;read next&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;write next&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;reset&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;ul&gt;
+&lt;li&gt;Direct acess&lt;br /&gt;
+ 直接存取，適用於 database system&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;read n&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;write n&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;position to n&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; read next &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; write next&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;rewrite n&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;其中 n 是 block 的編號。&lt;br /&gt;
+也有其他存取 file 的方式，像 IBM、VMS 就透過 index 來加快檔案存取速度，每份 data 都有自己的 index 表示他們的 logical record number ，index 資訊會被存在 memory 中，透過這些資訊到 disk 時尋找時間就可以大幅降低，概念上類似之前做的 paging。&lt;/p&gt;
+&lt;h3 id=&#34;disk-structure&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#disk-structure&#34;&gt;#&lt;/a&gt; Disk Structure&lt;/h3&gt;
+&lt;p&gt;disk 可以分成很多 partition ，每個 partition 的存取可以是 raw (without a file system) 像之前提過的 process image 的方式，也可以是 formatted 也就是透過 file system 的方式。&lt;br /&gt;
+每個 partition 會有該 partition 的 direction (目錄) ，讓我們對 partition 存的資料有一些概覽，我們可以在 directory 中尋找檔案、建立檔案、刪除檔案等等。&lt;br /&gt;
+最一開始使用的是 &lt;strong&gt;single-level directory&lt;/strong&gt; 也就是所有 user 共用一個目錄，舉例來說，電腦只有一個目錄，我在 &lt;strong&gt;桌面&lt;/strong&gt; 建立一個 a.txt 檔案，那我在 &lt;strong&gt;下載&lt;/strong&gt; 就不能建立 a.txt 檔案，沒有現在常見的路徑概念。所以之後又發展出樹狀結構目錄，像是 two (or three) level directory，把 directory 分成好幾個 user (第一層)，每個 user 下面又有自己的 file ，衍伸出了路徑概念，而且樹狀結構搜尋的時間複雜度是  &lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math xmlns=&#34;http://www.w3.org/1998/Math/MathML&#34;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;o&lt;/mi&gt;&lt;mi&gt;g&lt;/mi&gt;&lt;mo stretchy=&#34;false&#34;&gt;(&lt;/mo&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mo stretchy=&#34;false&#34;&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;log(n)&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.01968em;&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;o&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.03588em;&#34;&gt;g&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; ，也可以讓不同使用者建立同樣檔名的 file。&lt;br /&gt;
+我們可以用下圖來理解 single level 和多 level 的差異&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/qW7HtrP.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;這是 single level，藍色部分是目錄，黃色部分是 file&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/VNyLqsm.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;這是 two-level directory ， 紫色是第一層目錄，藍色是第二層，代表不同使用者，黃色是不同使用者的 file&lt;br /&gt;
+ 有時會有兩個使用者都能存取同一 file 的狀態 (shared file)，這時我們會說這是 Acyclic-Grapg Directories。&lt;br /&gt;
+另外在檔案管理中還有一個詞叫做 mounting 中文叫做安裝 (?) anyway 反正就是附著的概念，我們想在一個目錄底下存取一個檔案 (或一個子目錄)，我們必須把這些資料 mounting 到我們現在所處的位置。&lt;/p&gt;
+&lt;h3 id=&#34;file-sharing&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#file-sharing&#34;&gt;#&lt;/a&gt; File Sharing&lt;/h3&gt;
+&lt;p&gt;當我們要共享 file 時就必須考慮 protection，之前所講過的 lock 就是很好的方式，大部分檔案共享都是透過網路，稱為 Network File System (NFS)，在多 user 的存取中可以透過 User IDs 或 Group IDs 來確認存取者的身分和權限，NFS 是 UNIX 的 client-server file sharing protocol，CIFS 則是 Windows 標準的。在共享檔案系統中，確保檔案的正確也是很重要的一件事，檔案如果錯誤稱為 failure mode，我們會把一些錯誤的資料稱為 metadata，通常是指那些錯誤的目錄架構或非 user 的資料，另外我們有時也會紀錄檔案的狀態， (state information) 當我們想修復錯誤檔案，這些紀錄有助於我們復原到上一狀態，但如果沒有狀態資訊就只能全部清空。&lt;br /&gt;
+在 consistency (同步) 部分，不同作業系統有不同做法，可以參考之前在講同步問題的章節。&lt;/p&gt;
+&lt;p&gt;以上就是 file system 祝大家閱讀愉快&lt;/p&gt;
+ ]]></description>
+        </item>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/06/07/os/os-14/</guid>
             <title>I/O System</title>
