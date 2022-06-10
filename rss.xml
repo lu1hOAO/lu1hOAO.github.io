@@ -111,7 +111,7 @@
  有時會有兩個使用者都能存取同一 file 的狀態 (shared file)，這時我們會說這是 Acyclic-Grapg Directories。&lt;br /&gt;
 另外在檔案管理中還有一個詞叫做 mounting 中文叫做安裝 (?) anyway 反正就是附著的概念，我們想在一個目錄底下存取一個檔案 (或一個子目錄)，我們必須把這些資料 mounting 到我們現在所處的位置。&lt;/p&gt;
 &lt;h3 id=&#34;file-sharing&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#file-sharing&#34;&gt;#&lt;/a&gt; File Sharing&lt;/h3&gt;
-&lt;p&gt;當我們要共享 file 時就必須考慮 protection，之前所講過的 lock 就是很好的方式，大部分檔案共享都是透過網路，稱為 Network File System (NFS)，在多 user 的存取中可以透過 User IDs 或 Group IDs 來確認存取者的身分和權限，NFS 是 UNIX 的 client-server file sharing protocol，CIFS 則是 Windows 標準的。在共享檔案系統中，確保檔案的正確也是很重要的一件事，檔案如果錯誤稱為 failure mode，我們會把一些錯誤的資料稱為 metadata，通常是指那些錯誤的目錄架構或非 user 的資料，另外我們有時也會紀錄檔案的狀態， (state information) 當我們想修復錯誤檔案，這些紀錄有助於我們復原到上一狀態，但如果沒有狀態資訊就只能全部清空。&lt;br /&gt;
+&lt;p&gt;當我們要共享 file 時就必須考慮 protection，之前所講過的 lock 就是很好的方式，大部分檔案共享都是透過網路，稱為 Network File System (NFS)，在多 user 的存取中可以透過 User IDs 或 Group IDs 來確認存取者的身分和權限，NFS 是 UNIX 的 client-server file sharing protocol，CIFS 則是 Windows 標準的。在共享檔案系統中，確保檔案的正確也是很重要的一件事，檔案如果錯誤稱為 failure mode，我們會把一些錯誤的資料存在 metadata，通常是指那些錯誤的目錄架構或非 user 的資料，另外我們有時也會紀錄檔案的狀態， (state information) 當我們想修復錯誤檔案，這些紀錄有助於我們復原到上一狀態，但如果沒有狀態資訊就只能全部清空。&lt;br /&gt;
 在 consistency (同步) 部分，不同作業系統有不同做法，可以參考之前在講同步問題的章節。&lt;/p&gt;
 &lt;p&gt;以上就是 file system 祝大家閱讀愉快&lt;/p&gt;
  ]]></description>
