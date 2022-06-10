@@ -5,8 +5,8 @@
         <link>https://lu1hoao.github.io</link>
         <description></description>
         <language>en</language>
-        <pubDate>Thu, 09 Jun 2022 22:23:28 +0800</pubDate>
-        <lastBuildDate>Thu, 09 Jun 2022 22:23:28 +0800</lastBuildDate>
+        <pubDate>Fri, 10 Jun 2022 22:23:28 +0800</pubDate>
+        <lastBuildDate>Fri, 10 Jun 2022 22:23:28 +0800</lastBuildDate>
         <category>OS</category>
         <category>scheduling</category>
         <category>Synchronization</category>
@@ -22,6 +22,57 @@
         <category>VS Code</category>
         <category>WSL</category>
         <category>Disk</category>
+        <item>
+            <guid isPermalink="true">https://lu1hoao.github.io/2022/06/10/os/os-16/</guid>
+            <title>File System Implementation</title>
+            <link>https://lu1hoao.github.io/2022/06/10/os/os-16/</link>
+            <category>OS</category>
+            <pubDate>Fri, 10 Jun 2022 22:23:28 +0800</pubDate>
+            <description><![CDATA[ &lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
+&lt;p&gt;本篇文章主要講述 File system 的實作、管理 disk (file 儲存之處) 的方法，並說明一些實例。&lt;/p&gt;
+&lt;h3 id=&#34;file-structure&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#file-structure&#34;&gt;#&lt;/a&gt; File Structure&lt;/h3&gt;
+&lt;p&gt;File 是一個虛擬的儲存單位，裡面存放很多使用者覺得相關的內容，而 File system 儲存在 secondary storage，也就是 disk，這個系統應該要支援讀寫、隨機存取等等，而每一個 file 都會有一個 file control block (FCB)，如同之前提過的 process block ，紀錄關於 file 的資料 (大部分是 index)，在 Unix 的 file conrtrol block 又稱為 inode。對應用程式而言，開啟 file name 的方式無非就是呼喊 file name，之後的事情就是 OS 處理，但是在不同儲存裝置中其實需要不同的 file system ，因此我們可以用 layer 來看待電腦處理 file 這件事。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/vcn5YH0.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;其中 logical file system 又稱為 virtual file system (VFS)&lt;br /&gt;
+ 我們由上而下開始說明，&lt;strong&gt;logical file system&lt;/strong&gt; 管理中間的資訊，我們稱為 &lt;strong&gt;metadata&lt;/strong&gt;，會把 file name 轉成 file number，而他是參考 file control block 的資訊做轉換。&lt;strong&gt;file organization module&lt;/strong&gt; 理解 file 的運作，會把 logical block 轉成 physical block ，同時管理 free space ，&lt;strong&gt;Basic file system&lt;/strong&gt; 則會給與 command 像是 retrive block 123 這樣的指令給 &lt;strong&gt;device driver&lt;/strong&gt;。device drivers 是負責控制 I/O ，他會給 &lt;strong&gt;device contoller&lt;/strong&gt; 明確指令，告訴她把哪個 sector 的資料，放到 memory 的哪裡。&lt;br /&gt;
+Layer 的概念可以降低複雜度，但可能會造成 overhead。&lt;/p&gt;
+&lt;h3 id=&#34;file-system-implementation&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#file-system-implementation&#34;&gt;#&lt;/a&gt; File System Implementation&lt;/h3&gt;
+&lt;p&gt;首先在 disk  中會有 boot control block ，這裡面包含 OS 的資料以方便我們開機時使用，通常是在第一個 block，接下來會有所謂的 volume control block (或稱 superblock、mastr file table) 記錄這些 file 的 detail ，像是 block 的總數、free block 的總數、free block 的位置等等。我們用下圖理解開啟一個檔案 (open) 與讀一個檔案 (read) 的流程&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/vtB7Wom.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;系統會先到目錄 (此刻已在 memory 中) 尋找所需檔案的位置，然後到目錄所記錄的區域尋找該 file 的 control block 。&lt;br /&gt;
+接下來看 read 一個 file 的流程&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/eCl3D6E.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;當我們找到一個 file 的位置之後，我們就可以讀他，並且把它放到 process open file table 以防日後需要用到，也放到 system open file table 中，讓其他 process 也可以用。&lt;br /&gt;
+而在 directory 的實現中，通常有 linear list 的方式和 hash table 的方式。&lt;/p&gt;
+&lt;h3 id=&#34;file-allocation-methods&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#file-allocation-methods&#34;&gt;#&lt;/a&gt; File Allocation Methods&lt;/h3&gt;
+&lt;p&gt;就像記憶體管理一樣 file allocation 也是一件重要的事，以下簡介 Contiguous allocation 、Linked allocation、Indexed allocation 三種方法&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Contiguous allocation&lt;/strong&gt;&lt;br /&gt;
+ 每個 file 佔據的 block 都是連續的，所以只要知道起始 block 和 block 的總數目我們就可以輕易存取，他的存取速度也是最快的，因為指針不需要一直跑來跑去，但是會面臨 external fragmentation 的問題，若是要進行 compation 也會很花時間，稱為 compation off line，我們可以用下圖理解 contiguous allocation&lt;br /&gt;
+ 其中黃色區塊表示 count 這個 file　的範圍，綠色區塊表示 tr 這個 file。&lt;br /&gt;
+很多比較新的檔案系統則會使用 Extend-Based System ，這是考慮檔案會不斷增長所做的修改版。檔案的增加部分也會儲存在連續的 block 當中，為甚麼這麼固執呢？因為連續存取的速度很快呀！&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/hF3LKl6.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Linked allocation&lt;/strong&gt;&lt;br /&gt;
+ 顧名思義就是使用 linked list 來記錄 block 的位置，雖然不需拘泥在連續 block　上，意味著空間的使用更有彈性，但也代表我們很不方便直接存取，每次想找一個　block 都得從頭開始，所以實作上有時也會使用 clustering blocks 的方式，把多個 block 視為一個分配單位，用以縮短 linked list 的長度，但也增加 internal fragmentation，另外，這樣做也缺乏可靠性，因為 linked 一旦斷了就無法存取了。我們可以用下圖理解。linked list 的改良版是使用 FAT (File Allocation Table) 紀錄已造訪的 block 路徑，這樣下次就比較快&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/WarMzSU.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Indexed Allocation&lt;/strong&gt;&lt;br /&gt;
+ 每一個 file 都會有專屬的 index block 用來記錄該 file 的 data blocks，所以在目錄中我們只需紀錄 index block 的 index，而這也是使用隨機存取的方式，我們可以用下圖理解&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/VXFOWz7.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;總結來說 contigious 對於 sequential 和 random acess 的存取速度都很好，linked 適合 sequential ，indexed 比較複雜但是和隨機存取，而 cludter 則可以幫助 CPU 免於 overhead&lt;/p&gt;
+&lt;h3 id=&#34;free-list-of-blocks&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#free-list-of-blocks&#34;&gt;#&lt;/a&gt; Free list of blocks&lt;/h3&gt;
+&lt;p&gt;我們需要 data block 的 free list，也需要 inode 的 free list，有些會使用 bit vextor (bit map) ，他是一個有 n 個空間的 string，表示 n 個 block 的使用情況，0 表示被占用，而 1 表示空的，CPU 也有指令可以回傳第一個 1 (空的) block 編號，也可以用 link list 把所有 free 的 block 都存起來辦這樣比較不方便存取連續空的 block。&lt;/p&gt;
+&lt;h3 id=&#34;efficiency-and-performance&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#efficiency-and-performance&#34;&gt;#&lt;/a&gt; Efficiency and Performance&lt;/h3&gt;
+&lt;p&gt;為了提升 disk 的效率，最常見的做法就是使用 buffer cache，這裡的 cache 指的是 a copy of data (不是硬體的那種)，他是記憶體的一部分，紀錄比較常用的 block，另外也有 free behind 和 read ahead 的方式來最佳化 sequeential access，另外有些還會使用 page cache 讓 memory-mapped I/O 使用用以提高效率，如果 buffer cache 也支援 page cache 我們就稱為 unified buffer cache，這樣可以避免 一個 block 同時在 page cache 和 buffer cache 的狀況 (又稱 double caching)，但這樣就要決定如果 I/O 和 memory-mapped I/O 都要使用誰的優先權較高。&lt;/p&gt;
+&lt;h3 id=&#34;backup-and-recovery&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#backup-and-recovery&#34;&gt;#&lt;/a&gt; Backup and Recovery&lt;/h3&gt;
+&lt;p&gt;在檔案系統中，有 log structured file system (LFS) 幫助我們紀錄檔案的每次修改，這個過程就像交易一樣，在檔案修改之前要先寫一個紀錄到 log structure 中，之後若檔案想復原我們就有之前的資料，或者我們也可以用 Snapshots 紀錄檔案某個時刻的狀態，方便我們復原&lt;/p&gt;
+&lt;p&gt;以上就是檔案系統的實作 祝大家閱讀愉快！&lt;/p&gt;
+ ]]></description>
+        </item>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/06/09/os/os-15/</guid>
             <title>File System</title>
