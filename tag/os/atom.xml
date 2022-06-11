@@ -3,7 +3,7 @@
     <id>https://lu1hoao.github.io</id>
     <title>Lu Ying • Posts by &#34;os&#34; tag</title>
     <link href="https://lu1hoao.github.io" />
-    <updated>2022-06-10T14:23:28.000Z</updated>
+    <updated>2022-06-11T14:23:28.000Z</updated>
     <category term="OS" />
     <category term="scheduling" />
     <category term="Synchronization" />
@@ -19,6 +19,48 @@
     <category term="VS Code" />
     <category term="WSL" />
     <category term="Disk" />
+    <entry>
+        <id>https://lu1hoao.github.io/2022/06/11/os/os-17/</id>
+        <title>File System Internals</title>
+        <link rel="alternate" href="https://lu1hoao.github.io/2022/06/11/os/os-17/"/>
+        <content type="html">&lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
+&lt;p&gt;本篇文章主要在對檔案系統內部有更詳盡的說明，著重在 file sharing、virtual file systems、remote file systems、consistency semantics 和 NFS。&lt;/p&gt;
+&lt;h3 id=&#34;virtual-file-systemvfs&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#virtual-file-systemvfs&#34;&gt;#&lt;/a&gt; Virtual file system(VFS)&lt;/h3&gt;
+&lt;p&gt;VFS 是 Unix 提供的介面，允許使用同樣的 systemcall 針對不同的裝置進行檔案讀寫，他是使用 vnode 來記錄 inode 或 network file details，可以把 vnode 想成在 VFS 中的 inode，他存在於 kernel memory ，file sysytem 不能管理自己的 vnode ，必須使用 OS 提供的 function，實務上也會有 Virtual File System library 儲存 vnode。我們可以這樣理解 VFS：他是一個 file system 抽象層，把真正的 file sysytem 變得一致化。就像一個旅行社，你可以透過旅行社買機票、訂飯店，儘管每間航空公司訂機票的程序可能有所不同，但顧客透過旅行社看到的僅有買機票這個選項而不需去考慮背後複雜的處理流程。我們用下圖理解 VFS 扮演的角色&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/bWF7Ff4.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;在 Linux 中有 VFS 內包含四種型態：inode,file,super block,dentry，VFS 會規範對這些 object 的操作，每個物件都有一個指標指到 funtion table ，funtion table 會有 addresses routine 去實現這些操作&lt;/p&gt;
+&lt;h3 id=&#34;remote-file-system&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#remote-file-system&#34;&gt;#&lt;/a&gt; Remote File system&lt;/h3&gt;
+&lt;p&gt;檔案可以藉由網路分享，常見的做法包含兩種：&lt;strong&gt;file transfer&lt;/strong&gt; (used by ftp and the WWW)、&lt;strong&gt;distributed file systems (DFS)&lt;/strong&gt;，在 client-Sever Model 中，DFS 允許 client mount sever 的 directories 或 file systems 到自己的裝置中，為了確保這個過程是安全的通成會使用 authenticated (給定密碼) 或是授權 unauthorized 的方式。還有一種系統稱為 Distributed information system ，是在記憶使用者的安全憑證，他會把帳號和密碼連接起來，這樣就不用一直重複驗證。&lt;br /&gt;
+在使用 Network file system 時，如果網路掛掉怎麼辦呢？在 Windows 的 NFS 2/3 都是沒有記錄狀態的 (stateless)，如果網路掛掉所做的指令會消失直到網路恢復再重頭來過，NFS 4 則會記錄狀態 (stateful) state information 包含追蹤哪些 file 被 open、哪些東西被哪個 client mount&lt;/p&gt;
+&lt;h3 id=&#34;file-sharing&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#file-sharing&#34;&gt;#&lt;/a&gt; File sharing&lt;/h3&gt;
+&lt;p&gt;檔案共享的優點很多，可以讓多個使用者存取，但也會遇到很多問題。第一步就是 OS 要去確認這個檔案是不是可以被修改，有些檔案是唯讀檔案，那麼就不能修改內容，檔案的權限會記錄在 file attributes 中。一般而言共享模式有三種，另外我們會使用 Consistency semantic ，來描述檔案共享，翻成中文叫做一致性語意實在不知道在說啥，可以想成是不同系統有不同表示方式，但檔案共享就要有一樣的規範。以下圖理解檔案的三種共享&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/5KsVENZ.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Unix 提供的是互斥存取，所有單位讀取的檔案內容必須是一致的，某個 process 對檔案的任何動作其他檔案都會看到，實務上是會有一個 file pointer 指到目前位置，若有某個 byte 被加上，則 pointer 往下移一個 byte，Session Semantics 則是不具備互斥存取，大家在各自的副本進行讀寫，全部單位看到的內容不一定一致，最後一種則是唯讀檔案，若有多個 access 發生在同一個 file 我們稱為 file session 在檔案 share 當中我們並不是採取之前說過的同步方法，因為這樣會讓效率低落造成很大的 latency，畢竟 disk 和 memory 的存取速度差很多。&lt;/p&gt;
+&lt;h3 id=&#34;sun-nfs&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#sun-nfs&#34;&gt;#&lt;/a&gt; SUN NFS&lt;/h3&gt;
+&lt;p&gt;NFS 是被設計用來管理不同環境、不同裝置、不同網路架構的檔案，架構必須符合很多 protocol ，我們用下圖理解 NFS 扮演的角色&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/bAbc8Mv.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;接下來我們看一個實例，有關 NFS 的操作流程：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;客戶透過 RPC 送出請求到 mount sever&lt;/li&gt;
+&lt;li&gt;mount sever 檢查&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;file system that can be exported&lt;/li&gt;
+&lt;li&gt;legal requesting clients&lt;/li&gt;
+&lt;li&gt;it is legitimate to mount any directory within the legal file system&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;sever returns  &amp;quot;file handle&amp;quot; to client&lt;/li&gt;
+&lt;li&gt;sener maintains list of clients and mounted directories--this is state information！but this data is omly a &amp;quot;hint&amp;quot; not essential&lt;/li&gt;
+&lt;li&gt;mounting often occurs automatically&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;單一的 NFS  write 或許是 atomic 但整體不是。&lt;/p&gt;
+&lt;p&gt;以上就是 OS 小科普最終章！&lt;/p&gt;
+</content>
+        <category term="OS" />
+        <updated>2022-06-11T14:23:28.000Z</updated>
+    </entry>
     <entry>
         <id>https://lu1hoao.github.io/2022/06/10/os/os-16/</id>
         <title>File System Implementation</title>
