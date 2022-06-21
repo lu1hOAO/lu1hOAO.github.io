@@ -5,20 +5,20 @@
     <link href="https://lu1hoao.github.io" />
     <updated>2022-04-25T12:23:28.000Z</updated>
     <category term="OS" />
+    <category term="Memory" />
     <category term="scheduling" />
+    <category term="Disk" />
     <category term="Synchronization" />
     <category term="Deadlock" />
-    <category term="Memory" />
-    <category term="C" />
     <category term="combination" />
-    <category term="sort" />
+    <category term="C" />
     <category term="permutation" />
+    <category term="sort" />
     <category term="程式新手" />
     <category term="Visual studio 2022" />
-    <category term="debug" />
     <category term="VS Code" />
     <category term="WSL" />
-    <category term="Disk" />
+    <category term="debug" />
     <entry>
         <id>https://lu1hoao.github.io/2022/04/25/os/os-2/</id>
         <title>CPU Scheduling (下)</title>

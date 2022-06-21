@@ -5,20 +5,20 @@
     <link href="https://lu1hoao.github.io" />
     <updated>2022-06-20T08:42:28.000Z</updated>
     <category term="OS" />
+    <category term="Memory" />
     <category term="scheduling" />
+    <category term="Disk" />
     <category term="Synchronization" />
     <category term="Deadlock" />
-    <category term="Memory" />
-    <category term="C" />
     <category term="combination" />
-    <category term="sort" />
+    <category term="C" />
     <category term="permutation" />
+    <category term="sort" />
     <category term="程式新手" />
     <category term="Visual studio 2022" />
-    <category term="debug" />
     <category term="VS Code" />
     <category term="WSL" />
-    <category term="Disk" />
+    <category term="debug" />
     <entry>
         <id>https://lu1hoao.github.io/2022/06/20/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/stack-2/</id>
         <title>堆疊與佇列 (stack&amp;queue) (下)</title>

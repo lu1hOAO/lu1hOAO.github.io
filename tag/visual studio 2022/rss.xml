@@ -8,20 +8,20 @@
         <pubDate>Thu, 14 Apr 2022 16:42:28 +0800</pubDate>
         <lastBuildDate>Thu, 14 Apr 2022 16:42:28 +0800</lastBuildDate>
         <category>OS</category>
+        <category>Memory</category>
         <category>scheduling</category>
+        <category>Disk</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
-        <category>Memory</category>
-        <category>C</category>
         <category>combination</category>
-        <category>sort</category>
+        <category>C</category>
         <category>permutation</category>
+        <category>sort</category>
         <category>程式新手</category>
         <category>Visual studio 2022</category>
-        <category>debug</category>
         <category>VS Code</category>
         <category>WSL</category>
-        <category>Disk</category>
+        <category>debug</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/04/14/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/program-lesson-1/</guid>
             <title>環境建置--Visual Studio 2022</title>

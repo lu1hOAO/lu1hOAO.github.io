@@ -8,20 +8,20 @@
         <pubDate>Mon, 20 Jun 2022 16:42:28 +0800</pubDate>
         <lastBuildDate>Mon, 20 Jun 2022 16:42:28 +0800</lastBuildDate>
         <category>OS</category>
+        <category>Memory</category>
         <category>scheduling</category>
+        <category>Disk</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
-        <category>Memory</category>
-        <category>C</category>
         <category>combination</category>
-        <category>sort</category>
+        <category>C</category>
         <category>permutation</category>
+        <category>sort</category>
         <category>程式新手</category>
         <category>Visual studio 2022</category>
-        <category>debug</category>
         <category>VS Code</category>
         <category>WSL</category>
-        <category>Disk</category>
+        <category>debug</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/06/20/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/stack-2/</guid>
             <title>堆疊與佇列 (stack&amp;queue) (下)</title>

@@ -8,20 +8,20 @@
         <pubDate>Mon, 06 Jun 2022 22:23:28 +0800</pubDate>
         <lastBuildDate>Mon, 06 Jun 2022 22:23:28 +0800</lastBuildDate>
         <category>OS</category>
+        <category>Memory</category>
         <category>scheduling</category>
+        <category>Disk</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
-        <category>Memory</category>
-        <category>C</category>
         <category>combination</category>
-        <category>sort</category>
+        <category>C</category>
         <category>permutation</category>
+        <category>sort</category>
         <category>程式新手</category>
         <category>Visual studio 2022</category>
-        <category>debug</category>
         <category>VS Code</category>
         <category>WSL</category>
-        <category>Disk</category>
+        <category>debug</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/06/06/os/os-13/</guid>
             <title>Mass Storage System</title>

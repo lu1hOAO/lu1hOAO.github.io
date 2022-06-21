@@ -5,20 +5,20 @@
     <link href="https://lu1hoao.github.io" />
     <updated>2022-05-07T08:42:28.000Z</updated>
     <category term="OS" />
+    <category term="Memory" />
     <category term="scheduling" />
+    <category term="Disk" />
     <category term="Synchronization" />
     <category term="Deadlock" />
-    <category term="Memory" />
-    <category term="C" />
     <category term="combination" />
-    <category term="sort" />
+    <category term="C" />
     <category term="permutation" />
+    <category term="sort" />
     <category term="程式新手" />
     <category term="Visual studio 2022" />
-    <category term="debug" />
     <category term="VS Code" />
     <category term="WSL" />
-    <category term="Disk" />
+    <category term="debug" />
     <entry>
         <id>https://lu1hoao.github.io/2022/05/07/%E4%B8%80%E9%BB%9E%E9%BB%9E%E6%BC%94%E7%AE%97%E6%B3%95/permutation/</id>
         <title>C 語言排列 (permutation)</title>
