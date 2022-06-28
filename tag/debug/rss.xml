@@ -7,21 +7,21 @@
         <language>en</language>
         <pubDate>Fri, 22 Apr 2022 20:23:28 +0800</pubDate>
         <lastBuildDate>Fri, 22 Apr 2022 20:23:28 +0800</lastBuildDate>
+        <category>permutation</category>
+        <category>C</category>
+        <category>combination</category>
+        <category>sort</category>
         <category>OS</category>
         <category>Memory</category>
         <category>scheduling</category>
         <category>Disk</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
-        <category>combination</category>
-        <category>C</category>
-        <category>permutation</category>
-        <category>sort</category>
         <category>程式新手</category>
-        <category>Visual studio 2022</category>
         <category>VS Code</category>
         <category>WSL</category>
         <category>debug</category>
+        <category>Visual studio 2022</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/04/22/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/program-lesson-3/</guid>
             <title>Debug C 語言的方法</title>

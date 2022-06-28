@@ -7,21 +7,21 @@
         <language>en</language>
         <pubDate>Mon, 02 May 2022 21:23:28 +0800</pubDate>
         <lastBuildDate>Mon, 02 May 2022 21:23:28 +0800</lastBuildDate>
+        <category>permutation</category>
+        <category>C</category>
+        <category>combination</category>
+        <category>sort</category>
         <category>OS</category>
         <category>Memory</category>
         <category>scheduling</category>
         <category>Disk</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
-        <category>combination</category>
-        <category>C</category>
-        <category>permutation</category>
-        <category>sort</category>
         <category>程式新手</category>
-        <category>Visual studio 2022</category>
         <category>VS Code</category>
         <category>WSL</category>
         <category>debug</category>
+        <category>Visual studio 2022</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/05/02/os/os-7/</guid>
             <title>Deadlocks(下)</title>

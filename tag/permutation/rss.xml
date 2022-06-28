@@ -7,27 +7,27 @@
         <language>en</language>
         <pubDate>Sat, 07 May 2022 16:42:28 +0800</pubDate>
         <lastBuildDate>Sat, 07 May 2022 16:42:28 +0800</lastBuildDate>
+        <category>permutation</category>
+        <category>C</category>
+        <category>combination</category>
+        <category>sort</category>
         <category>OS</category>
         <category>Memory</category>
         <category>scheduling</category>
         <category>Disk</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
-        <category>combination</category>
-        <category>C</category>
-        <category>permutation</category>
-        <category>sort</category>
         <category>程式新手</category>
-        <category>Visual studio 2022</category>
         <category>VS Code</category>
         <category>WSL</category>
         <category>debug</category>
+        <category>Visual studio 2022</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/05/07/%E4%B8%80%E9%BB%9E%E9%BB%9E%E6%BC%94%E7%AE%97%E6%B3%95/permutation/</guid>
             <title>C 語言排列 (permutation)</title>
             <link>https://lu1hoao.github.io/2022/05/07/%E4%B8%80%E9%BB%9E%E9%BB%9E%E6%BC%94%E7%AE%97%E6%B3%95/permutation/</link>
-            <category>C</category>
             <category>permutation</category>
+            <category>C</category>
             <pubDate>Sat, 07 May 2022 16:42:28 +0800</pubDate>
             <description><![CDATA[ &lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
 &lt;p&gt;在 C++ 中有一個函數叫做 next_permutation ，它的作用是可以依照字典排序法列出一個數列 (或字串) 的下一個排列，所謂的字典排列就是先比較第一個數，第一個數一樣大時 ( ASCII 碼相同 )，比較第二個數，直到分出大小，舉例來說 1 2 3 這三個數字的下一個排列是 1 3 2 ，再下一個是 2 1 3，接著 2 3 1、3 1 2、3 2 1，那我們要怎麼用 C 來實現呢？&lt;br /&gt;
