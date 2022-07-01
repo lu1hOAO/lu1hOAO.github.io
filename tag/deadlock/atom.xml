@@ -4,21 +4,21 @@
     <title>Lu Ying • Posts by &#34;deadlock&#34; tag</title>
     <link href="https://lu1hoao.github.io" />
     <updated>2022-05-02T13:23:28.000Z</updated>
-    <category term="permutation" />
     <category term="C" />
+    <category term="permutation" />
     <category term="combination" />
     <category term="sort" />
-    <category term="OS" />
-    <category term="Memory" />
-    <category term="scheduling" />
-    <category term="Disk" />
-    <category term="Synchronization" />
-    <category term="Deadlock" />
     <category term="程式新手" />
+    <category term="Visual studio 2022" />
     <category term="VS Code" />
     <category term="WSL" />
     <category term="debug" />
-    <category term="Visual studio 2022" />
+    <category term="OS" />
+    <category term="scheduling" />
+    <category term="Memory" />
+    <category term="Disk" />
+    <category term="Synchronization" />
+    <category term="Deadlock" />
     <entry>
         <id>https://lu1hoao.github.io/2022/05/02/os/os-7/</id>
         <title>Deadlocks(下)</title>
