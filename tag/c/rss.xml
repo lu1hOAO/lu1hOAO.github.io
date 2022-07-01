@@ -5,14 +5,14 @@
         <link>https://lu1hoao.github.io</link>
         <description></description>
         <language>en</language>
-        <pubDate>Tue, 28 Jun 2022 16:42:28 +0800</pubDate>
-        <lastBuildDate>Tue, 28 Jun 2022 16:42:28 +0800</lastBuildDate>
+        <pubDate>Fri, 01 Jul 2022 16:42:28 +0800</pubDate>
+        <lastBuildDate>Fri, 01 Jul 2022 16:42:28 +0800</lastBuildDate>
         <category>C</category>
-        <category>permutation</category>
         <category>combination</category>
-        <category>sort</category>
+        <category>permutation</category>
         <category>程式新手</category>
         <category>Visual studio 2022</category>
+        <category>sort</category>
         <category>VS Code</category>
         <category>WSL</category>
         <category>debug</category>
@@ -23,11 +23,11 @@
         <category>Synchronization</category>
         <category>Deadlock</category>
         <item>
-            <guid isPermalink="true">https://lu1hoao.github.io/2022/06/28/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/list-2/</guid>
+            <guid isPermalink="true">https://lu1hoao.github.io/2022/07/01/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/list-2/</guid>
             <title>list(下)</title>
-            <link>https://lu1hoao.github.io/2022/06/28/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/list-2/</link>
+            <link>https://lu1hoao.github.io/2022/07/01/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/list-2/</link>
             <category>C</category>
-            <pubDate>Tue, 28 Jun 2022 16:42:28 +0800</pubDate>
+            <pubDate>Fri, 01 Jul 2022 16:42:28 +0800</pubDate>
             <description><![CDATA[ &lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
 &lt;p&gt;本篇文章主要講解環狀 list 以及雙向 list 的操作，接著也會說明 list 的應用，list 本身是一種資料結結構，也可以用來實作其他資料結構，就像 array 可以用來實作 stack 一樣。&lt;/p&gt;
 &lt;h3 id=&#34;環狀-list-的串接&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#環狀-list-的串接&#34;&gt;#&lt;/a&gt; 環狀 list 的串接&lt;/h3&gt;
