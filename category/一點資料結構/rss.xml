@@ -7,24 +7,24 @@
         <language>en</language>
         <pubDate>Tue, 19 Jul 2022 16:42:28 +0800</pubDate>
         <lastBuildDate>Tue, 19 Jul 2022 16:42:28 +0800</lastBuildDate>
+        <category>C</category>
+        <category>combination</category>
+        <category>sort</category>
+        <category>permutation</category>
         <category>OS</category>
         <category>scheduling</category>
-        <category>Memory</category>
-        <category>Disk</category>
-        <category>Synchronization</category>
-        <category>Deadlock</category>
-        <category>C</category>
         <category>程式新手</category>
         <category>VS Code</category>
         <category>WSL</category>
         <category>Visual studio 2022</category>
-        <category>combination</category>
+        <category>Memory</category>
         <category>debug</category>
-        <category>permutation</category>
-        <category>sort</category>
+        <category>Disk</category>
+        <category>Synchronization</category>
+        <category>Deadlock</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/07/19/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/recursive/</guid>
-            <title>Recursive</title>
+            <title>遞迴 (Recursive)</title>
             <link>https://lu1hoao.github.io/2022/07/19/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/recursive/</link>
             <category>C</category>
             <pubDate>Tue, 19 Jul 2022 16:42:28 +0800</pubDate>

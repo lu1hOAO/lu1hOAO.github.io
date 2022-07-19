@@ -4,24 +4,24 @@
     <title>Lu Ying</title>
     <link href="https://lu1hoao.github.io" />
     <updated>2022-07-19T08:42:28.000Z</updated>
+    <category term="C" />
+    <category term="combination" />
+    <category term="sort" />
+    <category term="permutation" />
     <category term="OS" />
     <category term="scheduling" />
-    <category term="Memory" />
-    <category term="Disk" />
-    <category term="Synchronization" />
-    <category term="Deadlock" />
-    <category term="C" />
     <category term="程式新手" />
     <category term="VS Code" />
     <category term="WSL" />
     <category term="Visual studio 2022" />
-    <category term="combination" />
+    <category term="Memory" />
     <category term="debug" />
-    <category term="permutation" />
-    <category term="sort" />
+    <category term="Disk" />
+    <category term="Synchronization" />
+    <category term="Deadlock" />
     <entry>
         <id>https://lu1hoao.github.io/2022/07/19/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/recursive/</id>
-        <title>Recursive</title>
+        <title>遞迴 (Recursive)</title>
         <link rel="alternate" href="https://lu1hoao.github.io/2022/07/19/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/recursive/"/>
         <content type="html">&lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
 &lt;p&gt;一個呼叫本身的函數稱為遞迴 (recursive)，遞迴通常拿來處理可以被分成多個有限步驟處理的問題，而且每個處理步驟都很相似，所以我們就可以先做一點點，然後交給下一棒，每一棒都做一點點，最後就會有做完的一天。因為遞迴具有上述的特性，因此在使用遞迴時比須注意以下幾點&lt;/p&gt;
