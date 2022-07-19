@@ -7,21 +7,21 @@
         <language>en</language>
         <pubDate>Mon, 18 Apr 2022 16:42:28 +0800</pubDate>
         <lastBuildDate>Mon, 18 Apr 2022 16:42:28 +0800</lastBuildDate>
-        <category>C</category>
-        <category>combination</category>
-        <category>permutation</category>
-        <category>程式新手</category>
-        <category>Visual studio 2022</category>
-        <category>sort</category>
-        <category>VS Code</category>
-        <category>WSL</category>
-        <category>debug</category>
         <category>OS</category>
         <category>scheduling</category>
         <category>Memory</category>
         <category>Disk</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
+        <category>C</category>
+        <category>程式新手</category>
+        <category>debug</category>
+        <category>VS Code</category>
+        <category>combination</category>
+        <category>Visual studio 2022</category>
+        <category>WSL</category>
+        <category>permutation</category>
+        <category>sort</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/04/18/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/program-lesson-2/</guid>
             <title>環境建置--VS Code + WSL</title>
