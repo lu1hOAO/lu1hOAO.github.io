@@ -5,8 +5,8 @@
         <link>https://lu1hoao.github.io</link>
         <description></description>
         <language>en</language>
-        <pubDate>Fri, 01 Jul 2022 16:42:28 +0800</pubDate>
-        <lastBuildDate>Fri, 01 Jul 2022 16:42:28 +0800</lastBuildDate>
+        <pubDate>Tue, 19 Jul 2022 16:42:28 +0800</pubDate>
+        <lastBuildDate>Tue, 19 Jul 2022 16:42:28 +0800</lastBuildDate>
         <category>OS</category>
         <category>scheduling</category>
         <category>Memory</category>
@@ -15,19 +15,19 @@
         <category>Deadlock</category>
         <category>C</category>
         <category>程式新手</category>
-        <category>debug</category>
         <category>VS Code</category>
-        <category>combination</category>
-        <category>Visual studio 2022</category>
         <category>WSL</category>
+        <category>Visual studio 2022</category>
+        <category>combination</category>
+        <category>debug</category>
         <category>permutation</category>
         <category>sort</category>
         <item>
-            <guid isPermalink="true">https://lu1hoao.github.io/2022/07/01/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/recursive/</guid>
+            <guid isPermalink="true">https://lu1hoao.github.io/2022/07/19/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/recursive/</guid>
             <title>Recursive</title>
-            <link>https://lu1hoao.github.io/2022/07/01/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/recursive/</link>
+            <link>https://lu1hoao.github.io/2022/07/19/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/recursive/</link>
             <category>C</category>
-            <pubDate>Fri, 01 Jul 2022 16:42:28 +0800</pubDate>
+            <pubDate>Tue, 19 Jul 2022 16:42:28 +0800</pubDate>
             <description><![CDATA[ &lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
 &lt;p&gt;一個呼叫本身的函數稱為遞迴 (recursive)，遞迴通常拿來處理可以被分成多個有限步驟處理的問題，而且每個處理步驟都很相似，所以我們就可以先做一點點，然後交給下一棒，每一棒都做一點點，最後就會有做完的一天。因為遞迴具有上述的特性，因此在使用遞迴時比須注意以下幾點&lt;/p&gt;
 &lt;ul&gt;
@@ -1646,8 +1646,8 @@ quick sort 的時間複雜度是 nlogn，又有內建，為甚麼還要學其他
             <title>Debug C 語言的方法</title>
             <link>https://lu1hoao.github.io/2022/04/22/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/program-lesson-3/</link>
             <category>程式新手</category>
-            <category>debug</category>
             <category>VS Code</category>
+            <category>debug</category>
             <pubDate>Fri, 22 Apr 2022 20:23:28 +0800</pubDate>
             <description><![CDATA[ &lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
 &lt;p&gt;寫程式中很重要的一步是偵錯 (debug)，這是當我們的程式無法得出我們想要的結果時，必須進行的一步，而寫程式常見的錯誤大概可以分成四種，本文主要介紹如何在 VS Code 執行 debug 模式。&lt;/p&gt;
