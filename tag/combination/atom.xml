@@ -4,9 +4,9 @@
     <title>Lu Ying • Posts by &#34;combination&#34; tag</title>
     <link href="https://lu1hoao.github.io" />
     <updated>2022-05-14T08:42:28.000Z</updated>
+    <category term="combination" />
     <category term="C" />
     <category term="permutation" />
-    <category term="combination" />
     <category term="sort" />
     <category term="OS" />
     <category term="Memory" />
@@ -71,8 +71,8 @@
 &lt;h3 id=&#34;非遞迴解法&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#非遞迴解法&#34;&gt;#&lt;/a&gt; 非遞迴解法&lt;/h3&gt;
 &lt;p&gt;呼應前面提到作遞迴解法時也可以思考是否存在非遞迴解法，比如這題就可以用 4 個迴圈實作出非遞迴解法喔，有興趣可以試試看！&lt;/p&gt;
 </content>
-        <category term="C" />
         <category term="combination" />
+        <category term="C" />
         <updated>2022-05-14T08:42:28.000Z</updated>
     </entry>
 </feed>
