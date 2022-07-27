@@ -4,21 +4,21 @@
     <title>Lu Ying • Posts by &#34;c&#34; tag</title>
     <link href="https://lu1hoao.github.io" />
     <updated>2022-07-27T08:42:28.000Z</updated>
-    <category term="combination" />
     <category term="C" />
+    <category term="combination" />
     <category term="permutation" />
-    <category term="sort" />
     <category term="OS" />
-    <category term="scheduling" />
     <category term="Memory" />
+    <category term="scheduling" />
     <category term="Disk" />
+    <category term="sort" />
     <category term="Synchronization" />
     <category term="Deadlock" />
     <category term="程式新手" />
-    <category term="VS Code" />
-    <category term="WSL" />
     <category term="Visual studio 2022" />
     <category term="debug" />
+    <category term="VS Code" />
+    <category term="WSL" />
     <entry>
         <id>https://lu1hoao.github.io/2022/07/27/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/tree/</id>
         <title>樹狀結構 (tree)(一)</title>
@@ -52,7 +52,7 @@
 &lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/5rs6eLS.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;可以發現如果不是滿枝二元樹就會浪費許多空間，對寫程式的人來說，無法判定陣列裡儲存的數值是正確數值還是未被清空的，是一件很可怕的事情，所以，我們經常用 list 來記錄樹狀結構&lt;br /&gt;
 樹狀結構的一個節點如下所示&lt;/p&gt;
-&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;node&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;node&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt; llink&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;rlink&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;char&lt;/span&gt; data &lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;llink 指到左子樹，rlink 指到右子樹&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;node&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;node&lt;/span&gt;  &lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;llink&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;rlink&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;char&lt;/span&gt; data &lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;llink 指到左子樹，rlink 指到右子樹&lt;/p&gt;
 &lt;h3 id=&#34;節點的追蹤&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#節點的追蹤&#34;&gt;#&lt;/a&gt; 節點的追蹤&lt;/h3&gt;
 &lt;p&gt;追蹤樹狀結構時我們經常使用前序追蹤 (preoder)、後序追蹤 (postoder)、中序追蹤 (inorder) 這三種，前序追蹤是指先追蹤樹根、左節點、右節點，中序追蹤是指先追蹤左節點、樹根、右節點，後序追蹤則是左節點、右節點、樹根，總之是依照樹根的位置決定追蹤的名稱&lt;br /&gt;
 下方圖片演示了在不同追蹤演算法下的情況&lt;/p&gt;
@@ -601,8 +601,8 @@ n 個皇后是指在一個 &lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34
 &lt;h3 id=&#34;非遞迴解法&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#非遞迴解法&#34;&gt;#&lt;/a&gt; 非遞迴解法&lt;/h3&gt;
 &lt;p&gt;呼應前面提到作遞迴解法時也可以思考是否存在非遞迴解法，比如這題就可以用 4 個迴圈實作出非遞迴解法喔，有興趣可以試試看！&lt;/p&gt;
 </content>
-        <category term="combination" />
         <category term="C" />
+        <category term="combination" />
         <updated>2022-05-14T08:42:28.000Z</updated>
     </entry>
     <entry>

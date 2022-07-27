@@ -7,27 +7,27 @@
         <language>en</language>
         <pubDate>Sat, 14 May 2022 16:42:28 +0800</pubDate>
         <lastBuildDate>Sat, 14 May 2022 16:42:28 +0800</lastBuildDate>
-        <category>combination</category>
         <category>C</category>
+        <category>combination</category>
         <category>permutation</category>
-        <category>sort</category>
         <category>OS</category>
-        <category>scheduling</category>
         <category>Memory</category>
+        <category>scheduling</category>
         <category>Disk</category>
+        <category>sort</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
         <category>程式新手</category>
-        <category>VS Code</category>
-        <category>WSL</category>
         <category>Visual studio 2022</category>
         <category>debug</category>
+        <category>VS Code</category>
+        <category>WSL</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/05/14/%E4%B8%80%E9%BB%9E%E9%BB%9E%E6%BC%94%E7%AE%97%E6%B3%95/combination/</guid>
             <title>C 語言組合 (combination)</title>
             <link>https://lu1hoao.github.io/2022/05/14/%E4%B8%80%E9%BB%9E%E9%BB%9E%E6%BC%94%E7%AE%97%E6%B3%95/combination/</link>
-            <category>combination</category>
             <category>C</category>
+            <category>combination</category>
             <pubDate>Sat, 14 May 2022 16:42:28 +0800</pubDate>
             <description><![CDATA[ &lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
 &lt;p&gt;本篇文章講述以 C 語言實作排列組合中的「組合」，輸出從 m 個數當中取 n 個數的所有取法，在組合當中核心概念是遞迴，之後也會用專門文章來介紹遞迴的概念與其他應用&lt;/p&gt;

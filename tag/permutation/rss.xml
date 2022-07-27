@@ -7,21 +7,21 @@
         <language>en</language>
         <pubDate>Sat, 07 May 2022 16:42:28 +0800</pubDate>
         <lastBuildDate>Sat, 07 May 2022 16:42:28 +0800</lastBuildDate>
-        <category>combination</category>
         <category>C</category>
+        <category>combination</category>
         <category>permutation</category>
-        <category>sort</category>
         <category>OS</category>
-        <category>scheduling</category>
         <category>Memory</category>
+        <category>scheduling</category>
         <category>Disk</category>
+        <category>sort</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
         <category>程式新手</category>
-        <category>VS Code</category>
-        <category>WSL</category>
         <category>Visual studio 2022</category>
         <category>debug</category>
+        <category>VS Code</category>
+        <category>WSL</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/05/07/%E4%B8%80%E9%BB%9E%E9%BB%9E%E6%BC%94%E7%AE%97%E6%B3%95/permutation/</guid>
             <title>C 語言排列 (permutation)</title>

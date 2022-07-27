@@ -7,21 +7,21 @@
         <language>en</language>
         <pubDate>Wed, 27 Jul 2022 16:42:28 +0800</pubDate>
         <lastBuildDate>Wed, 27 Jul 2022 16:42:28 +0800</lastBuildDate>
-        <category>combination</category>
         <category>C</category>
+        <category>combination</category>
         <category>permutation</category>
-        <category>sort</category>
         <category>OS</category>
-        <category>scheduling</category>
         <category>Memory</category>
+        <category>scheduling</category>
         <category>Disk</category>
+        <category>sort</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
         <category>程式新手</category>
-        <category>VS Code</category>
-        <category>WSL</category>
         <category>Visual studio 2022</category>
         <category>debug</category>
+        <category>VS Code</category>
+        <category>WSL</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/07/27/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/tree/</guid>
             <title>樹狀結構 (tree)(一)</title>
@@ -57,7 +57,7 @@
 &lt;p&gt;&lt;img data-src=&#34;https://i.imgur.com/5rs6eLS.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;可以發現如果不是滿枝二元樹就會浪費許多空間，對寫程式的人來說，無法判定陣列裡儲存的數值是正確數值還是未被清空的，是一件很可怕的事情，所以，我們經常用 list 來記錄樹狀結構&lt;br /&gt;
 樹狀結構的一個節點如下所示&lt;/p&gt;
-&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;node&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;node&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt; llink&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;rlink&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;char&lt;/span&gt; data &lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;llink 指到左子樹，rlink 指到右子樹&lt;/p&gt;
+&lt;figure class=&#34;highlight c&#34;&gt;&lt;figcaption data-lang=&#34;c&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;node&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;node&lt;/span&gt;  &lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;llink&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt;rlink&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;char&lt;/span&gt; data &lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;llink 指到左子樹，rlink 指到右子樹&lt;/p&gt;
 &lt;h3 id=&#34;節點的追蹤&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#節點的追蹤&#34;&gt;#&lt;/a&gt; 節點的追蹤&lt;/h3&gt;
 &lt;p&gt;追蹤樹狀結構時我們經常使用前序追蹤 (preoder)、後序追蹤 (postoder)、中序追蹤 (inorder) 這三種，前序追蹤是指先追蹤樹根、左節點、右節點，中序追蹤是指先追蹤左節點、樹根、右節點，後序追蹤則是左節點、右節點、樹根，總之是依照樹根的位置決定追蹤的名稱&lt;br /&gt;
 下方圖片演示了在不同追蹤演算法下的情況&lt;/p&gt;
@@ -1091,8 +1091,8 @@ reference bit 是記錄這個 page 近期也沒有被用到，因此他的值會
             <guid isPermalink="true">https://lu1hoao.github.io/2022/05/14/%E4%B8%80%E9%BB%9E%E9%BB%9E%E6%BC%94%E7%AE%97%E6%B3%95/combination/</guid>
             <title>C 語言組合 (combination)</title>
             <link>https://lu1hoao.github.io/2022/05/14/%E4%B8%80%E9%BB%9E%E9%BB%9E%E6%BC%94%E7%AE%97%E6%B3%95/combination/</link>
-            <category>combination</category>
             <category>C</category>
+            <category>combination</category>
             <pubDate>Sat, 14 May 2022 16:42:28 +0800</pubDate>
             <description><![CDATA[ &lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
 &lt;p&gt;本篇文章講述以 C 語言實作排列組合中的「組合」，輸出從 m 個數當中取 n 個數的所有取法，在組合當中核心概念是遞迴，之後也會用專門文章來介紹遞迴的概念與其他應用&lt;/p&gt;
@@ -1727,8 +1727,8 @@ quick sort 的時間複雜度是 nlogn，又有內建，為甚麼還要學其他
             <title>Debug C 語言的方法</title>
             <link>https://lu1hoao.github.io/2022/04/22/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/program-lesson-3/</link>
             <category>程式新手</category>
-            <category>VS Code</category>
             <category>debug</category>
+            <category>VS Code</category>
             <pubDate>Fri, 22 Apr 2022 20:23:28 +0800</pubDate>
             <description><![CDATA[ &lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
 &lt;p&gt;寫程式中很重要的一步是偵錯 (debug)，這是當我們的程式無法得出我們想要的結果時，必須進行的一步，而寫程式常見的錯誤大概可以分成四種，本文主要介紹如何在 VS Code 執行 debug 模式。&lt;/p&gt;
