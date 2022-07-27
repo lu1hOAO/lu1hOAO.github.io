@@ -18,10 +18,10 @@
         <category>Synchronization</category>
         <category>Deadlock</category>
         <category>程式新手</category>
-        <category>Visual studio 2022</category>
+        <category>debug</category>
         <category>VS Code</category>
         <category>WSL</category>
-        <category>debug</category>
+        <category>Visual studio 2022</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/05/29/os/os-12/</guid>
             <title>Virtual Memory (下)</title>
