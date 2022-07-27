@@ -9,16 +9,16 @@
     <category term="permutation" />
     <category term="sort" />
     <category term="OS" />
-    <category term="Memory" />
     <category term="scheduling" />
+    <category term="Memory" />
     <category term="Disk" />
     <category term="Synchronization" />
     <category term="Deadlock" />
     <category term="程式新手" />
-    <category term="debug" />
     <category term="VS Code" />
     <category term="WSL" />
     <category term="Visual studio 2022" />
+    <category term="debug" />
     <entry>
         <id>https://lu1hoao.github.io/2022/05/29/os/os-12/</id>
         <title>Virtual Memory (下)</title>

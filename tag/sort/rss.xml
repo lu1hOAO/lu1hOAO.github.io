@@ -12,16 +12,16 @@
         <category>permutation</category>
         <category>sort</category>
         <category>OS</category>
-        <category>Memory</category>
         <category>scheduling</category>
+        <category>Memory</category>
         <category>Disk</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
         <category>程式新手</category>
-        <category>debug</category>
         <category>VS Code</category>
         <category>WSL</category>
         <category>Visual studio 2022</category>
+        <category>debug</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/05/05/%E4%B8%80%E9%BB%9E%E9%BB%9E%E6%BC%94%E7%AE%97%E6%B3%95/sort/</guid>
             <title>C 語言排序 (sort)</title>

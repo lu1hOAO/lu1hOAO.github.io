@@ -12,16 +12,16 @@
         <category>permutation</category>
         <category>sort</category>
         <category>OS</category>
-        <category>Memory</category>
         <category>scheduling</category>
+        <category>Memory</category>
         <category>Disk</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
         <category>程式新手</category>
-        <category>debug</category>
         <category>VS Code</category>
         <category>WSL</category>
         <category>Visual studio 2022</category>
+        <category>debug</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/04/25/os/os-2/</guid>
             <title>CPU Scheduling (下)</title>
