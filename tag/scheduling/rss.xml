@@ -7,22 +7,22 @@
         <language>en</language>
         <pubDate>Mon, 25 Apr 2022 20:23:28 +0800</pubDate>
         <lastBuildDate>Mon, 25 Apr 2022 20:23:28 +0800</lastBuildDate>
-        <category>C</category>
-        <category>-[自學]</category>
         <category>OS</category>
-        <category>Memory</category>
         <category>scheduling</category>
+        <category>-[自學]</category>
+        <category>Memory</category>
         <category>Disk</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
-        <category>combination</category>
-        <category>程式新手</category>
-        <category>Visual studio 2022</category>
+        <category>C</category>
         <category>permutation</category>
-        <category>VS Code</category>
-        <category>WSL</category>
-        <category>sort</category>
+        <category>程式新手</category>
         <category>debug</category>
+        <category>VS Code</category>
+        <category>combination</category>
+        <category>Visual studio 2022</category>
+        <category>sort</category>
+        <category>WSL</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/04/25/os/os-2/</guid>
             <title>CPU Scheduling (下)</title>
