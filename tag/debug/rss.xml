@@ -8,27 +8,28 @@
         <pubDate>Fri, 22 Apr 2022 20:23:28 +0800</pubDate>
         <lastBuildDate>Fri, 22 Apr 2022 20:23:28 +0800</lastBuildDate>
         <category>C</category>
-        <category>combination</category>
-        <category>permutation</category>
+        <category>-[自學]</category>
         <category>OS</category>
         <category>Memory</category>
         <category>scheduling</category>
         <category>Disk</category>
-        <category>sort</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
+        <category>combination</category>
         <category>程式新手</category>
         <category>Visual studio 2022</category>
-        <category>debug</category>
+        <category>permutation</category>
         <category>VS Code</category>
         <category>WSL</category>
+        <category>sort</category>
+        <category>debug</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/04/22/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/program-lesson-3/</guid>
             <title>Debug C 語言的方法</title>
             <link>https://lu1hoao.github.io/2022/04/22/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/program-lesson-3/</link>
             <category>程式新手</category>
-            <category>debug</category>
             <category>VS Code</category>
+            <category>debug</category>
             <pubDate>Fri, 22 Apr 2022 20:23:28 +0800</pubDate>
             <description><![CDATA[ &lt;h3 id=&#34;概要&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#概要&#34;&gt;#&lt;/a&gt; 概要&lt;/h3&gt;
 &lt;p&gt;寫程式中很重要的一步是偵錯 (debug)，這是當我們的程式無法得出我們想要的結果時，必須進行的一步，而寫程式常見的錯誤大概可以分成四種，本文主要介紹如何在 VS Code 執行 debug 模式。&lt;/p&gt;

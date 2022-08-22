@@ -8,20 +8,21 @@
         <pubDate>Wed, 27 Jul 2022 16:42:28 +0800</pubDate>
         <lastBuildDate>Wed, 27 Jul 2022 16:42:28 +0800</lastBuildDate>
         <category>C</category>
-        <category>combination</category>
-        <category>permutation</category>
+        <category>-[自學]</category>
         <category>OS</category>
         <category>Memory</category>
         <category>scheduling</category>
         <category>Disk</category>
-        <category>sort</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
+        <category>combination</category>
         <category>程式新手</category>
         <category>Visual studio 2022</category>
-        <category>debug</category>
+        <category>permutation</category>
         <category>VS Code</category>
         <category>WSL</category>
+        <category>sort</category>
+        <category>debug</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/07/27/%E4%B8%80%E9%BB%9E%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/tree/</guid>
             <title>樹狀結構 (tree)(一)</title>

@@ -5,20 +5,21 @@
     <link href="https://lu1hoao.github.io" />
     <updated>2022-04-22T12:23:28.000Z</updated>
     <category term="C" />
-    <category term="combination" />
-    <category term="permutation" />
+    <category term="-[自學]" />
     <category term="OS" />
     <category term="Memory" />
     <category term="scheduling" />
     <category term="Disk" />
-    <category term="sort" />
     <category term="Synchronization" />
     <category term="Deadlock" />
+    <category term="combination" />
     <category term="程式新手" />
     <category term="Visual studio 2022" />
-    <category term="debug" />
+    <category term="permutation" />
     <category term="VS Code" />
     <category term="WSL" />
+    <category term="sort" />
+    <category term="debug" />
     <entry>
         <id>https://lu1hoao.github.io/2022/04/22/%E7%A8%8B%E5%BC%8F%E5%B0%8F%E7%99%BD/program-lesson-3/</id>
         <title>Debug C 語言的方法</title>
@@ -58,8 +59,8 @@
 &lt;p&gt;這樣就完成了，新手可以藉由這個方式來理解  &lt;code&gt;i++&lt;/code&gt;  與  &lt;code&gt;++i&lt;/code&gt;  的差別喔，其實 debug 模式有很多使用方法，可以設定不同條件的中斷點，會用的話真的很好用，不過我覺得寫程式需要心態調整，有時候寫不出來，做點別的事再回來就想出來了，如果一直 debug 不出來也不要灰心，休息一下再繼續，祝各位小白寫扣順利！&lt;/p&gt;
 </content>
         <category term="程式新手" />
-        <category term="debug" />
         <category term="VS Code" />
+        <category term="debug" />
         <updated>2022-04-22T12:23:28.000Z</updated>
     </entry>
     <entry>

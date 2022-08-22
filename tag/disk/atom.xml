@@ -5,20 +5,21 @@
     <link href="https://lu1hoao.github.io" />
     <updated>2022-06-06T14:23:28.000Z</updated>
     <category term="C" />
-    <category term="combination" />
-    <category term="permutation" />
+    <category term="-[自學]" />
     <category term="OS" />
     <category term="Memory" />
     <category term="scheduling" />
     <category term="Disk" />
-    <category term="sort" />
     <category term="Synchronization" />
     <category term="Deadlock" />
+    <category term="combination" />
     <category term="程式新手" />
     <category term="Visual studio 2022" />
-    <category term="debug" />
+    <category term="permutation" />
     <category term="VS Code" />
     <category term="WSL" />
+    <category term="sort" />
+    <category term="debug" />
     <entry>
         <id>https://lu1hoao.github.io/2022/06/06/os/os-13/</id>
         <title>Mass Storage System</title>
