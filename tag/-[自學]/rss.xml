@@ -7,22 +7,22 @@
         <language>en</language>
         <pubDate>Mon, 22 Aug 2022 16:42:28 +0800</pubDate>
         <lastBuildDate>Mon, 22 Aug 2022 16:42:28 +0800</lastBuildDate>
-        <category>OS</category>
-        <category>scheduling</category>
         <category>-[自學]</category>
+        <category>OS</category>
         <category>Memory</category>
         <category>Disk</category>
+        <category>scheduling</category>
         <category>Synchronization</category>
         <category>Deadlock</category>
         <category>C</category>
-        <category>permutation</category>
-        <category>程式新手</category>
-        <category>debug</category>
-        <category>VS Code</category>
         <category>combination</category>
-        <category>Visual studio 2022</category>
+        <category>permutation</category>
         <category>sort</category>
+        <category>程式新手</category>
+        <category>VS Code</category>
         <category>WSL</category>
+        <category>debug</category>
+        <category>Visual studio 2022</category>
         <item>
             <guid isPermalink="true">https://lu1hoao.github.io/2022/08/22/Linux%20%E7%B4%80%E9%8C%84/learn/</guid>
             <title>自學筆記</title>
@@ -35,7 +35,7 @@
 現在我已經在資訊系了，自學以來有不少心得，雖每個人念書的方式都不一樣，但自學期間受到很多前輩的幫助，或許我的一點點心得也能幫助到剛到這個領域的新手。&lt;br /&gt;
 自認不是很有電腦天份的人，不是器材空，但是數學物理和英文都不差，讀原文書不會吃力也很習慣看英文文件，就是那種最最最普通的讀地名高中上來不太知道自己要幹嘛的那種人哈哈。&lt;/p&gt;
 &lt;h3 id=&#34;自學初期-心態調整&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#自學初期-心態調整&#34;&gt;#&lt;/a&gt; 自學初期 -- 心態調整&lt;/h3&gt;
-&lt;p&gt;新手剛要寫程式時，往往不是被程式的語法難住，而是在&lt;strong&gt;安裝相關套件時遇到問題不知道該如何處理&lt;/strong&gt;，比如想要建造一個可以寫 C 的環境，就要先安裝 IDE 、編譯器，上網做功課卻發現下面留言都在吵架，有人說 VS Code 好 ，有人說直接上 vim 才是王道。但說的這些人都已經很厲害了，自己有一套見解和習慣，不是一般新手能明白的。我剛開始寫程式時就算別人跟我說 A 牌的 IDE 很難用我也感受不出難用在哪裡，所以我的建議是選好自己的 IDE 之後，上網找教學影片一步一步跟著安裝， 如果還是無法接受自己不知原理卻要跟著一個口令一個動作，那就把這些教學當作是信仰，只要想著是信仰心裡就會比較好過一點，就像我們不會深究為甚麼媽祖會保佑我們、他的法力從何而來一樣。&lt;/p&gt;
+&lt;p&gt;新手剛要寫程式時，往往不是被程式的語法難住，而是在&lt;strong&gt;安裝相關套件時遇到問題不知道該如何處理&lt;/strong&gt;，比如想要建造一個可以寫 C 的環境，就要先安裝編輯器 、編譯器，上網做功課卻發現下面留言都在吵架，有人說 VS Code 好 ，有人說直接上 vim 才是王道。但說的這些人都已經很厲害了，自己有一套見解和習慣，不是一般新手能明白的。我剛開始寫程式時就算別人跟我說 A 牌的 IDE 很難用我也感受不出難用在哪裡，所以我的建議是選好自己喜歡的軟體之後，上網找教學影片一步一步跟著安裝， 如果還是無法接受自己不知原理卻要跟著一個口令一個動作，那就把這些教學當作是信仰，只要想著是信仰心裡就會比較好過一點，就像我們不會深究為甚麼媽祖會保佑我們、他的法力從何而來一樣。&lt;/p&gt;
 &lt;h3 id=&#34;自學中期-書比網站更好&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#自學中期-書比網站更好&#34;&gt;#&lt;/a&gt; 自學中期 -- 書比網站更好&lt;/h3&gt;
 &lt;p&gt;原系的程式設計課是 C++、C 語言混合上，比較偏應用導向，因為想學得更所以我跑去資訊系修他們的程式設計，教得是 C，不修還好，一修發現負擔好重 (廢話人家是資訊系耶)，寫完作業題目、熟讀 PPT 是絕對無法拿高分的，分奴如我開始狂刷題練習，我一開始是用 zero judge ，有多瘋狂呢？大概三週刷 100 題，一些特選上來的資訊系朋友都說沒看過我這麼瘋的人。刷題過程中會碰到很多需要資料結構、演算法概念的解題技巧，一開始我也是上網查，但總覺得很沒效率，加上內容農場太多，所以後來就買了資料結構、演算法的專書，一章一章慢慢讀邊讀邊打成筆記，然後再去寫題目。&lt;br /&gt;
 這個過程中我深刻感受到 &lt;strong&gt;書比網站好多了&lt;/strong&gt; ，如果是單純 Google ，能不能正確打出關鍵字都是問題了 (有些特殊演算法會有特殊名字) 加上內容農場實在太多，很容易變成在抄程式碼。書通常會有比較完整的解說，內容也比較值得信任。&lt;/p&gt;
