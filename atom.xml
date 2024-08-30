@@ -33,7 +33,7 @@
 &lt;li&gt;use the queue to traverse the graph.&lt;/li&gt;
 &lt;li&gt;repeat 3 and 4 tile the queue is empty.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;strong&gt;DFS&lt;/strong&gt; &lt;em&gt;O(V+E)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;DFS&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Time complexity &lt;em&gt;O(V+E)&lt;/em&gt;, Space &lt;em&gt;O(V+E)&lt;/em&gt;&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;convert input data to a directed graph.&lt;/li&gt;
