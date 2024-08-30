@@ -17,7 +17,7 @@
 &lt;p&gt;&lt;strong&gt;A topological ordering is possible if and only if the grapg has no directed cycles&lt;/strong&gt;,that is, if it is a directed acyclic graph (DAG).&lt;/p&gt;
 &lt;h3 id=&#34;example&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#example&#34;&gt;#&lt;/a&gt; Example&lt;/h3&gt;
 &lt;p&gt;&lt;img data-src=&#34;https://hackmd.io/_uploads/HJTxqmVjR.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;This graph has many valid topological sorts,including:&lt;/p&gt;
+&lt;p&gt;This graph has many valid topological sorts, including:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;5,7,3,11,8,2,9,10&lt;/li&gt;
 &lt;li&gt;3,5,7,8,11,2,9,10&lt;/li&gt;
