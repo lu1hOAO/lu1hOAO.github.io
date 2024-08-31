@@ -6,10 +6,10 @@
     <updated>2024-08-30T04:54:15.000Z</updated>
     <entry>
         <id>https://lu1hoao.github.io/2024/08/30/Topological%20Sorting/</id>
-        <title>Topological sorting</title>
+        <title>Topological Sorting</title>
         <link rel="alternate" href="https://lu1hoao.github.io/2024/08/30/Topological%20Sorting/"/>
         <content type="html">&lt;h3 id=&#34;overview&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#overview&#34;&gt;#&lt;/a&gt; Overview&lt;/h3&gt;
-&lt;p&gt;In computer science, a topological sort or topological ordering of a &lt;strong&gt;directed grapg&lt;/strong&gt; is a linear ordering of its vertices. For instance, the vertices of the grapg may represent tasks to be performed, and the edges may represent constraints that one task ust be performed before another; in this application, a topological ordering is just a valid sequence for the tasks.&lt;/p&gt;
+&lt;p&gt;In computer science, a topological sort or topological ordering of a &lt;strong&gt;directed graph&lt;/strong&gt; is a linear ordering of its vertices. For instance, the vertices of the graph may represent tasks to be performed, and the edges may represent constraints that one task ust be performed before another; in this application, a topological ordering is just a valid sequence for the tasks.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;A topological ordering is possible if and only if the grapg has no directed cycles&lt;/strong&gt;,that is, if it is a directed acyclic graph (DAG).&lt;/p&gt;
 &lt;h3 id=&#34;example&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#example&#34;&gt;#&lt;/a&gt; Example&lt;/h3&gt;
 &lt;p&gt;&lt;img data-src=&#34;https://hackmd.io/_uploads/HJTxqmVjR.png&#34; alt=&#34;image&#34; /&gt;&lt;/p&gt;
