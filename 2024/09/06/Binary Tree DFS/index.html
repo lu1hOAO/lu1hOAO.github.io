@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Lu Ying">
+
+
+
+
+
+
+
+<title>Binary Tree DFS | Lu Ying</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Roboto+Mono&display=swap');
+</style>
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/menu.js"></script>
+    
+
+
+
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
+
+
+
+  <!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+  <body>
+    <div class="mask-border">
+    </div>
+
+    <div class="wrapper">
+
+      <div class="header">
+  <div class="flex-container">
+    <div class="header-inner">
+      <div class="site-brand-container">
+        <a href="/">
+          
+            Lu Ying
+          
+        </a>
+      </div>
+      <div id="menu-btn" class="menu-btn" onclick="toggleMenu()">
+        Menu
+      </div>
+      <nav class="site-nav">
+        <ul class="menu-list">
+          
+            
+              <li class="menu-item">
+                <a href="/">Home</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/categories/gallery/">Posts</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/archives/">Archive</a>
+              </li> 
+                   
+          
+          
+            <li class="menu-item search-btn">
+              <a href="#">Search</a>
+            </li>
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main">
+        <div class="flex-container">
+          <article id="post">
+
+  
+    <div class="post-head">
+    <div class="post-info">
+        <div class="tag-list">
+            
+                
+                    <span class="post-tag">
+                        <a href="/tags/Algorithm/">
+                            Algorithm
+                        </a>
+                    </span>    
+                
+                    <span class="post-tag">
+                        <a href="/tags/Binary-Tree/">
+                            Binary Tree
+                        </a>
+                    </span>    
+                           
+            
+        </div>
+        <div class="post-title">
+            
+            
+                Binary Tree DFS
+            
+            
+        </div>
+        <span class="post-date">
+            Sep 6, 2024
+        </span>
+    </div>
+    <div class="post-img">
+        
+            <img src="https://hackmd.io/_uploads/HJcZP7_h0.jpg" alt="featured_image">
+              
+    </div>
+</div>
+    <div class="post-content">
+    <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>In computer science, tree traversal is a form of graph travrsal and refers to the process of <strong>visiting each node in a tree data structure, exactly once</strong>. Such traversals are classified by the order in which the nodes are visited.</p>
+<h3 id="DFS"><a href="#DFS" class="headerlink" title="DFS"></a>DFS</h3><p>In depth-first search(DFS), the search tree is deepened as much as possible before going to the next sibling. To traverse binary trees with depth-first search, perform the following operations at each node:</p>
+<ol>
+<li>If the current node is empty then return</li>
+<li>Execute the following tree operations in a certain order<br> N: Visit the current node.<br> L: <strong>Recursively</strong> traverse the current node’s left subtree<br> R: <strong>Recursively</strong> traverse the current node’s right subtree.</li>
+</ol>
+<p><strong>Pre-order, NLR</strong><br><strong>Post-order, LRN</strong><br><strong>In-order, LNR</strong><br><strong>Reverse pre-order, NRL</strong><br><strong>Reverse post-order, RLN</strong><br><strong>Reverse  in-order, RNL</strong></p>
+<p><strong>Given a tree with distinct elements, either pre-order or post-order paired with in-order is sufficient to describe the tree uniquely.</strong> However, pre-order with post-order leaves some ambiguity in the tree structure. </p>
+<h3 id="Problems"><a href="#Problems" class="headerlink" title="Problems"></a>Problems</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal">Construct Binary Tree from Preorder and Inorder Traversal</a></p>
+<pre><code class=".cpp">class Solution &#123;
+public:
+    int pidx;
+    unordered_map&lt;int,int&gt; mp;
+    TreeNode* buildTree(vector&lt;int&gt;&amp; preorder, vector&lt;int&gt;&amp; inorder) &#123;
+        pidx=0;
+        int len=inorder.size();
+        for(int i=0;i&lt;len;i++)&#123;
+            mp[inorder[i]]=i;
+        &#125;
+        return construct(0,len-1,preorder);
+    &#125;
+    TreeNode* construct(int start,int end,vector&lt;int&gt;&amp;preorder)&#123;
+        if(start&gt;end) return NULL;
+        int rootval=preorder[pidx];
+        TreeNode *head= new TreeNode(rootval);
+        int mid=mp[rootval];
+        pidx++;
+        head-&gt;left=construct(start,mid-1,preorder);
+        head-&gt;right=construct(mid+1,end,preorder);
+        return head;
+    &#125;
+&#125;;
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal">Construct Binary Tree from inorder and postorder traversal</a></p>
+<pre><code class="cpp">class Solution &#123;
+public:
+    int pidx;
+    unordered_map&lt;int,int&gt; mp;
+    TreeNode* buildTree(vector&lt;int&gt;&amp; inorder, vector&lt;int&gt;&amp; postorder) &#123;
+        int len=inorder.size();
+        pidx=len-1;
+        for(int i=0;i&lt;len;i++)&#123;
+            mp[inorder[i]]=i;
+        &#125;
+        return construct(0,len-1,postorder);
+    &#125;
+    TreeNode* construct(int start,int end,vector&lt;int&gt;&amp;postorder)&#123;
+        if(start&gt;end) return NULL;
+        int rootval=postorder[pidx];
+        TreeNode* head= new TreeNode(rootval);
+        int mid=mp[rootval];
+        pidx--;
+        head-&gt;right=construct(mid+1,end,postorder);
+        head-&gt;left=construct(start,mid-1,postorder);
+        return head;
+    &#125;
+&#125;;
+</code></pre>
+<p>Everytime we create a new node with a number from preorder array. That should be root node of each subtree, because in preorder, we traverse the tree like root, left and right. So let’s say middle(&#x3D;root)<br>To create left and right side of tree, we use two pointers, let’s say start and end.<br>Start and end specify the range of the current subtree in the inorder list.<br>Within this range, the root node is determined, and itd index is used to recursively set the ranges for the left and right subtrees.</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/binary-tree-maximum-path-sum/">Binary Tree Maximum Path Sum</a></p>
+<pre><code class="cpp">class Solution &#123;
+public:
+    int max_sum=INT_MIN;
+    int maxPathSum(TreeNode* root) &#123;
+        max_gain(root);
+        return max_sum;
+    &#125;
+    int max_gain(TreeNode* root)&#123;
+        if(!root) return 0;
+        int l=max(max_gain(root-&gt;left),0);
+        int r=max(max_gain(root-&gt;right),0);
+        int new_price=root-&gt;val+l+r;
+        max_sum=max(max_sum,new_price);
+        return root-&gt;val+max(l,r);
+    &#125;
+&#125;;
+</code></pre>
+<p>In this problem we use <strong>postorder traversal</strong> to calculate the maximum path sum of subtrees. <strong>For each node we can choose either its left subtree or right subtree</strong>, so our return value is <code>root-&gt;val+max(l,r)</code>  However, each node may be an end point, so the correct answer of maximum sum is <code>int new_price=root-&gt;val+l+r; max_sum=max(max_sum,new_price);</code></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/flatten-binary-tree-to-linked-list/">Flatten Binary Tree to Linked List</a></p>
+<pre><code class="cpp">class Solution &#123;
+public:
+    void flatten(TreeNode* root) &#123;
+        if(root) preorder(root); 
+    &#125;
+    TreeNode* preorder(TreeNode* root)&#123;
+        TreeNode* leftmost=root;
+        if(root)&#123;
+            TreeNode* left=root-&gt;left;
+            TreeNode* right=root-&gt;right;
+            root-&gt;right=left;
+            root-&gt;left=NULL;
+            if(left) leftmost=preorder(left); //deal with its left subtree
+            if(right)&#123;
+               leftmost-&gt;right=right;
+               leftmost=preorder(right); //deal with its right subtree
+            &#125;
+        &#125;
+        return leftmost;
+    &#125;
+&#125;;
+</code></pre>
+<p>If we notice carefully in the flattened tree, each node’s right child points to the next node of a <strong>pre-order traversal</strong>, so we return the leftmost node untile all left node was added to the list and we started to deal with right node( though the variable name still called leftmost )</p>
+<h3 id="Common-Data-Structure-in-DFS"><a href="#Common-Data-Structure-in-DFS" class="headerlink" title="Common Data Structure in DFS"></a>Common Data Structure in DFS</h3><p>I prefer use recursive function to implement DFS, however stack is also an useful data structure to implement DFS. There is a problem ask programers useing stack to implement Binary Search Tree Inorder Iterator.<br><a target="_blank" rel="noopener" href="https://leetcode.com/problems/binary-search-tree-iterator">Binary Search Tree Iterator</a></p>
+<pre><code class="cpp">//Inorder
+class BSTIterator &#123;
+public:
+    stack&lt;TreeNode*&gt;s;
+    BSTIterator(TreeNode* root) &#123;
+        Inorder(root);
+    &#125;
+    
+    int next() &#123;
+        TreeNode* top=s.top();
+        s.pop();
+        Inorder(top-&gt;right);
+        return top-&gt;val;
+    &#125;
+    
+    bool hasNext() &#123;
+        return !s.empty();
+    &#125;
+    void Inorder(TreeNode* root)&#123;
+        while(root)&#123;
+            s.push(root);
+            root=root-&gt;left;
+        &#125;
+    &#125;
+&#125;;
+</code></pre>
+<p>Notice that we should put a node’s left child on the top of the stack to ensure the ordering is in-order. If we want to change it to pre-order or post-order we can modify our code to this</p>
+<pre><code class="cpp">//Preorder
+class BSTIterator &#123;
+public:
+    stack&lt;TreeNode*&gt;s;
+    TreeNode *now;
+    BSTIterator(TreeNode* root) &#123;
+        s.push(root);
+    &#125;
+    
+    int next() &#123;
+        TreeNode *now=s.top();
+        Preorder(now);
+        s.pop();
+        return now-&gt;val;
+    &#125;
+    
+    bool hasNext() &#123;
+        return !s.empty();
+    &#125;
+    void Preorder(TreeNode* root)&#123;
+        if(root-&gt;right) s.push(root-&gt;right);
+        if(root-&gt;left) s.push(root-&gt;left);
+    &#125;
+&#125;;
+</code></pre>
+<pre><code class="cpp">//Postorder
+class BSTIterator &#123;
+public:
+    stack&lt;TreeNode*&gt;s;
+    BSTIterator(TreeNode* root) &#123;
+        Postorder(root);
+    &#125;
+    
+    int next() &#123;
+        TreeNode *top=s.top();
+        s.pop();
+        Postorder(top-&gt;left);
+        return top&gt;val;
+    &#125;
+    
+    bool hasNext() &#123;
+        return !s.empty();
+    &#125;
+    void Postorder(TreeNode* root)&#123;
+        while(root)&#123;
+            s.push(root);
+            if(root-&gt;right) s.push(root-&gt;right);
+            root=root-&gt;left;
+        &#125;
+    &#125;
+&#125;;
+</code></pre>
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>The time and space analysis of DFS differs according to its application area.In theoretical computer science, DFS is typically used to traverse an entire graph(tree), and takes time $O(|V|+|E|)$. This is linear in the size of the graph. In these applications it also uses space $O(|V|)$  in the worst case to store the stack of vertices on the current search path as well as the set of already-visited vertices. Thus, in this setting, the time and bounds are the same as fpr breadth-first search and the choice of which of these two algorithms to use depends less on their complexity and more on the different properties of the vertex orderings the two algorithms produce.</p>
+
+</div> 
+
+<script>
+    window.onload = detectors();
+</script>
+    <div class="post-footer">
+    <div class="h-line-primary"></div>
+    <nav class="post-nav">
+        <div class="prev-item">
+           
+        </div>
+        <div class="next-item">
+            
+                <div class="icon arrow-right"></div>
+                <div class="post-link">
+                  <a href="/2024/08/30/Topological%20Sorting/">Next</a>  
+                </div>  
+            
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="post-comment">
+
+     
+
+     
+    
+    
+
+</div>
+     
+  
+</article>
+        </div>
+      </div>
+      
+      <div class="footer">
+    <div class="flex-container">
+        <div class="footer-text">
+            
+            
+                Lu Ying | 
+            
+            
+                Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/zoeingwingkei/frame/">Frame</a>
+                
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    
+      <div class="search-popup">
+    <div class="search-popup-overlay">  
+    </div>
+    <div class="search-popup-window" >
+        <div class="search-header">
+            <div class="search-input-container">
+              <input autocomplete="off" autocapitalize="off" maxlength="80"
+                     placeholder="Search Anything" spellcheck="false"
+                     type="search" class="search-input">
+            </div>
+            <div class="search-close-btn">
+                <div class="icon close-btn"></div>
+            </div>
+        </div>
+        <div class="search-result-container">
+        </div>
+    </div>
+</div>
+
+<script>
+    const searchConfig = {
+        path             : "/search.xml",
+        top_n_per_article: "1",
+        unescape         : "false",
+        trigger: "auto",
+        preload: "false"
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+<script src="/js/search.js"></script>
+    
+    
+
+  </body>
+</html>

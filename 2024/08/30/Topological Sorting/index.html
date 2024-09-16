@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Lu Ying">
+
+
+
+
+
+
+
+<title>Topological Sorting | Lu Ying</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Roboto+Mono&display=swap');
+</style>
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/menu.js"></script>
+    
+
+
+
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
+
+
+
+  <!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+  <body>
+    <div class="mask-border">
+    </div>
+
+    <div class="wrapper">
+
+      <div class="header">
+  <div class="flex-container">
+    <div class="header-inner">
+      <div class="site-brand-container">
+        <a href="/">
+          
+            Lu Ying
+          
+        </a>
+      </div>
+      <div id="menu-btn" class="menu-btn" onclick="toggleMenu()">
+        Menu
+      </div>
+      <nav class="site-nav">
+        <ul class="menu-list">
+          
+            
+              <li class="menu-item">
+                <a href="/">Home</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/categories/gallery/">Posts</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/archives/">Archive</a>
+              </li> 
+                   
+          
+          
+            <li class="menu-item search-btn">
+              <a href="#">Search</a>
+            </li>
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main">
+        <div class="flex-container">
+          <article id="post">
+
+  
+    <div class="post-head">
+    <div class="post-info">
+        <div class="tag-list">
+            
+                
+                    <span class="post-tag">
+                        <a href="/tags/Algorithm/">
+                            Algorithm
+                        </a>
+                    </span>    
+                
+                    <span class="post-tag">
+                        <a href="/tags/Graph/">
+                            Graph
+                        </a>
+                    </span>    
+                           
+            
+        </div>
+        <div class="post-title">
+            
+            
+                Topological Sorting
+            
+            
+        </div>
+        <span class="post-date">
+            Aug 30, 2024
+        </span>
+    </div>
+    <div class="post-img">
+        
+            <img src="https://hackmd.io/_uploads/BkVArRAi0.jpg" alt="featured_image">
+              
+    </div>
+</div>
+    <div class="post-content">
+    <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>In computer science, a topological sort or topological ordering of a <strong>directed graph</strong> is a linear ordering of its vertices. For instance, the vertices of the graph may represent tasks to be performed, and the edges may represent constraints that one task ust be performed before another; in this application, a topological ordering is just a valid sequence for the tasks.</p>
+<p><strong>A topological ordering is possible if and only if the grapg has no directed cycles</strong>,that is, if it is a directed acyclic graph (DAG).</p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p><img src="https://hackmd.io/_uploads/HJTxqmVjR.png" alt="image"></p>
+<p>This graph has many valid topological sorts, including:</p>
+<ul>
+<li>5,7,3,11,8,2,9,10</li>
+<li>3,5,7,8,11,2,9,10</li>
+<li>3,5,7,8,11,2,10,9</li>
+<li>5,7,3,8,11,2,10,9</li>
+<li>7,5,11,3,10,8,9,2</li>
+<li>5,7,11,2,3,8,9,10</li>
+<li>3,7,8,5,11,10,2,9</li>
+</ul>
+<h3 id="Algorithms"><a href="#Algorithms" class="headerlink" title="Algorithms"></a>Algorithms</h3><p><strong>Kahn’s algorithm</strong> </p>
+<p>Time complexity <em>O(V+E)</em>, Space <em>O(V)</em></p>
+<ol>
+<li>convert input data to a directed graph.</li>
+<li>use an array to record the incoming edges of  vertices.</li>
+<li>add the nodes which has no incoming edge into a queue.</li>
+<li>use the queue to traverse the graph.</li>
+<li>repeat 3 and 4 tile the queue is empty.</li>
+</ol>
+<p><strong>DFS</strong> </p>
+<p>Time complexity <em>O(V+E)</em>, Space <em>O(V+E)</em></p>
+<ol>
+<li>convert input data to a directed graph.</li>
+<li>use an array to mark vertices’s states, each vertex has three states including initial, temporary and permanent. If we visite a temporary vertex then return false(cycle detect ), if we visite a permanent vertex, then return true. (to avoid repeated traversal) </li>
+<li>add a permanent vertex into the top of a stack.</li>
+<li>repeat 3 and 4 tile all vertices was visited.</li>
+</ol>
+<h3 id="Problems"><a href="#Problems" class="headerlink" title="Problems"></a>Problems</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/course-schedule/description/?envType=study-plan-v2&envId=top-interview-150">Course Schedule</a></p>
+<pre><code class="cpp">//Kahn&#39;s algorithm
+class Solution &#123;
+public:
+    bool canFinish(int numCourses, vector&lt;vector&lt;int&gt;&gt;&amp; prerequisites) &#123;
+        vector&lt;int&gt;adj[numCourses];
+        vector&lt;int&gt;indegree(numCourses,0);
+        int ans=0;
+        for(auto x:prerequisites)&#123;
+            adj[x[1]].push_back(x[0]); //construct a graph (step 1)
+            indegree[x[0]]++; //step2
+        &#125;
+        queue&lt;int&gt;q;
+        for(int i=0;i&lt;numCourses;i++)&#123;
+            if(indegree[i]==0) q.push(i); //step 3
+        &#125;
+        while(!q.empty())&#123;
+            int now=q.front();
+            ans++;
+            q.pop();
+            for(auto x:adj[now])&#123;
+                indegree[x]--;
+                if(indegree[x]==0) q.push(x);
+            &#125;
+        &#125;
+        return ans==numCourses;
+    &#125;
+&#125;;
+</code></pre>
+<pre><code class="cpp">//DFS
+class Solution &#123;
+public:
+    bool canFinish(int numCourses, vector&lt;vector&lt;int&gt;&gt;&amp; prerequisites) &#123;
+        vector&lt;vector&lt;int&gt;&gt;adj(numCourses);
+        vector&lt;int&gt;mark(numCourses,0);
+        bool rst;
+        int ans=0;
+        for(auto x:prerequisites)&#123;
+            adj[x[1]].push_back(x[0]);
+        &#125;
+        //mark[i]=0 initial
+        //mark[i]=1 temporary
+        //mark[i]=2 permanent
+        for(int i=0;i&lt;numCourses;i++)&#123;
+            if(mark[i]&lt;2)&#123;
+                rst=dfs(i,mark,adj);
+                if(!rst) return false;
+            &#125;
+        &#125;
+        return true;
+    &#125;
+    bool dfs(int i,vector&lt;int&gt;&amp;mark,vector&lt;vector&lt;int&gt;&gt;&amp;adj)&#123;
+        if(mark[i]==2) return true;
+        if(mark[i]==1) return false; //detect cycle
+        mark[i]=1;
+        for(auto x:adj[i])&#123;
+            if(!dfs(x,mark,adj)) return false;
+        &#125;
+        mark[i]=2;
+        return true;
+    &#125;
+&#125;;
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/course-schedule-ii/description/?envType=study-plan-v2&envId=top-interview-150">Course Schedule II</a></p>
+<pre><code class="cpp">//Kahn&#39;s algorithm
+class Solution &#123;
+public:
+    vector&lt;int&gt; findOrder(int numCourses, vector&lt;vector&lt;int&gt;&gt;&amp; prerequisites) &#123;
+        vector&lt;int&gt;adj[numCourses];
+        vector&lt;int&gt;indegree(numCourses,0);
+        vector&lt;int&gt;ans;
+        for(auto x:prerequisites)&#123;
+            adj[x[1]].push_back(x[0]);
+            indegree[x[0]]++;
+        &#125;
+        queue&lt;int&gt;q;
+        for(int i=0;i&lt;numCourses;i++)&#123;
+            if(indegree[i]==0) q.push(i);
+        &#125;
+        while(!q.empty())&#123;
+            int now=q.front();
+            ans.push_back(now);
+            q.pop();
+            for(auto x:adj[now])&#123;
+                indegree[x]--;
+                if(indegree[x]==0) q.push(x);
+            &#125;
+        &#125;
+        if(ans.size()!=numCourses)&#123;
+            return &#123;&#125;;
+        &#125;
+        return ans;
+    &#125;
+&#125;;
+</code></pre>
+<p>&#96;<br><a target="_blank" rel="noopener" href="https://leetcode.com/problems/build-a-matrix-with-conditions/description/">Build a Matrix with Conditions</a></p>
+<pre><code class="cpp">class Solution &#123;
+public:
+    vector&lt;vector&lt;int&gt;&gt; buildMatrix(int k, vector&lt;vector&lt;int&gt;&gt;&amp; rowConditions, vector&lt;vector&lt;int&gt;&gt;&amp; colConditions) &#123;
+        vector&lt;vector&lt;int&gt;&gt;rowgraph(k+1),colgraph(k+1);
+        for(auto&amp; rc:rowConditions)&#123;
+            rowgraph[rc[0]].push_back(rc[1]);
+        &#125;
+        for(auto&amp; cc:colConditions)&#123;
+            colgraph[cc[0]].push_back(cc[1]);
+        &#125;
+        vector&lt;int&gt; roworder=topoSort(rowgraph,k);
+        vector&lt;int&gt; colorder=topoSort(colgraph,k);
+
+        if(roworder.empty()||colorder.empty()) return&#123;&#125;;
+        vector&lt;vector&lt;int&gt;&gt;result(k,vector&lt;int&gt;(k,0));
+        unordered_map&lt;int,int&gt;rowMap,colMap;
+        for(int i=0;i&lt;k;++i)&#123;
+        // i represents position, order[i] represents number
+            rowMap[roworder[i]]=i;
+            colMap[colorder[i]]=i;
+        &#125;
+        for(int i=1;i&lt;=k;i++)&#123;
+        //Map[i] represent i&#39;s position
+            result[rowMap[i]][colMap[i]]=i;
+        &#125;
+        return result;
+    &#125;
+    
+    //Kahn&#39;s algorithm
+    vector&lt;int&gt; topoSort(vector&lt;vector&lt;int&gt;&gt; &amp;graph, int k)&#123;
+        vector&lt;int&gt;indegree(k+1,0),order;
+        queue&lt;int&gt;q;
+        for(int i=1;i&lt;=k;i++)&#123;
+            for(int j:graph[i])&#123;
+                ++indegree[j];
+            &#125;
+        &#125;
+        for(int i=1;i&lt;=k;i++)&#123;
+            if(indegree[i]==0) q.push(i);
+        &#125;
+        while(!q.empty())&#123;
+            int node=q.front();
+            q.pop();
+            order.push_back(node);
+            for(int adj:graph[node])&#123;
+                if(--indegree[adj]==0) q.push(adj);
+            &#125;
+        &#125;
+        return order.size()==k? order:vector&lt;int&gt;();
+    &#125;
+&#125;;
+</code></pre>
+
+</div> 
+
+<script>
+    window.onload = detectors();
+</script>
+    <div class="post-footer">
+    <div class="h-line-primary"></div>
+    <nav class="post-nav">
+        <div class="prev-item">
+           
+                <div class="icon arrow-left"></div>
+                <div class="post-link">
+                    <a href="/2024/09/06/Binary%20Tree%20DFS/">Prev</a>
+                </div>
+            
+        </div>
+        <div class="next-item">
+            
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="post-comment">
+
+     
+
+     
+    
+    
+
+</div>
+     
+  
+</article>
+        </div>
+      </div>
+      
+      <div class="footer">
+    <div class="flex-container">
+        <div class="footer-text">
+            
+            
+                Lu Ying | 
+            
+            
+                Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/zoeingwingkei/frame/">Frame</a>
+                
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    
+      <div class="search-popup">
+    <div class="search-popup-overlay">  
+    </div>
+    <div class="search-popup-window" >
+        <div class="search-header">
+            <div class="search-input-container">
+              <input autocomplete="off" autocapitalize="off" maxlength="80"
+                     placeholder="Search Anything" spellcheck="false"
+                     type="search" class="search-input">
+            </div>
+            <div class="search-close-btn">
+                <div class="icon close-btn"></div>
+            </div>
+        </div>
+        <div class="search-result-container">
+        </div>
+    </div>
+</div>
+
+<script>
+    const searchConfig = {
+        path             : "/search.xml",
+        top_n_per_article: "1",
+        unescape         : "false",
+        trigger: "auto",
+        preload: "false"
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+<script src="/js/search.js"></script>
+    
+    
+
+  </body>
+</html>

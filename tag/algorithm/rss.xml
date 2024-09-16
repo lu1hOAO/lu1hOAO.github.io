@@ -1,17 +1,23 @@
 <?xml version="1.0"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://lu1hoao.github.io</id>
-    <title>Lu Ying</title>
-    <link href="https://lu1hoao.github.io" />
-    <updated>2024-09-06T06:57:09.863Z</updated>
-    <category term="Algorithm" />
-    <category term="Binary Tree" />
-    <category term="Graph" />
-    <entry>
-        <id>https://lu1hoao.github.io/2024/09/06/Binary%20Tree%20DFS/</id>
-        <title>Binary Tree DFS</title>
-        <link rel="alternate" href="https://lu1hoao.github.io/2024/09/06/Binary%20Tree%20DFS/"/>
-        <content type="html">&lt;h3 id=&#34;Overview&#34;&gt;&lt;a href=&#34;#Overview&#34; class=&#34;headerlink&#34; title=&#34;Overview&#34;&gt;&lt;/a&gt;Overview&lt;/h3&gt;&lt;p&gt;In computer science, tree traversal is a form of graph travrsal and refers to the process of &lt;strong&gt;visiting each node in a tree data structure, exactly once&lt;/strong&gt;. Such traversals are classified by the order in which the nodes are visited.&lt;/p&gt;
+<rss version="2.0">
+    <channel>
+        <title>Lu Ying • Posts by &#34;algorithm&#34; tag</title>
+        <link>https://lu1hoao.github.io</link>
+        <description></description>
+        <language>en</language>
+        <pubDate>Fri, 06 Sep 2024 14:57:09 +0800</pubDate>
+        <lastBuildDate>Fri, 06 Sep 2024 14:57:09 +0800</lastBuildDate>
+        <category>Algorithm</category>
+        <category>Binary Tree</category>
+        <category>Graph</category>
+        <item>
+            <guid isPermalink="true">https://lu1hoao.github.io/2024/09/06/Binary%20Tree%20DFS/</guid>
+            <title>Binary Tree DFS</title>
+            <link>https://lu1hoao.github.io/2024/09/06/Binary%20Tree%20DFS/</link>
+            <category>Algorithm</category>
+            <category>Binary Tree</category>
+            <pubDate>Fri, 06 Sep 2024 14:57:09 +0800</pubDate>
+            <description><![CDATA[ &lt;h3 id=&#34;Overview&#34;&gt;&lt;a href=&#34;#Overview&#34; class=&#34;headerlink&#34; title=&#34;Overview&#34;&gt;&lt;/a&gt;Overview&lt;/h3&gt;&lt;p&gt;In computer science, tree traversal is a form of graph travrsal and refers to the process of &lt;strong&gt;visiting each node in a tree data structure, exactly once&lt;/strong&gt;. Such traversals are classified by the order in which the nodes are visited.&lt;/p&gt;
 &lt;h3 id=&#34;DFS&#34;&gt;&lt;a href=&#34;#DFS&#34; class=&#34;headerlink&#34; title=&#34;DFS&#34;&gt;&lt;/a&gt;DFS&lt;/h3&gt;&lt;p&gt;In depth-first search(DFS), the search tree is deepened as much as possible before going to the next sibling. To traverse binary trees with depth-first search, perform the following operations at each node:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;If the current node is empty then return&lt;/li&gt;
@@ -194,16 +200,16 @@ public:
 &amp;#125;;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&#34;Conclusion&#34;&gt;&lt;a href=&#34;#Conclusion&#34; class=&#34;headerlink&#34; title=&#34;Conclusion&#34;&gt;&lt;/a&gt;Conclusion&lt;/h3&gt;&lt;p&gt;The time and space analysis of DFS differs according to its application area.In theoretical computer science, DFS is typically used to traverse an entire graph(tree), and takes time $O(|V|+|E|)$. This is linear in the size of the graph. In these applications it also uses space $O(|V|)$  in the worst case to store the stack of vertices on the current search path as well as the set of already-visited vertices. Thus, in this setting, the time and bounds are the same as fpr breadth-first search and the choice of which of these two algorithms to use depends less on their complexity and more on the different properties of the vertex orderings the two algorithms produce.&lt;/p&gt;
-</content>
-        <category term="Algorithm" />
-        <category term="Binary Tree" />
-        <updated>2024-09-06T06:57:09.863Z</updated>
-    </entry>
-    <entry>
-        <id>https://lu1hoao.github.io/2024/08/30/Topological%20Sorting/</id>
-        <title>Topological Sorting</title>
-        <link rel="alternate" href="https://lu1hoao.github.io/2024/08/30/Topological%20Sorting/"/>
-        <content type="html">&lt;h3 id=&#34;Overview&#34;&gt;&lt;a href=&#34;#Overview&#34; class=&#34;headerlink&#34; title=&#34;Overview&#34;&gt;&lt;/a&gt;Overview&lt;/h3&gt;&lt;p&gt;In computer science, a topological sort or topological ordering of a &lt;strong&gt;directed graph&lt;/strong&gt; is a linear ordering of its vertices. For instance, the vertices of the graph may represent tasks to be performed, and the edges may represent constraints that one task ust be performed before another; in this application, a topological ordering is just a valid sequence for the tasks.&lt;/p&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">https://lu1hoao.github.io/2024/08/30/Topological%20Sorting/</guid>
+            <title>Topological Sorting</title>
+            <link>https://lu1hoao.github.io/2024/08/30/Topological%20Sorting/</link>
+            <category>Algorithm</category>
+            <category>Graph</category>
+            <pubDate>Fri, 30 Aug 2024 12:54:15 +0800</pubDate>
+            <description><![CDATA[ &lt;h3 id=&#34;Overview&#34;&gt;&lt;a href=&#34;#Overview&#34; class=&#34;headerlink&#34; title=&#34;Overview&#34;&gt;&lt;/a&gt;Overview&lt;/h3&gt;&lt;p&gt;In computer science, a topological sort or topological ordering of a &lt;strong&gt;directed graph&lt;/strong&gt; is a linear ordering of its vertices. For instance, the vertices of the graph may represent tasks to be performed, and the edges may represent constraints that one task ust be performed before another; in this application, a topological ordering is just a valid sequence for the tasks.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;A topological ordering is possible if and only if the grapg has no directed cycles&lt;/strong&gt;,that is, if it is a directed acyclic graph (DAG).&lt;/p&gt;
 &lt;h3 id=&#34;Example&#34;&gt;&lt;a href=&#34;#Example&#34; class=&#34;headerlink&#34; title=&#34;Example&#34;&gt;&lt;/a&gt;Example&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://hackmd.io/_uploads/HJTxqmVjR.png&#34; alt=&#34;image&#34;&gt;&lt;/p&gt;
 &lt;p&gt;This graph has many valid topological sorts, including:&lt;/p&gt;
@@ -381,9 +387,7 @@ public:
     &amp;#125;
 &amp;#125;;
 &lt;/code&gt;&lt;/pre&gt;
-</content>
-        <category term="Algorithm" />
-        <category term="Graph" />
-        <updated>2024-08-30T04:54:15.000Z</updated>
-    </entry>
-</feed>
+ ]]></description>
+        </item>
+    </channel>
+</rss>
