@@ -1,0 +1,16 @@
+.post-head {
+  margin-top: $margin-primary;
+}
+.post-head .post-info {
+  width: 100%;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+}
+.post-head .post-info .post-title {
+  margin-bottom: $margin-m-1;
+}
+.post-head .post-img {
+  margin-top: $margin-l-1;
+}
