@@ -34,153 +34,16 @@
 <li>repeat 3 and 4 tile all vertices was visited.</li>
 </ol>
 <h3 id="Problems"><a href="#Problems" class="headerlink" title="Problems"></a>Problems</h3><p><a href="https://leetcode.com/problems/course-schedule/description/?envType=study-plan-v2&envId=top-interview-150">Course Schedule</a></p>
-<pre><code class="cpp">//Kahn&#39;s algorithm
-class Solution &#123;
-public:
-    bool canFinish(int numCourses, vector&lt;vector&lt;int&gt;&gt;&amp; prerequisites) &#123;
-        vector&lt;int&gt;adj[numCourses];
-        vector&lt;int&gt;indegree(numCourses,0);
-        int ans=0;
-        for(auto x:prerequisites)&#123;
-            adj[x[1]].push_back(x[0]); //construct a graph (step 1)
-            indegree[x[0]]++; //step2
-        &#125;
-        queue&lt;int&gt;q;
-        for(int i=0;i&lt;numCourses;i++)&#123;
-            if(indegree[i]==0) q.push(i); //step 3
-        &#125;
-        while(!q.empty())&#123;
-            int now=q.front();
-            ans++;
-            q.pop();
-            for(auto x:adj[now])&#123;
-                indegree[x]--;
-                if(indegree[x]==0) q.push(x);
-            &#125;
-        &#125;
-        return ans==numCourses;
-    &#125;
-&#125;;
-</code></pre>
-<pre><code class="cpp">//DFS
-class Solution &#123;
-public:
-    bool canFinish(int numCourses, vector&lt;vector&lt;int&gt;&gt;&amp; prerequisites) &#123;
-        vector&lt;vector&lt;int&gt;&gt;adj(numCourses);
-        vector&lt;int&gt;mark(numCourses,0);
-        bool rst;
-        int ans=0;
-        for(auto x:prerequisites)&#123;
-            adj[x[1]].push_back(x[0]);
-        &#125;
-        //mark[i]=0 initial
-        //mark[i]=1 temporary
-        //mark[i]=2 permanent
-        for(int i=0;i&lt;numCourses;i++)&#123;
-            if(mark[i]&lt;2)&#123;
-                rst=dfs(i,mark,adj);
-                if(!rst) return false;
-            &#125;
-        &#125;
-        return true;
-    &#125;
-    bool dfs(int i,vector&lt;int&gt;&amp;mark,vector&lt;vector&lt;int&gt;&gt;&amp;adj)&#123;
-        if(mark[i]==2) return true;
-        if(mark[i]==1) return false; //detect cycle
-        mark[i]=1;
-        for(auto x:adj[i])&#123;
-            if(!dfs(x,mark,adj)) return false;
-        &#125;
-        mark[i]=2;
-        return true;
-    &#125;
-&#125;;
-</code></pre>
-<p><a href="https://leetcode.com/problems/course-schedule-ii/description/?envType=study-plan-v2&envId=top-interview-150">Course Schedule II</a></p>
-<pre><code class="cpp">//Kahn&#39;s algorithm
-class Solution &#123;
-public:
-    vector&lt;int&gt; findOrder(int numCourses, vector&lt;vector&lt;int&gt;&gt;&amp; prerequisites) &#123;
-        vector&lt;int&gt;adj[numCourses];
-        vector&lt;int&gt;indegree(numCourses,0);
-        vector&lt;int&gt;ans;
-        for(auto x:prerequisites)&#123;
-            adj[x[1]].push_back(x[0]);
-            indegree[x[0]]++;
-        &#125;
-        queue&lt;int&gt;q;
-        for(int i=0;i&lt;numCourses;i++)&#123;
-            if(indegree[i]==0) q.push(i);
-        &#125;
-        while(!q.empty())&#123;
-            int now=q.front();
-            ans.push_back(now);
-            q.pop();
-            for(auto x:adj[now])&#123;
-                indegree[x]--;
-                if(indegree[x]==0) q.push(x);
-            &#125;
-        &#125;
-        if(ans.size()!=numCourses)&#123;
-            return &#123;&#125;;
-        &#125;
-        return ans;
-    &#125;
-&#125;;
-</code></pre>
-<p>&#96;<br><a href="https://leetcode.com/problems/build-a-matrix-with-conditions/description/">Build a Matrix with Conditions</a></p>
-<pre><code class="cpp">class Solution &#123;
-public:
-    vector&lt;vector&lt;int&gt;&gt; buildMatrix(int k, vector&lt;vector&lt;int&gt;&gt;&amp; rowConditions, vector&lt;vector&lt;int&gt;&gt;&amp; colConditions) &#123;
-        vector&lt;vector&lt;int&gt;&gt;rowgraph(k+1),colgraph(k+1);
-        for(auto&amp; rc:rowConditions)&#123;
-            rowgraph[rc[0]].push_back(rc[1]);
-        &#125;
-        for(auto&amp; cc:colConditions)&#123;
-            colgraph[cc[0]].push_back(cc[1]);
-        &#125;
-        vector&lt;int&gt; roworder=topoSort(rowgraph,k);
-        vector&lt;int&gt; colorder=topoSort(colgraph,k);
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Kahn&#x27;s algorithm</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">canFinish</span><span class="params">(<span class="type">int</span> numCourses, vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; prerequisites)</span> </span>&#123;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt;adj[numCourses];</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt;<span class="built_in">indegree</span>(numCourses,<span class="number">0</span>);</span><br><span class="line">        <span class="type">int</span> ans=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> x:prerequisites)&#123;</span><br><span class="line">            adj[x[<span class="number">1</span>]].<span class="built_in">push_back</span>(x[<span class="number">0</span>]); <span class="comment">//construct a graph (step 1)</span></span><br><span class="line">            indegree[x[<span class="number">0</span>]]++; <span class="comment">//step2</span></span><br><span class="line">        &#125;</span><br><span class="line">        queue&lt;<span class="type">int</span>&gt;q;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;numCourses;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(indegree[i]==<span class="number">0</span>) q.<span class="built_in">push</span>(i); <span class="comment">//step 3</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(!q.<span class="built_in">empty</span>())&#123;</span><br><span class="line">            <span class="type">int</span> now=q.<span class="built_in">front</span>();</span><br><span class="line">            ans++;</span><br><span class="line">            q.<span class="built_in">pop</span>();</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">auto</span> x:adj[now])&#123;</span><br><span class="line">                indegree[x]--;</span><br><span class="line">                <span class="keyword">if</span>(indegree[x]==<span class="number">0</span>) q.<span class="built_in">push</span>(x);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans==numCourses;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//DFS</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">canFinish</span><span class="params">(<span class="type">int</span> numCourses, vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; prerequisites)</span> </span>&#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;<span class="built_in">adj</span>(numCourses);</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt;<span class="built_in">mark</span>(numCourses,<span class="number">0</span>);</span><br><span class="line">        <span class="type">bool</span> rst;</span><br><span class="line">        <span class="type">int</span> ans=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> x:prerequisites)&#123;</span><br><span class="line">            adj[x[<span class="number">1</span>]].<span class="built_in">push_back</span>(x[<span class="number">0</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//mark[i]=0 initial</span></span><br><span class="line">        <span class="comment">//mark[i]=1 temporary</span></span><br><span class="line">        <span class="comment">//mark[i]=2 permanent</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;numCourses;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(mark[i]&lt;<span class="number">2</span>)&#123;</span><br><span class="line">                rst=<span class="built_in">dfs</span>(i,mark,adj);</span><br><span class="line">                <span class="keyword">if</span>(!rst) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> i,vector&lt;<span class="type">int</span>&gt;&amp;mark,vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp;adj)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(mark[i]==<span class="number">2</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(mark[i]==<span class="number">1</span>) <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">//detect cycle</span></span><br><span class="line">        mark[i]=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> x:adj[i])&#123;</span><br><span class="line">            <span class="keyword">if</span>(!<span class="built_in">dfs</span>(x,mark,adj)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        mark[i]=<span class="number">2</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-        if(roworder.empty()||colorder.empty()) return&#123;&#125;;
-        vector&lt;vector&lt;int&gt;&gt;result(k,vector&lt;int&gt;(k,0));
-        unordered_map&lt;int,int&gt;rowMap,colMap;
-        for(int i=0;i&lt;k;++i)&#123;
-        // i represents position, order[i] represents number
-            rowMap[roworder[i]]=i;
-            colMap[colorder[i]]=i;
-        &#125;
-        for(int i=1;i&lt;=k;i++)&#123;
-        //Map[i] represent i&#39;s position
-            result[rowMap[i]][colMap[i]]=i;
-        &#125;
-        return result;
-    &#125;
-    
-    //Kahn&#39;s algorithm
-    vector&lt;int&gt; topoSort(vector&lt;vector&lt;int&gt;&gt; &amp;graph, int k)&#123;
-        vector&lt;int&gt;indegree(k+1,0),order;
-        queue&lt;int&gt;q;
-        for(int i=1;i&lt;=k;i++)&#123;
-            for(int j:graph[i])&#123;
-                ++indegree[j];
-            &#125;
-        &#125;
-        for(int i=1;i&lt;=k;i++)&#123;
-            if(indegree[i]==0) q.push(i);
-        &#125;
-        while(!q.empty())&#123;
-            int node=q.front();
-            q.pop();
-            order.push_back(node);
-            for(int adj:graph[node])&#123;
-                if(--indegree[adj]==0) q.push(adj);
-            &#125;
-        &#125;
-        return order.size()==k? order:vector&lt;int&gt;();
-    &#125;
-&#125;;
-</code></pre>
+<p><a href="https://leetcode.com/problems/course-schedule-ii/description/?envType=study-plan-v2&envId=top-interview-150">Course Schedule II</a></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Kahn&#x27;s algorithm</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">findOrder</span><span class="params">(<span class="type">int</span> numCourses, vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; prerequisites)</span> </span>&#123;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt;adj[numCourses];</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt;<span class="built_in">indegree</span>(numCourses,<span class="number">0</span>);</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt;ans;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> x:prerequisites)&#123;</span><br><span class="line">            adj[x[<span class="number">1</span>]].<span class="built_in">push_back</span>(x[<span class="number">0</span>]);</span><br><span class="line">            indegree[x[<span class="number">0</span>]]++;</span><br><span class="line">        &#125;</span><br><span class="line">        queue&lt;<span class="type">int</span>&gt;q;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;numCourses;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(indegree[i]==<span class="number">0</span>) q.<span class="built_in">push</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(!q.<span class="built_in">empty</span>())&#123;</span><br><span class="line">            <span class="type">int</span> now=q.<span class="built_in">front</span>();</span><br><span class="line">            ans.<span class="built_in">push_back</span>(now);</span><br><span class="line">            q.<span class="built_in">pop</span>();</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">auto</span> x:adj[now])&#123;</span><br><span class="line">                indegree[x]--;</span><br><span class="line">                <span class="keyword">if</span>(indegree[x]==<span class="number">0</span>) q.<span class="built_in">push</span>(x);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(ans.<span class="built_in">size</span>()!=numCourses)&#123;</span><br><span class="line">            <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>&#96;<br><a href="https://leetcode.com/problems/build-a-matrix-with-conditions/description/">Build a Matrix with Conditions</a></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">buildMatrix</span>(<span class="type">int</span> k, vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; rowConditions, vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; colConditions) &#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;<span class="built_in">rowgraph</span>(k<span class="number">+1</span>),<span class="built_in">colgraph</span>(k<span class="number">+1</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span>&amp; rc:rowConditions)&#123;</span><br><span class="line">            rowgraph[rc[<span class="number">0</span>]].<span class="built_in">push_back</span>(rc[<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span>&amp; cc:colConditions)&#123;</span><br><span class="line">            colgraph[cc[<span class="number">0</span>]].<span class="built_in">push_back</span>(cc[<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; roworder=<span class="built_in">topoSort</span>(rowgraph,k);</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; colorder=<span class="built_in">topoSort</span>(colgraph,k);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(roworder.<span class="built_in">empty</span>()||colorder.<span class="built_in">empty</span>()) <span class="keyword">return</span>&#123;&#125;;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;<span class="built_in">result</span>(k,<span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(k,<span class="number">0</span>));</span><br><span class="line">        unordered_map&lt;<span class="type">int</span>,<span class="type">int</span>&gt;rowMap,colMap;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;k;++i)&#123;</span><br><span class="line">        <span class="comment">// i represents position, order[i] represents number</span></span><br><span class="line">            rowMap[roworder[i]]=i;</span><br><span class="line">            colMap[colorder[i]]=i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=k;i++)&#123;</span><br><span class="line">        <span class="comment">//Map[i] represent i&#x27;s position</span></span><br><span class="line">            result[rowMap[i]][colMap[i]]=i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//Kahn&#x27;s algorithm</span></span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">topoSort</span><span class="params">(vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; &amp;graph, <span class="type">int</span> k)</span></span>&#123;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt;<span class="built_in">indegree</span>(k<span class="number">+1</span>,<span class="number">0</span>),order;</span><br><span class="line">        queue&lt;<span class="type">int</span>&gt;q;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=k;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j:graph[i])&#123;</span><br><span class="line">                ++indegree[j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=k;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(indegree[i]==<span class="number">0</span>) q.<span class="built_in">push</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(!q.<span class="built_in">empty</span>())&#123;</span><br><span class="line">            <span class="type">int</span> node=q.<span class="built_in">front</span>();</span><br><span class="line">            q.<span class="built_in">pop</span>();</span><br><span class="line">            order.<span class="built_in">push_back</span>(node);</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> adj:graph[node])&#123;</span><br><span class="line">                <span class="keyword">if</span>(--indegree[adj]==<span class="number">0</span>) q.<span class="built_in">push</span>(adj);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> order.<span class="built_in">size</span>()==k? order:<span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
 ]]></content>
       <categories>
         <category>gallery</category>
@@ -204,180 +67,23 @@ public:
 <p><strong>Pre-order, NLR</strong><br><strong>Post-order, LRN</strong><br><strong>In-order, LNR</strong><br><strong>Reverse pre-order, NRL</strong><br><strong>Reverse post-order, RLN</strong><br><strong>Reverse  in-order, RNL</strong></p>
 <p><strong>Given a tree with distinct elements, either pre-order or post-order paired with in-order is sufficient to describe the tree uniquely.</strong> However, pre-order with post-order leaves some ambiguity in the tree structure. </p>
 <h3 id="Problems"><a href="#Problems" class="headerlink" title="Problems"></a>Problems</h3><p><a href="https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal">Construct Binary Tree from Preorder and Inorder Traversal</a></p>
-<pre><code class=".cpp">class Solution &#123;
-public:
-    int pidx;
-    unordered_map&lt;int,int&gt; mp;
-    TreeNode* buildTree(vector&lt;int&gt;&amp; preorder, vector&lt;int&gt;&amp; inorder) &#123;
-        pidx=0;
-        int len=inorder.size();
-        for(int i=0;i&lt;len;i++)&#123;
-            mp[inorder[i]]=i;
-        &#125;
-        return construct(0,len-1,preorder);
-    &#125;
-    TreeNode* construct(int start,int end,vector&lt;int&gt;&amp;preorder)&#123;
-        if(start&gt;end) return NULL;
-        int rootval=preorder[pidx];
-        TreeNode *head= new TreeNode(rootval);
-        int mid=mp[rootval];
-        pidx++;
-        head-&gt;left=construct(start,mid-1,preorder);
-        head-&gt;right=construct(mid+1,end,preorder);
-        return head;
-    &#125;
-&#125;;
-</code></pre>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> pidx;</span><br><span class="line">    unordered_map&lt;<span class="type">int</span>,<span class="type">int</span>&gt; mp;</span><br><span class="line">    <span class="function">TreeNode* <span class="title">buildTree</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; preorder, vector&lt;<span class="type">int</span>&gt;&amp; inorder)</span> </span>&#123;</span><br><span class="line">        pidx=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> len=inorder.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">            mp[inorder[i]]=i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">construct</span>(<span class="number">0</span>,len<span class="number">-1</span>,preorder);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">TreeNode* <span class="title">construct</span><span class="params">(<span class="type">int</span> start,<span class="type">int</span> end,vector&lt;<span class="type">int</span>&gt;&amp;preorder)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(start&gt;end) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        <span class="type">int</span> rootval=preorder[pidx];</span><br><span class="line">        TreeNode *head= <span class="keyword">new</span> <span class="built_in">TreeNode</span>(rootval);</span><br><span class="line">        <span class="type">int</span> mid=mp[rootval];</span><br><span class="line">        pidx++;</span><br><span class="line">        head-&gt;left=<span class="built_in">construct</span>(start,mid<span class="number">-1</span>,preorder);</span><br><span class="line">        head-&gt;right=<span class="built_in">construct</span>(mid<span class="number">+1</span>,end,preorder);</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p><a href="https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal">Construct Binary Tree from inorder and postorder traversal</a></p>
-<pre><code class="cpp">class Solution &#123;
-public:
-    int pidx;
-    unordered_map&lt;int,int&gt; mp;
-    TreeNode* buildTree(vector&lt;int&gt;&amp; inorder, vector&lt;int&gt;&amp; postorder) &#123;
-        int len=inorder.size();
-        pidx=len-1;
-        for(int i=0;i&lt;len;i++)&#123;
-            mp[inorder[i]]=i;
-        &#125;
-        return construct(0,len-1,postorder);
-    &#125;
-    TreeNode* construct(int start,int end,vector&lt;int&gt;&amp;postorder)&#123;
-        if(start&gt;end) return NULL;
-        int rootval=postorder[pidx];
-        TreeNode* head= new TreeNode(rootval);
-        int mid=mp[rootval];
-        pidx--;
-        head-&gt;right=construct(mid+1,end,postorder);
-        head-&gt;left=construct(start,mid-1,postorder);
-        return head;
-    &#125;
-&#125;;
-</code></pre>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> pidx;</span><br><span class="line">    unordered_map&lt;<span class="type">int</span>,<span class="type">int</span>&gt; mp;</span><br><span class="line">    <span class="function">TreeNode* <span class="title">buildTree</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; inorder, vector&lt;<span class="type">int</span>&gt;&amp; postorder)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> len=inorder.<span class="built_in">size</span>();</span><br><span class="line">        pidx=len<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">            mp[inorder[i]]=i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">construct</span>(<span class="number">0</span>,len<span class="number">-1</span>,postorder);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">TreeNode* <span class="title">construct</span><span class="params">(<span class="type">int</span> start,<span class="type">int</span> end,vector&lt;<span class="type">int</span>&gt;&amp;postorder)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(start&gt;end) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        <span class="type">int</span> rootval=postorder[pidx];</span><br><span class="line">        TreeNode* head= <span class="keyword">new</span> <span class="built_in">TreeNode</span>(rootval);</span><br><span class="line">        <span class="type">int</span> mid=mp[rootval];</span><br><span class="line">        pidx--;</span><br><span class="line">        head-&gt;right=<span class="built_in">construct</span>(mid<span class="number">+1</span>,end,postorder);</span><br><span class="line">        head-&gt;left=<span class="built_in">construct</span>(start,mid<span class="number">-1</span>,postorder);</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>Everytime we create a new node with a number from preorder array. That should be root node of each subtree, because in preorder, we traverse the tree like root, left and right. So let’s say middle(&#x3D;root)<br>To create left and right side of tree, we use two pointers, let’s say start and end.<br>Start and end specify the range of the current subtree in the inorder list.<br>Within this range, the root node is determined, and itd index is used to recursively set the ranges for the left and right subtrees.</p>
 <p><a href="https://leetcode.com/problems/binary-tree-maximum-path-sum/">Binary Tree Maximum Path Sum</a></p>
-<pre><code class="cpp">class Solution &#123;
-public:
-    int max_sum=INT_MIN;
-    int maxPathSum(TreeNode* root) &#123;
-        max_gain(root);
-        return max_sum;
-    &#125;
-    int max_gain(TreeNode* root)&#123;
-        if(!root) return 0;
-        int l=max(max_gain(root-&gt;left),0);
-        int r=max(max_gain(root-&gt;right),0);
-        int new_price=root-&gt;val+l+r;
-        max_sum=max(max_sum,new_price);
-        return root-&gt;val+max(l,r);
-    &#125;
-&#125;;
-</code></pre>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> max_sum=INT_MIN;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxPathSum</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">max_gain</span>(root);</span><br><span class="line">        <span class="keyword">return</span> max_sum;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">max_gain</span><span class="params">(TreeNode* root)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> l=<span class="built_in">max</span>(<span class="built_in">max_gain</span>(root-&gt;left),<span class="number">0</span>);</span><br><span class="line">        <span class="type">int</span> r=<span class="built_in">max</span>(<span class="built_in">max_gain</span>(root-&gt;right),<span class="number">0</span>);</span><br><span class="line">        <span class="type">int</span> new_price=root-&gt;val+l+r;</span><br><span class="line">        max_sum=<span class="built_in">max</span>(max_sum,new_price);</span><br><span class="line">        <span class="keyword">return</span> root-&gt;val+<span class="built_in">max</span>(l,r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>In this problem we use <strong>postorder traversal</strong> to calculate the maximum path sum of subtrees. <strong>For each node we can choose either its left subtree or right subtree</strong>, so our return value is <code>root-&gt;val+max(l,r)</code>  However, each node may be an end point, so the correct answer of maximum sum is <code>int new_price=root-&gt;val+l+r; max_sum=max(max_sum,new_price);</code></p>
 <p><a href="https://leetcode.com/problems/flatten-binary-tree-to-linked-list/">Flatten Binary Tree to Linked List</a></p>
-<pre><code class="cpp">class Solution &#123;
-public:
-    void flatten(TreeNode* root) &#123;
-        if(root) preorder(root); 
-    &#125;
-    TreeNode* preorder(TreeNode* root)&#123;
-        TreeNode* leftmost=root;
-        if(root)&#123;
-            TreeNode* left=root-&gt;left;
-            TreeNode* right=root-&gt;right;
-            root-&gt;right=left;
-            root-&gt;left=NULL;
-            if(left) leftmost=preorder(left); //deal with its left subtree
-            if(right)&#123;
-               leftmost-&gt;right=right;
-               leftmost=preorder(right); //deal with its right subtree
-            &#125;
-        &#125;
-        return leftmost;
-    &#125;
-&#125;;
-</code></pre>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">flatten</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root) <span class="built_in">preorder</span>(root); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">TreeNode* <span class="title">preorder</span><span class="params">(TreeNode* root)</span></span>&#123;</span><br><span class="line">        TreeNode* leftmost=root;</span><br><span class="line">        <span class="keyword">if</span>(root)&#123;</span><br><span class="line">            TreeNode* left=root-&gt;left;</span><br><span class="line">            TreeNode* right=root-&gt;right;</span><br><span class="line">            root-&gt;right=left;</span><br><span class="line">            root-&gt;left=<span class="literal">NULL</span>;</span><br><span class="line">            <span class="keyword">if</span>(left) leftmost=<span class="built_in">preorder</span>(left); <span class="comment">//deal with its left subtree</span></span><br><span class="line">            <span class="keyword">if</span>(right)&#123;</span><br><span class="line">               leftmost-&gt;right=right;</span><br><span class="line">               leftmost=<span class="built_in">preorder</span>(right); <span class="comment">//deal with its right subtree</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> leftmost;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>If we notice carefully in the flattened tree, each node’s right child points to the next node of a <strong>pre-order traversal</strong>, so we return the leftmost node untile all left node was added to the list and we started to deal with right node( though the variable name still called leftmost )</p>
 <h3 id="Common-Data-Structure-in-DFS"><a href="#Common-Data-Structure-in-DFS" class="headerlink" title="Common Data Structure in DFS"></a>Common Data Structure in DFS</h3><p>I prefer use recursive function to implement DFS, however stack is also an useful data structure to implement DFS. There is a problem ask programers useing stack to implement Binary Search Tree Inorder Iterator.<br><a href="https://leetcode.com/problems/binary-search-tree-iterator">Binary Search Tree Iterator</a></p>
-<pre><code class="cpp">//Inorder
-class BSTIterator &#123;
-public:
-    stack&lt;TreeNode*&gt;s;
-    BSTIterator(TreeNode* root) &#123;
-        Inorder(root);
-    &#125;
-    
-    int next() &#123;
-        TreeNode* top=s.top();
-        s.pop();
-        Inorder(top-&gt;right);
-        return top-&gt;val;
-    &#125;
-    
-    bool hasNext() &#123;
-        return !s.empty();
-    &#125;
-    void Inorder(TreeNode* root)&#123;
-        while(root)&#123;
-            s.push(root);
-            root=root-&gt;left;
-        &#125;
-    &#125;
-&#125;;
-</code></pre>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Inorder</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BSTIterator</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    stack&lt;TreeNode*&gt;s;</span><br><span class="line">    <span class="built_in">BSTIterator</span>(TreeNode* root) &#123;</span><br><span class="line">        <span class="built_in">Inorder</span>(root);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        TreeNode* top=s.<span class="built_in">top</span>();</span><br><span class="line">        s.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="built_in">Inorder</span>(top-&gt;right);</span><br><span class="line">        <span class="keyword">return</span> top-&gt;val;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> !s.<span class="built_in">empty</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Inorder</span><span class="params">(TreeNode* root)</span></span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(root)&#123;</span><br><span class="line">            s.<span class="built_in">push</span>(root);</span><br><span class="line">            root=root-&gt;left;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>Notice that we should put a node’s left child on the top of the stack to ensure the ordering is in-order. If we want to change it to pre-order or post-order we can modify our code to this</p>
-<pre><code class="cpp">//Preorder
-class BSTIterator &#123;
-public:
-    stack&lt;TreeNode*&gt;s;
-    TreeNode *now;
-    BSTIterator(TreeNode* root) &#123;
-        s.push(root);
-    &#125;
-    
-    int next() &#123;
-        TreeNode *now=s.top();
-        Preorder(now);
-        s.pop();
-        return now-&gt;val;
-    &#125;
-    
-    bool hasNext() &#123;
-        return !s.empty();
-    &#125;
-    void Preorder(TreeNode* root)&#123;
-        if(root-&gt;right) s.push(root-&gt;right);
-        if(root-&gt;left) s.push(root-&gt;left);
-    &#125;
-&#125;;
-</code></pre>
-<pre><code class="cpp">//Postorder
-class BSTIterator &#123;
-public:
-    stack&lt;TreeNode*&gt;s;
-    BSTIterator(TreeNode* root) &#123;
-        Postorder(root);
-    &#125;
-    
-    int next() &#123;
-        TreeNode *top=s.top();
-        s.pop();
-        Postorder(top-&gt;left);
-        return top&gt;val;
-    &#125;
-    
-    bool hasNext() &#123;
-        return !s.empty();
-    &#125;
-    void Postorder(TreeNode* root)&#123;
-        while(root)&#123;
-            s.push(root);
-            if(root-&gt;right) s.push(root-&gt;right);
-            root=root-&gt;left;
-        &#125;
-    &#125;
-&#125;;
-</code></pre>
-<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>The time and space analysis of DFS differs according to its application area.In theoretical computer science, DFS is typically used to traverse an entire graph(tree), and takes time $O(|V|+|E|)$. This is linear in the size of the graph. In these applications it also uses space $O(|V|)$  in the worst case to store the stack of vertices on the current search path as well as the set of already-visited vertices. Thus, in this setting, the time and bounds are the same as fpr breadth-first search and the choice of which of these two algorithms to use depends less on their complexity and more on the different properties of the vertex orderings the two algorithms produce.</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Preorder</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BSTIterator</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    stack&lt;TreeNode*&gt;s;</span><br><span class="line">    TreeNode *now;</span><br><span class="line">    <span class="built_in">BSTIterator</span>(TreeNode* root) &#123;</span><br><span class="line">        s.<span class="built_in">push</span>(root);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        TreeNode *now=s.<span class="built_in">top</span>();</span><br><span class="line">        <span class="built_in">Preorder</span>(now);</span><br><span class="line">        s.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">return</span> now-&gt;val;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> !s.<span class="built_in">empty</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Preorder</span><span class="params">(TreeNode* root)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root-&gt;right) s.<span class="built_in">push</span>(root-&gt;right);</span><br><span class="line">        <span class="keyword">if</span>(root-&gt;left) s.<span class="built_in">push</span>(root-&gt;left);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Postorder</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BSTIterator</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    stack&lt;TreeNode*&gt;s;</span><br><span class="line">    <span class="built_in">BSTIterator</span>(TreeNode* root) &#123;</span><br><span class="line">        <span class="built_in">Postorder</span>(root);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        TreeNode *top=s.<span class="built_in">top</span>();</span><br><span class="line">        s.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="built_in">Postorder</span>(top-&gt;left);</span><br><span class="line">        <span class="keyword">return</span> top&gt;val;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> !s.<span class="built_in">empty</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Postorder</span><span class="params">(TreeNode* root)</span></span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(root)&#123;</span><br><span class="line">            s.<span class="built_in">push</span>(root);</span><br><span class="line">            <span class="keyword">if</span>(root-&gt;right) s.<span class="built_in">push</span>(root-&gt;right);</span><br><span class="line">            root=root-&gt;left;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>The time and space analysis of DFS differs according to its application area.In theoretical computer science, DFS is typically used to traverse an entire graph(tree), and takes time <em>O(|V|+|E|)</em>. This is linear in the size of the graph. In these applications it also uses space <em>O(|V|)</em> in the worst case to store the stack of vertices on the current search path as well as the set of already-visited vertices. Thus, in this setting, the time and bounds are the same as for breadth-first search and the choice of which of these two algorithms to use depends less on their complexity and more on the different properties of the vertex orderings the two algorithms produce.</p>
 ]]></content>
       <categories>
         <category>gallery</category>
